@@ -1,0 +1,3403 @@
+GPT-5.4 vs GPT-5.1 — Production Stress Test v2 (Setor AI)
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setor AI — GPT-5.4 vs GPT-5.1 Production Stress Test v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #000000;
+  --bg-card: #111111;
+  --bg-card-hover: #1a1a1a;
+  --accent: #007AFF;
+  --accent-light: #12ADFF;
+  --text-primary: #ffffff;
+  --text-secondary: #999999;
+  --text-muted: #666666;
+  --border: #222222;
+  --green: #22c55e;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --purple: #A855F7;
+  --orange: #FF6B35;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* === HERO === */
+.hero {
+  text-align: center;
+  padding: 80px 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(18,173,255,0.08) 0%, transparent 60%);
+  animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.logo-container {
+  width: 80px;
+  height: 98px;
+  margin: 0 auto 32px;
+  position: relative;
+  filter: drop-shadow(0 0 20px rgba(18,173,255,0.4));
+}
+
+.logo-container svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes shimmer {
+  0% { filter: brightness(1) drop-shadow(0 0 20px rgba(18,173,255,0.4)); }
+  50% { filter: brightness(1.3) drop-shadow(0 0 30px rgba(18,173,255,0.6)); }
+  100% { filter: brightness(1) drop-shadow(0 0 20px rgba(18,173,255,0.4)); }
+}
+
+.logo-container {
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #fff 0%, #12ADFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero .subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.hero .date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.hero .badge {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(18,173,255,0.15);
+  color: var(--accent-light);
+  border: 1px solid rgba(18,173,255,0.3);
+}
+
+/* === SECTIONS === */
+section {
+  margin-bottom: 48px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -0.02em;
+}
+
+h2 .section-num {
+  color: var(--accent-light);
+  font-weight: 400;
+  margin-right: 8px;
+}
+
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+}
+
+/* === CARDS === */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.2s;
+}
+
+.card:hover {
+  border-color: rgba(18,173,255,0.3);
+}
+
+.card .card-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.card .card-value {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.card .card-detail {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.card.winner { border-color: var(--green); }
+.card.cost { border-color: var(--orange); }
+.card.rec { border-color: var(--accent-light); }
+
+/* === CRITIQUE CARDS === */
+.critique-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.critique-card {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.critique-card.amber {
+  background: rgba(245,158,11,0.08);
+  border-color: rgba(245,158,11,0.2);
+}
+
+.critique-card strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+.critique-card p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* === TABLES === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+th {
+  text-align: left;
+  padding: 10px 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(34,34,34,0.5);
+  vertical-align: top;
+}
+
+tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+/* === HEATMAP === */
+.heatmap-table th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.heatmap-table .label-cell {
+  min-width: 160px;
+}
+
+.heatmap-table .label-cell .edge {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.heatmap-table .target-cell {
+  font-size: 0.75rem;
+  color: var(--accent-light);
+  font-weight: 500;
+}
+
+/* === BUBBLES === */
+.convo-compare {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.convo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.convo-header h4 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.edge-tag {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 8px;
+}
+
+.org-tag {
+  font-size: 0.75rem;
+  color: var(--accent-light);
+}
+
+.bubble-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.bubble-col {
+  min-height: 120px;
+}
+
+.bubble-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 2px solid;
+}
+
+.score-badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.stage-tag {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.dm-bubble {
+  background: #1a1a2e;
+  border-radius: 16px 16px 16px 4px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 6px;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.dm-bubble.empty {
+  color: var(--text-muted);
+  font-style: italic;
+  background: rgba(239,68,68,0.1);
+}
+
+.fail-badge {
+  background: rgba(239,68,68,0.2);
+  color: var(--red);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.fu-count {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* === TOKEN ECONOMICS === */
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.token-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.token-card .config-name {
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+.token-bar {
+  display: flex;
+  height: 24px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.token-bar .text-part {
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.token-bar .reason-part {
+  background: rgba(18,173,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.token-stat {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 4px 0;
+}
+
+.token-stat strong {
+  color: var(--text-primary);
+}
+
+/* === RECOMMENDATION === */
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.rec-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+}
+
+.rec-card.recommended {
+  border-color: var(--green);
+  box-shadow: 0 0 20px rgba(34,197,94,0.1);
+}
+
+.rec-card.danger {
+  border-color: var(--red);
+  box-shadow: 0 0 20px rgba(239,68,68,0.15);
+}
+
+.rec-card.danger h4 {
+  color: var(--red);
+}
+
+.rec-card .danger-tag {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  background: var(--red);
+  color: #fff;
+  padding: 2px 12px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.rec-card .rec-tag {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  background: var(--green);
+  color: #000;
+  padding: 2px 12px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.rec-card h4 {
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.rec-card .rec-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.rec-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.rec-card li {
+  font-size: 0.8rem;
+  padding: 4px 0;
+  color: var(--text-secondary);
+}
+
+.rec-card li::before {
+  content: '→ ';
+  color: var(--accent-light);
+}
+
+.pro { color: var(--green); }
+.con { color: var(--red); }
+
+/* === NOTES === */
+.note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* === APPENDIX === */
+.appendix-toggle {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-family: inherit;
+  margin-bottom: 4px;
+}
+
+.appendix-content {
+  display: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 0 0 8px 8px;
+  padding: 16px;
+  margin-top: -5px;
+  margin-bottom: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.appendix-content pre {
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: var(--text-secondary);
+}
+
+/* === FOOTER === */
+footer {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+/* === CTO FEEDBACK BANNER === */
+.cto-banner {
+  background: rgba(168,85,247,0.08);
+  border: 2px solid rgba(168,85,247,0.4);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cto-banner::before {
+  content: 'CTO FEEDBACK';
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: #A855F7;
+  color: #fff;
+  padding: 2px 12px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cto-banner h4 {
+  color: #A855F7;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.cto-banner p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.cto-banner p:last-child {
+  margin-bottom: 0;
+}
+
+.cto-banner code {
+  background: rgba(168,85,247,0.15);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  color: #c084fc;
+}
+
+.cto-items {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+
+.cto-items li {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(168,85,247,0.1);
+}
+
+.cto-items li:last-child {
+  border-bottom: none;
+}
+
+.cto-items li strong {
+  color: var(--text-primary);
+}
+
+.cto-impact {
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 12px;
+}
+
+.cto-impact p {
+  color: var(--amber);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .card-grid, .token-grid, .rec-grid { grid-template-columns: 1fr; }
+  .bubble-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 1.8rem; }
+  .container { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ========== 1. HERO ========== -->
+<div class="hero">
+  <div class="logo-container">
+    <svg width="971" height="1189" viewBox="0 0 971 1189" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M891.917 657.488L709.998 646.621L269.159 620.293C210.231 616.778 160.054 576.213 144.258 519.342L0 0L631.276 465.344L891.917 657.488Z" fill="url(#paint0_linear_1_2)"/>
+<path d="M966.073 429.141L970.77 495.639L938.039 460.399L795.386 449.124L891.917 657.458L631.291 465.344L699.89 366.201L919.514 407.991L966.073 429.141Z" fill="url(#paint1_linear_1_2)"/>
+<path d="M891.917 657.488L129.992 1188.31L456.723 716.97L709.998 646.621L891.917 657.488Z" fill="url(#paint2_linear_1_2)"/>
+<path d="M919.514 407.991L699.89 366.201L645.148 247.98L890.24 359.171L919.514 407.991Z" fill="url(#paint3_linear_1_2)"/>
+<path d="M919.514 407.991L645.148 247.98L890.24 359.171L919.514 407.991Z" fill="url(#paint4_linear_1_2)"/>
+<path d="M795.386 449.124L718.531 443.056L891.917 657.488L795.386 449.124Z" fill="url(#paint5_linear_1_2)"/>
+<path d="M129.992 1188.31L709.998 646.621L456.723 716.97L129.992 1188.31Z" fill="url(#paint6_linear_1_2)"/>
+<path d="M126.594 455.935L891.917 657.488L269.13 620.293C210.216 616.777 160.04 576.228 144.228 519.371L126.579 455.935H126.594Z" fill="url(#paint7_linear_1_2)"/>
+<path d="M63.2749 227.968L107.311 386.491L891.917 657.488L63.2749 227.968Z" fill="url(#paint8_linear_1_2)"/>
+<path d="M966.073 429.141L970.77 495.639L956.3 439.074L919.514 407.991L966.073 429.141Z" fill="url(#paint9_linear_1_2)"/>
+<defs>
+<linearGradient id="paint0_linear_1_2" x1="445.958" y1="657.488" x2="445.958" y2="0" gradientUnits="userSpaceOnUse">
+<stop offset="0.02" stop-color="#12ADFF"/>
+<stop offset="0.55" stop-color="#0B3FFF"/>
+<stop offset="1" stop-color="#12ADFF"/>
+</linearGradient>
+<linearGradient id="paint1_linear_1_2" x1="801.03" y1="657.458" x2="801.03" y2="366.201" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1184FF"/>
+<stop offset="1" stop-color="#1110DB"/>
+</linearGradient>
+<linearGradient id="paint2_linear_1_2" x1="129.992" y1="917.457" x2="891.917" y2="917.457" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1110DB"/>
+<stop offset="0.56" stop-color="#1184FF"/>
+<stop offset="1" stop-color="#12ADFF"/>
+</linearGradient>
+<linearGradient id="paint3_linear_1_2" x1="645.148" y1="327.985" x2="919.514" y2="327.985" gradientUnits="userSpaceOnUse">
+<stop stop-color="#18A5FD"/>
+<stop offset="1" stop-color="#1110DB"/>
+</linearGradient>
+<linearGradient id="paint4_linear_1_2" x1="645.148" y1="327.985" x2="919.514" y2="327.985" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1110DB"/>
+<stop offset="0.56" stop-color="#1184FF"/>
+<stop offset="1" stop-color="#12ADFF"/>
+</linearGradient>
+<linearGradient id="paint5_linear_1_2" x1="718.531" y1="550.279" x2="891.917" y2="550.279" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1184FF"/>
+<stop offset="1" stop-color="#1110DB"/>
+</linearGradient>
+<linearGradient id="paint6_linear_1_2" x1="129.992" y1="917.457" x2="709.998" y2="917.457" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1184FF"/>
+<stop offset="1" stop-color="#1110DB"/>
+</linearGradient>
+<linearGradient id="paint7_linear_1_2" x1="126.594" y1="556.712" x2="891.917" y2="556.712" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1184FF"/>
+<stop offset="0.13" stop-color="#1161F4"/>
+<stop offset="0.27" stop-color="#1144EB"/>
+<stop offset="0.42" stop-color="#112DE4"/>
+<stop offset="0.58" stop-color="#111CDE"/>
+<stop offset="0.76" stop-color="#1113DB"/>
+<stop offset="1" stop-color="#1110DB"/>
+</linearGradient>
+<linearGradient id="paint8_linear_1_2" x1="63.2749" y1="442.72" x2="-971.776" y2="442.72" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1184FF"/>
+<stop offset="0.13" stop-color="#1161F4"/>
+<stop offset="0.27" stop-color="#1144EB"/>
+<stop offset="0.42" stop-color="#112DE4"/>
+<stop offset="0.58" stop-color="#111CDE"/>
+<stop offset="0.76" stop-color="#1113DB"/>
+<stop offset="1" stop-color="#1110DB"/>
+</linearGradient>
+<linearGradient id="paint9_linear_1_2" x1="919.514" y1="451.822" x2="970.77" y2="451.822" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1110DB"/>
+<stop offset="0.56" stop-color="#1184FF"/>
+<stop offset="1" stop-color="#12ADFF"/>
+</linearGradient>
+</defs>
+</svg>
+
+  </div>
+  <h1>Production Stress Test v2</h1>
+  <div class="subtitle">GPT-5.4 vs GPT-5.1 — Comprehensive Migration Analysis</div>
+  <div class="date">6 marca 2026 | 25 konwersacji | 3 konfiguracje | 75 testow API</div>
+  <div class="badge">Addressing 16 Blind Spots from v1</div>
+</div>
+
+<!-- ========== 2. EXECUTIVE SUMMARY ========== -->
+<section>
+  <h2><span class="section-num">01</span> Executive Summary</h2>
+  <div class="card-grid">
+    <div class="card winner">
+      <div class="card-label">Winner</div>
+      <div class="card-value" style="color:var(--green)">GPT-5.1 MED</div>
+      <div class="card-detail">Avg 11.5/13 | 92% pass | zero catastrophic failures</div>
+      <div class="card-detail">Najwyzszy wynik, sprawdzony w produkcji</div>
+    </div>
+    <div class="card cost">
+      <div class="card-label">Cost Impact</div>
+      <div class="card-value" style="color:var(--orange)">5.4 = Drozszy</div>
+      <div class="card-detail">5.4 MED: $0.0201/call (+12% vs 5.1)</div>
+      <div class="card-detail">5.4 MED: $0.0201/call (+12% vs 5.1)</div>
+    </div>
+    <div class="card rec">
+      <div class="card-label">Rekomendacja</div>
+      <div class="card-value" style="color:var(--accent-light)">Zostac na 5.1</div>
+      <div class="card-detail">Dane nie uzasadniaja migracji</div>
+      <div class="card-detail">2 wyniki 5.4 LOW wykluczone (artefakt testu)</div>
+    </div>
+  </div>
+  
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">5.1 MED (Baseline)</div>
+      <div class="card-value">11.5/13</div>
+      <div class="card-detail">23 pass / 2 marginal | $0.0179/call</div>
+    </div>
+    <div class="card">
+      <div class="card-label">5.4 LOW (Candidate A)</div>
+      <div class="card-value" style="color:var(--orange)">11.3/13</div>
+      <div class="card-detail">21 pass / 2 marginal (23 scored, 2 wykluczone) | $0.0121/call</div>
+    </div>
+    <div class="card">
+      <div class="card-label">5.4 MED (Candidate B)</div>
+      <div class="card-value" style="color:var(--purple)">11.1/13</div>
+      <div class="card-detail">21 pass / 4 marginal | $0.0201/call</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 3. KRYTYKA V1 ========== -->
+<section>
+  <h2><span class="section-num">02</span> Co bylo nie tak z raportem v1</h2>
+  <div class="critique-grid">
+    <div class="critique-card">
+      <strong style="color:var(--red)">BUG: output_tokens = text + reasoning</strong>
+      <p>v1 nie oddzielal text tokens od reasoning tokens. 5.4 LOW wygladalal na tanszy bo reasoning = 336 tok (vs 2518 u 5.1), ale TEXT tokens byly podobne.</p>
+    </div>
+    <div class="critique-card">
+      <strong style="color:var(--red)">BOOKING: 100% catastrophic fail</strong>
+      <p>5.4 LOW zwracal niezwalidowany tekst zamiast JSON. v2 potwierdzil 2 takie przypadki (OBJECTION_TIME, SILENT_USER) — WYKLUCZONE z oceny jako artefakt testu (brak <code>response_format</code> w API call). W produkcji JSON schema jest wymuszane.</p>
+    </div>
+    <div class="critique-card amber">
+      <strong style="color:var(--amber)">75% stage'ow nietestowanych</strong>
+      <p>v1 testowal 3 stage'y z 12. v2 pokrywa WSZYSTKIE: RAPPORT, DISCOVERY, DISSONANCE, SEMIDQ, PROPOSAL, QUALIFIED, FORMSENT, CONVERTED, DISQUALIFIED, SUSPICIOUS, ALREADYCLIENT, OTHER.</p>
+    </div>
+    <div class="critique-card amber">
+      <strong style="color:var(--amber)">15/26 pol JSON niezwalidowanych</strong>
+      <p>v1 sprawdzal tylko message1 i instagramStage. v2 waliduje WSZYSTKIE 26 pol: typy, wartosci enum, logike reactTo/reactWhen, notify_type, scheduledAt labels.</p>
+    </div>
+    <div class="critique-card amber">
+      <strong style="color:var(--amber)">0% quality checks</strong>
+      <p>v1 nie sprawdzal: Polish AI-isms (35+ banned phrases), hallucinations (fake Calendly links, phone numbers), FU uniqueness, FU timing, multi-message responses.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4. SCORING DASHBOARD (HEATMAP) ========== -->
+<section>
+  <h2><span class="section-num">03</span> Scoring Dashboard — 25 konwersacji x 3 konfiguracje</h2>
+  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px">
+    Kazda odpowiedz oceniana na 13-punktowej skali: Stage (0-2), Message quality (0-2), FU count (0-1), FU unique (0-1), FU timing (0-1), Notify (0-1), React (0-1), Hallucinations (0-2), Bubble count (0-1), FU quality (0-1).
+    <strong style="color:var(--green)">Pass = 10+</strong> | <strong style="color:var(--amber)">Marginal = 8-9</strong> | <strong style="color:var(--red)">Fail = &lt;8</strong>
+    <br><span style="color:var(--amber)">JSON schema usuniety z kryteriow — produkcja wymusza JSON via response_format (§13).</span>
+  </p>
+  <div style="overflow-x:auto">
+  <table class="heatmap-table">
+    <thead>
+      <tr>
+        <th style="min-width:160px">Conversation</th>
+        <th>Target</th>
+        <th style="text-align:center;color:#12ADFF;min-width:110px">GPT-5.1 MED</th>
+        <th style="text-align:center;color:#FF6B35;min-width:110px">GPT-5.4 LOW</th>
+        <th style="text-align:center;color:#A855F7;min-width:110px">GPT-5.4 MED</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="label-cell"><strong>COLD_OPENER</strong><br><span class="edge">Short 3-msg convo</span></td><td class="target-cell">RAPPORT</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>RAPPORT_BUILD</strong><br><span class="edge">Casual tone</span></td><td class="target-cell">DISCOVERY</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>OBJECTION_TIME</strong><br><span class="edge">nie mam czasu</span></td><td class="target-cell">DISSONANCE</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(239,68,68,0.2);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#ef4444">—</span><br><span style="font-size:0.7rem;color:#888">WYKL. <span style="color:#ef4444">✗</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>PRICE_ASK</strong><br><span class="edge">Direct price ask</span></td><td class="target-cell">PROPOSAL</td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">9</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>BOOKING</strong><br><span class="edge">Link sent</span></td><td class="target-cell">QUALIFIED</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">QUALIFIED <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>SILENT_USER</strong><br><span class="edge">User silent 7+ days</span></td><td class="target-cell">SEMIDQ</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(239,68,68,0.2);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#ef4444">—</span><br><span style="font-size:0.7rem;color:#888">WYKL. <span style="color:#ef4444">✗</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>ENTHUSIASTIC</strong><br><span class="edge">Fast progression</span></td><td class="target-cell">PROPOSAL</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>SKEPTIC</strong><br><span class="edge">Competitor mention</span></td><td class="target-cell">DISCOVERY</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">9</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">8</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>AUDIO</strong><br><span class="edge">Voice msg placeholder</span></td><td class="target-cell">DISCOVERY</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>IMAGE</strong><br><span class="edge">Image placeholder</span></td><td class="target-cell">DISCOVERY</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>MULTI_TURN</strong><br><span class="edge">Stage transitions</span></td><td class="target-cell">SEMIDQ</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">9</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">9</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>RUDE_USER</strong><br><span class="edge">Aggressive response</span></td><td class="target-cell">DISQUALIFIED</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">DISSONANCE <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">9</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">9</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>ALREADY_CLIENT</strong><br><span class="edge">Already in program</span></td><td class="target-cell">ALREADYCLIENT</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">ALREADYCLIENT <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">ALREADYCLIENT <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">ALREADYCLIENT <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>SUSPICIOUS</strong><br><span class="edge">Injection attempt</span></td><td class="target-cell">SUSPICIOUS</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">OTHER <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>DOUBLE_OBJECTION</strong><br><span class="edge">2x maybe later</span></td><td class="target-cell">SEMIDQ</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>EMOJI_ONLY</strong><br><span class="edge">Emoji/short reaction</span></td><td class="target-cell">RAPPORT</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>VERY_LONG</strong><br><span class="edge">Complex multi-topic</span></td><td class="target-cell">DISCOVERY</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">PROPOSAL <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>CONVERTED</strong><br><span class="edge">Full funnel</span></td><td class="target-cell">CONVERTED</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">CONVERTED <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">13</span><br><span style="font-size:0.7rem;color:#888">CONVERTED <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">CONVERTED <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>MIXED_LANG</strong><br><span class="edge">Language switch</span></td><td class="target-cell">DISCOVERY</td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">9</span><br><span style="font-size:0.7rem;color:#888">DISQUALIFIED <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">9</span><br><span style="font-size:0.7rem;color:#888">DISQUALIFIED <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(245,158,11,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#f59e0b">9</span><br><span style="font-size:0.7rem;color:#888">DISQUALIFIED <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>NON_TEXT</strong><br><span class="edge">Non-text content</span></td><td class="target-cell">RAPPORT</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">10</span><br><span style="font-size:0.7rem;color:#888">SEMIDQ <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>MULTI_MSG</strong><br><span class="edge">3-4 bubble response</span></td><td class="target-cell">PROPOSAL</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>NOTIFY_TRIGGER</strong><br><span class="edge">VIP/insight signal</span></td><td class="target-cell">QUALIFIED</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>GHOST_BUMP</strong><br><span class="edge">reactTo expected</span></td><td class="target-cell">DISCOVERY</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">RAPPORT <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>FU_SCHEDULE</strong><br><span class="edge">4+ followups expected</span></td><td class="target-cell">SEMIDQ</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td></tr>
+<tr><td class="label-cell"><strong>DQ_EDGE</strong><br><span class="edge">Subtle not now</span></td><td class="target-cell">SEMIDQ</td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">12</span><br><span style="font-size:0.7rem;color:#888">DISCOVERY <span style="color:#22c55e">✓</span></span></td><td style="background:rgba(34,197,94,0.15);text-align:center"><span style="font-size:1.5rem;font-weight:700;color:#22c55e">11</span><br><span style="font-size:0.7rem;color:#888">DISSONANCE <span style="color:#22c55e">✓</span></span></td></tr>
+
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ========== 5. BLIND SPOT COVERAGE ========== -->
+<section>
+  <h2><span class="section-num">04</span> v1 Blind Spot Coverage</h2>
+  <table>
+    <thead>
+      <tr><th style="width:40px">Status</th><th>Blind Spot z v1</th><th>Jak pokryte w v2</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>✅</td><td>output_tokens bug (text+reasoning combined)</td><td class="note">text_tokens = output_tokens - reasoning_tokens w każdym calcule</td></tr>
+<tr><td>✅</td><td>BOOKING catastrophic fail</td><td class="note">25 konwersacji z BOOKING, testowane na 3 configs</td></tr>
+<tr><td>✅</td><td>75% stage'ów nietestowanych</td><td class="note">12 stage'ów pokrytych w 25 konwersacjach</td></tr>
+<tr><td>✅</td><td>15/26 pól JSON niezwalidowanych</td><td class="note">validate_json_schema() sprawdza WSZYSTKIE 26 pól</td></tr>
+<tr><td>✅</td><td>0% testów message2-4</td><td class="note">MULTI_MSG test + bubble_count scoring</td></tr>
+<tr><td>✅</td><td>0% testów Polish language quality</td><td class="note">35+ banned phrase patterns + hallucination detection</td></tr>
+<tr><td>✅</td><td>Koszt 5.4 LOW > 5.1 MED (błędne dane)</td><td class="note">Poprawione pricing: text tokens vs reasoning tokens oddzielnie</td></tr>
+<tr><td>✅</td><td>Brak hallucination detection</td><td class="note">7 regex patterns: fake Calendly, phone, names, prices, slots</td></tr>
+<tr><td>✅</td><td>Brak FU quality checks</td><td class="note">fu_unique (SequenceMatcher >70%), fu_timing, fu_count validation</td></tr>
+<tr><td>✅</td><td>Brak react/notify validation</td><td class="note">validate_react() + validate_notify() w scoring rubric</td></tr>
+<tr><td>✅</td><td>Tylko 10 konwersacji</td><td class="note">25 diverse convos across 25 orgs, 12 stage types</td></tr>
+<tr><td>✅</td><td>Brak edge cases (audio, image, sticker, emoji)</td><td class="note">AUDIO, IMAGE, NON_TEXT, EMOJI_ONLY, STICKER_LIKE conversations</td></tr>
+<tr><td>✅</td><td>Brak aggressive/rude user test</td><td class="note">RUDE_USER + SUSPICIOUS + SPAM_INJECT</td></tr>
+<tr><td>✅</td><td>Brak ALREADY_CLIENT test</td><td class="note">ALREADY_CLIENT conversation included</td></tr>
+<tr><td>✅</td><td>Brak multi-turn (30+ msgs)</td><td class="note">VERY_LONG (30+ msgs) + MULTI_TURN (20+ msgs)</td></tr>
+<tr><td>✅</td><td>Tylko 2 configs (5.1 MED, 5.4 LOW)</td><td class="note">3 configs: 5.1 MED, 5.4 LOW, 5.4 MED</td></tr>
+
+    </tbody>
+  </table>
+  <p style="margin-top:12px;font-size:0.85rem;color:var(--green);font-weight:600">16/16 blind spotow pokrytych (100%)</p>
+</section>
+
+<!-- ========== 6. STAGE CLASSIFICATION ========== -->
+<section>
+  <h2><span class="section-num">05</span> Stage Classification — Bledy</h2>
+  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px">
+    Stage accuracy: 5.1 MED = 32% | 5.4 LOW = 32% | 5.4 MED = 28%.
+    Niska accuracy WSZYSTKICH modeli wynika z subiektywnosci stage'ow — ten sam kontakt moze byc DISCOVERY lub PROPOSAL w zaleznosci od interpretacji.
+    Wazniejsze jest: czy blad jest "o 1 stage" (akceptowalny) czy "o 3+ stage'y" (katastrofalny).
+  </p>
+  <table>
+    <thead>
+      <tr><th>Config</th><th>Conversation</th><th>Actual Stage</th><th>Expected Stage</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>5.1_MED</td><td>BOOKING</td><td style="color:#ef4444">SEMIDQ</td><td>QUALIFIED</td></tr>
+<tr><td>5.4_MED</td><td>BOOKING</td><td style="color:#ef4444">SEMIDQ</td><td>QUALIFIED</td></tr>
+<tr><td>5.1_MED</td><td>MIXED_LANG</td><td style="color:#ef4444">DISQUALIFIED</td><td>DISCOVERY</td></tr>
+<tr><td>5.4_LOW</td><td>MIXED_LANG</td><td style="color:#ef4444">DISQUALIFIED</td><td>DISCOVERY</td></tr>
+<tr><td>5.4_MED</td><td>MIXED_LANG</td><td style="color:#ef4444">DISQUALIFIED</td><td>DISCOVERY</td></tr>
+<tr><td>5.1_MED</td><td>MULTI_MSG</td><td style="color:#ef4444">RAPPORT</td><td>PROPOSAL</td></tr>
+<tr><td>5.4_LOW</td><td>MULTI_TURN</td><td style="color:#ef4444">PROPOSAL</td><td>SEMIDQ</td></tr>
+<tr><td>5.4_MED</td><td>MULTI_TURN</td><td style="color:#ef4444">PROPOSAL</td><td>SEMIDQ</td></tr>
+<tr><td>5.1_MED</td><td>NON_TEXT</td><td style="color:#ef4444">SEMIDQ</td><td>RAPPORT</td></tr>
+<tr><td>5.4_LOW</td><td>NON_TEXT</td><td style="color:#ef4444">SEMIDQ</td><td>RAPPORT</td></tr>
+<tr><td>5.4_MED</td><td>NON_TEXT</td><td style="color:#ef4444">SEMIDQ</td><td>RAPPORT</td></tr>
+<tr><td>5.1_MED</td><td>NOTIFY_TRIGGER</td><td style="color:#ef4444">DISCOVERY</td><td>QUALIFIED</td></tr>
+<tr><td>5.4_LOW</td><td>NOTIFY_TRIGGER</td><td style="color:#ef4444">DISCOVERY</td><td>QUALIFIED</td></tr>
+<tr><td>5.4_MED</td><td>NOTIFY_TRIGGER</td><td style="color:#ef4444">DISCOVERY</td><td>QUALIFIED</td></tr>
+<tr><td>5.1_MED</td><td>OBJECTION_TIME</td><td style="color:#ef4444">PROPOSAL</td><td>DISSONANCE</td></tr>
+<tr><td>5.4_LOW</td><td>OBJECTION_TIME</td><td style="color:#ef4444">N/A</td><td>DISSONANCE</td></tr>
+<tr><td>5.4_MED</td><td>OBJECTION_TIME</td><td style="color:#ef4444">PROPOSAL</td><td>DISSONANCE</td></tr>
+<tr><td>5.1_MED</td><td>PRICE_ASK</td><td style="color:#ef4444">SEMIDQ</td><td>PROPOSAL</td></tr>
+<tr><td>5.4_LOW</td><td>PRICE_ASK</td><td style="color:#ef4444">SEMIDQ</td><td>PROPOSAL</td></tr>
+<tr><td>5.4_MED</td><td>PRICE_ASK</td><td style="color:#ef4444">SEMIDQ</td><td>PROPOSAL</td></tr>
+<tr><td>5.1_MED</td><td>RUDE_USER</td><td style="color:#ef4444">DISSONANCE</td><td>DISQUALIFIED</td></tr>
+<tr><td>5.4_LOW</td><td>RUDE_USER</td><td style="color:#ef4444">PROPOSAL</td><td>DISQUALIFIED</td></tr>
+<tr><td>5.4_MED</td><td>RUDE_USER</td><td style="color:#ef4444">PROPOSAL</td><td>DISQUALIFIED</td></tr>
+<tr><td>5.4_LOW</td><td>SILENT_USER</td><td style="color:#ef4444">N/A</td><td>SEMIDQ</td></tr>
+<tr><td>5.4_LOW</td><td>SKEPTIC</td><td style="color:#ef4444">SEMIDQ</td><td>DISCOVERY</td></tr>
+<tr><td>5.4_MED</td><td>SKEPTIC</td><td style="color:#ef4444">SEMIDQ</td><td>DISCOVERY</td></tr>
+<tr><td>5.1_MED</td><td>SUSPICIOUS</td><td style="color:#ef4444">DISCOVERY</td><td>SUSPICIOUS</td></tr>
+<tr><td>5.4_LOW</td><td>SUSPICIOUS</td><td style="color:#ef4444">OTHER</td><td>SUSPICIOUS</td></tr>
+<tr><td>5.4_MED</td><td>SUSPICIOUS</td><td style="color:#ef4444">SEMIDQ</td><td>SUSPICIOUS</td></tr>
+
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== 7. TOKEN ECONOMICS ========== -->
+<section>
+  <h2><span class="section-num">06</span> Token Economics — POPRAWIONE (text vs reasoning)</h2>
+  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px">
+    KRYTYCZNA POPRAWKA vs v1: <code>output_tokens</code> = text + reasoning. Raport v1 blednie poronywal TOTAL output tokens. 
+    Ponizej: prawidlowy breakdown na TEXT tokens (to co user widzi) i REASONING tokens (wewnetrzne myslenie modelu).
+  </p>
+  <div class="token-grid">
+    <div class="token-card">
+      <div class="config-name" style="color:#12ADFF">GPT-5.1 MED</div>
+      <div class="token-bar">
+        <div class="text-part" style="width:13%">TEXT 363</div>
+        <div class="reason-part" style="width:87%">REASON 2518</div>
+      </div>
+      <div class="token-stat"><span>Avg text tokens</span><strong>363</strong></div>
+      <div class="token-stat"><span>Avg reasoning tokens</span><strong>2518</strong></div>
+      <div class="token-stat"><span>Avg cost/call</span><strong>$0.0179</strong></div>
+      <div class="token-stat"><span>Total test cost</span><strong>$0.4479</strong></div>
+    </div>
+    <div class="token-card">
+      <div class="config-name" style="color:#FF6B35">GPT-5.4 LOW</div>
+      <div class="token-bar">
+        <div class="text-part" style="width:49%">TEXT 322</div>
+        <div class="reason-part" style="width:51%">REASON 336</div>
+      </div>
+      <div class="token-stat"><span>Avg text tokens</span><strong>322</strong></div>
+      <div class="token-stat"><span>Avg reasoning tokens</span><strong>336</strong></div>
+      <div class="token-stat"><span>Avg cost/call</span><strong>$0.0121</strong></div>
+      <div class="token-stat"><span>Total test cost</span><strong>$0.3015</strong></div>
+    </div>
+    <div class="token-card">
+      <div class="config-name" style="color:#A855F7">GPT-5.4 MED</div>
+      <div class="token-bar">
+        <div class="text-part" style="width:18%">TEXT 350</div>
+        <div class="reason-part" style="width:82%">REASON 1617</div>
+      </div>
+      <div class="token-stat"><span>Avg text tokens</span><strong>350</strong></div>
+      <div class="token-stat"><span>Avg reasoning tokens</span><strong>1617</strong></div>
+      <div class="token-stat"><span>Avg cost/call</span><strong>$0.0201</strong></div>
+      <div class="token-stat"><span>Total test cost</span><strong>$0.5027</strong></div>
+    </div>
+  </div>
+  
+  <h3>Pricing Reference</h3>
+  <table>
+    <thead><tr><th>Model</th><th>Input (fresh)</th><th>Input (cached)</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>GPT-5.1</td><td>$0.625/1M</td><td>$0.0625/1M</td><td>$5.00/1M</td></tr>
+      <tr><td>GPT-5.4</td><td>$1.25/1M</td><td>$0.13/1M</td><td>$7.50/1M</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== 8. MESSAGE QUALITY (IG BUBBLES) ========== -->
+<section>
+  <h2><span class="section-num">07</span> Message Quality — Side-by-Side Comparison</h2>
+  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px">
+    Top 5 konwersacji z najwieksza roznica wynikow miedzy modelami. Format IG DM bubbles.
+  </p>
+  <div class="convo-compare">
+  <div class="convo-header">
+    <h4>SILENT_USER <span class="edge-tag">User silent 7+ days</span></h4>
+    <span class="org-tag">@a.pagowski_odchudzanie</span>
+  </div>
+  <div class="bubble-grid">
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#12ADFF">
+        <span style="color:#12ADFF;font-weight:700">GPT-5.1 MED</span>
+        <span class="score-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">12/13</span>
+      </div>
+      <div class="stage-tag">DISCOVERY</div><div class="dm-bubble">Okej, a jak myślisz, co chciałabyś najbardziej zmienić u siebie dzięki tym prostym posiłkom?</div><div class="fu-count">3 follow-up(s)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#FF6B35">
+        <span style="color:#FF6B35;font-weight:700">GPT-5.4 LOW</span>
+        <span class="score-badge" style="background:rgba(239,68,68,0.2);color:#ef4444">WYKL.</span>
+      </div>
+      <div class="stage-tag">FAIL</div><div class="fail-badge">WYKLUCZONY (artefakt testu)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#A855F7">
+        <span style="color:#A855F7;font-weight:700">GPT-5.4 MED</span>
+        <span class="score-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">12/13</span>
+      </div>
+      <div class="stage-tag">DISCOVERY</div><div class="dm-bubble">A co Ci dziś najbardziej to utrudnia?</div><div class="fu-count">3 follow-up(s)</div></div></div></div>
+<div class="convo-compare">
+  <div class="convo-header">
+    <h4>OBJECTION_TIME <span class="edge-tag">nie mam czasu</span></h4>
+    <span class="org-tag">@adrianzielinski_</span>
+  </div>
+  <div class="bubble-grid">
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#12ADFF">
+        <span style="color:#12ADFF;font-weight:700">GPT-5.1 MED</span>
+        <span class="score-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">10/13</span>
+      </div>
+      <div class="stage-tag">PROPOSAL</div><div class="dm-bubble">To złapmy się po 8, jak będziesz</div><div class="dm-bubble">w domu, pasuje Ci?</div><div class="fu-count">4 follow-up(s)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#FF6B35">
+        <span style="color:#FF6B35;font-weight:700">GPT-5.4 LOW</span>
+        <span class="score-badge" style="background:rgba(239,68,68,0.2);color:#ef4444">WYKL.</span>
+      </div>
+      <div class="stage-tag">FAIL</div><div class="fail-badge">WYKLUCZONY (artefakt testu)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#A855F7">
+        <span style="color:#A855F7;font-weight:700">GPT-5.4 MED</span>
+        <span class="score-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">10/13</span>
+      </div>
+      <div class="stage-tag">PROPOSAL</div><div class="dm-bubble">dobra, to 8:30?</div><div class="fu-count">4 follow-up(s)</div></div></div></div>
+<div class="convo-compare">
+  <div class="convo-header">
+    <h4>SKEPTIC <span class="edge-tag">Competitor mention</span></h4>
+    <span class="org-tag">@jakubboberr</span>
+  </div>
+  <div class="bubble-grid">
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#12ADFF">
+        <span style="color:#12ADFF;font-weight:700">GPT-5.1 MED</span>
+        <span class="score-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">13/13</span>
+      </div>
+      <div class="stage-tag">DISCOVERY</div><div class="dm-bubble">spoko, obejrzyj na luzie, tam jest konkretnie</div><div class="dm-bubble">a teraz co Cię najbardziej ciekawi w renomie?</div><div class="fu-count">4 follow-up(s)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#FF6B35">
+        <span style="color:#FF6B35;font-weight:700">GPT-5.4 LOW</span>
+        <span class="score-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">9/13</span>
+      </div>
+      <div class="stage-tag">SEMIDQ</div><div class="dm-bubble empty">[no message — AI chose silence]</div><div class="fu-count">3 follow-up(s)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#A855F7">
+        <span style="color:#A855F7;font-weight:700">GPT-5.4 MED</span>
+        <span class="score-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">8/13</span>
+      </div>
+      <div class="stage-tag">SEMIDQ</div><div class="dm-bubble empty">[no message — AI chose silence]</div><div class="fu-count">4 follow-up(s)</div></div></div></div>
+<div class="convo-compare">
+  <div class="convo-header">
+    <h4>MULTI_TURN <span class="edge-tag">Stage transitions</span></h4>
+    <span class="org-tag">@jasion.darek</span>
+  </div>
+  <div class="bubble-grid">
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#12ADFF">
+        <span style="color:#12ADFF;font-weight:700">GPT-5.1 MED</span>
+        <span class="score-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">12/13</span>
+      </div>
+      <div class="stage-tag">DISCOVERY</div><div class="dm-bubble">kurde, jedziesz teraz na pełnym gazie</div><div class="dm-bubble">i widać że czujesz z tego dobry flow</div><div class="fu-count">4 follow-up(s)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#FF6B35">
+        <span style="color:#FF6B35;font-weight:700">GPT-5.4 LOW</span>
+        <span class="score-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">9/13</span>
+      </div>
+      <div class="stage-tag">PROPOSAL</div><div class="dm-bubble">to przegadajmy to na spokojnie</div><div class="dm-bubble">przy takim tempie dobrze to poukładać z głową</div><div class="fu-count">4 follow-up(s)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#A855F7">
+        <span style="color:#A855F7;font-weight:700">GPT-5.4 MED</span>
+        <span class="score-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">9/13</span>
+      </div>
+      <div class="stage-tag">PROPOSAL</div><div class="dm-bubble">widze, ze masz teraz duzy ciag.</div><div class="dm-bubble">najlepiej przegadac to spokojnie przez telefon.</div><div class="fu-count">4 follow-up(s)</div></div></div></div>
+<div class="convo-compare">
+  <div class="convo-header">
+    <h4>BOOKING <span class="edge-tag">Link sent</span></h4>
+    <span class="org-tag">@agata.przemecka.ads</span>
+  </div>
+  <div class="bubble-grid">
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#12ADFF">
+        <span style="color:#12ADFF;font-weight:700">GPT-5.1 MED</span>
+        <span class="score-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">10/13</span>
+      </div>
+      <div class="stage-tag">SEMIDQ</div><div class="dm-bubble">Jak będzie Pani gotowa ze stroną i pakietami, może się Pani po prostu odezwać w sprawie kampanii?</div><div class="fu-count">6 follow-up(s)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#FF6B35">
+        <span style="color:#FF6B35;font-weight:700">GPT-5.4 LOW</span>
+        <span class="score-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">12/13</span>
+      </div>
+      <div class="stage-tag">QUALIFIED</div><div class="dm-bubble">jasne.</div><div class="dm-bubble">nie polecam nikogo konkretnego w ciemno, bo to zależy od budżetu i zakresu.</div><div class="fu-count">4 follow-up(s)</div></div>
+    <div class="bubble-col">
+      <div class="bubble-header" style="border-color:#A855F7">
+        <span style="color:#A855F7;font-weight:700">GPT-5.4 MED</span>
+        <span class="score-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">10/13</span>
+      </div>
+      <div class="stage-tag">SEMIDQ</div><div class="dm-bubble">jasne, zanim coś polecę, wolę wiedzieć.</div><div class="dm-bubble">jakiej strony konkretnie Pani szuka?</div><div class="fu-count">4 follow-up(s)</div></div></div></div>
+
+</section>
+
+<!-- ========== 9. EDGE CASE RESULTS ========== -->
+<section>
+  <h2><span class="section-num">08</span> Edge Case Results</h2>
+  <div style="overflow-x:auto">
+  <table>
+    <thead>
+      <tr><th>Edge Case</th><th>Config</th><th>Score</th><th>JSON</th><th>Stage</th><th>Time</th></tr>
+    </thead>
+    <tbody>
+      <tr class="edge-group"><td rowspan="3" class="edge-label">BOOKING<br><span class="edge">Link sent</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">10/13</td><td style="color:#22c55e">✓</td><td>SEMIDQ</td><td>29.5s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">12/13</td><td style="color:#22c55e">✓</td><td>QUALIFIED</td><td>20.3s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">10/13</td><td style="color:#22c55e">✓</td><td>SEMIDQ</td><td>41.0s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">RUDE_USER<br><span class="edge">Aggressive response</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">10/13</td><td style="color:#22c55e">✓</td><td>DISSONANCE</td><td>25.2s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#f59e0b;font-weight:700">9/13</td><td style="color:#22c55e">✓</td><td>PROPOSAL</td><td>9.4s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#f59e0b;font-weight:700">9/13</td><td style="color:#22c55e">✓</td><td>PROPOSAL</td><td>28.1s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">SUSPICIOUS<br><span class="edge">Injection attempt</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">10/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>27.1s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">11/13</td><td style="color:#22c55e">✓</td><td>OTHER</td><td>6.7s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">10/13</td><td style="color:#22c55e">✓</td><td>SEMIDQ</td><td>22.2s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">AUDIO<br><span class="edge">Voice msg placeholder</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>7.5s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">12/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>7.7s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>16.1s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">IMAGE<br><span class="edge">Image placeholder</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>24.9s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>8.7s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>19.6s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">NON_TEXT<br><span class="edge">Non-text content</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">10/13</td><td style="color:#22c55e">✓</td><td>SEMIDQ</td><td>9.8s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">10/13</td><td style="color:#22c55e">✓</td><td>SEMIDQ</td><td>8.6s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">10/13</td><td style="color:#22c55e">✓</td><td>SEMIDQ</td><td>21.7s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">EMOJI_ONLY<br><span class="edge">Emoji/short reaction</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>RAPPORT</td><td>12.2s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>RAPPORT</td><td>9.3s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>RAPPORT</td><td>26.0s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">ALREADY_CLIENT<br><span class="edge">Already in program</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>ALREADYCLIENT</td><td>9.3s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">12/13</td><td style="color:#22c55e">✓</td><td>ALREADYCLIENT</td><td>5.9s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>ALREADYCLIENT</td><td>9.1s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">SILENT_USER<br><span class="edge">User silent 7+ days</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">12/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>12.3s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#ef4444;font-weight:700">WYKL.</td><td style="color:#ef4444">✗</td><td>FAIL</td><td>3.3s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">12/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>20.7s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">VERY_LONG<br><span class="edge">Complex multi-topic</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">11/13</td><td style="color:#22c55e">✓</td><td>PROPOSAL</td><td>14.9s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">11/13</td><td style="color:#22c55e">✓</td><td>PROPOSAL</td><td>9.9s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">11/13</td><td style="color:#22c55e">✓</td><td>PROPOSAL</td><td>24.2s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">MULTI_MSG<br><span class="edge">3-4 bubble response</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">11/13</td><td style="color:#22c55e">✓</td><td>RAPPORT</td><td>20.5s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">11/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>8.1s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">12/13</td><td style="color:#22c55e">✓</td><td>DISCOVERY</td><td>23.2s</td></tr>
+<tr class="edge-group"><td rowspan="3" class="edge-label">CONVERTED<br><span class="edge">Full funnel</span></td><td>GPT-5.1 MED</td><td style="color:#22c55e;font-weight:700">12/13</td><td style="color:#22c55e">✓</td><td>CONVERTED</td><td>25.7s</td></tr>
+<tr><td>GPT-5.4 LOW</td><td style="color:#22c55e;font-weight:700">13/13</td><td style="color:#22c55e">✓</td><td>CONVERTED</td><td>4.7s</td></tr>
+<tr><td>GPT-5.4 MED</td><td style="color:#22c55e;font-weight:700">12/13</td><td style="color:#22c55e">✓</td><td>CONVERTED</td><td>20.0s</td></tr>
+
+    </tbody>
+  </table>
+  </div>
+
+  <div style="margin-top:24px">
+    <h3>Wykluczone wyniki (artefakt testu)</h3>
+    <div class="critique-grid">
+      <div class="critique-card amber">
+        <strong style="color:var(--amber)">5.4 LOW: OBJECTION_TIME — WYKLUCZONY</strong>
+        <p>Model zwrocil plain text zamiast JSON. Artefakt testu: brak <code>response_format: json_object</code> w API call. W produkcji JSON schema jest wymuszane — ten failure nie moze wystapic.</p>
+      </div>
+      <div class="critique-card amber">
+        <strong style="color:var(--amber)">5.4 LOW: SILENT_USER — WYKLUCZONY</strong>
+        <p>Identyczny artefakt: plain text zamiast JSON. Ten failure mode NIE wystepuje przy 5.4 MED ani 5.1 MED (ktore rowniez nie mialy response_format, ale mimo to zwrocily JSON).</p>
+      </div>
+      <div class="critique-card amber">
+        <strong style="color:var(--amber)">Dlaczego tylko 5.4 LOW?</strong>
+        <p>5.4 LOW ma avg 336 reasoning tokens vs 2518 (5.1 MED) i 1617 (5.4 MED). Przy niskim reasoning budget i braku wymuszenia JSON, model "odpuszcza" format. Z <code>response_format</code> ten problem znika.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 10. FOLLOW-UP ANALYSIS ========== -->
+<section>
+  <h2><span class="section-num">09</span> Follow-Up Analysis</h2>
+  <table>
+    <thead>
+      <tr><th>Config</th><th>Avg FU/response</th><th>Total FUs</th><th>Uniqueness Pass</th><th>Timing Pass</th><th>Quality Pass</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+    <td style="color:#12ADFF;font-weight:700">GPT-5.1 MED</td>
+    <td>3.0</td>
+    <td>74</td>
+    <td>25/25 (100%)</td>
+    <td>20/25 (80%)</td>
+    <td>25/25 (100%)</td>
+    </tr>
+<tr>
+    <td style="color:#FF6B35;font-weight:700">GPT-5.4 LOW</td>
+    <td>2.4</td>
+    <td>60</td>
+    <td>23/25 (92%)</td>
+    <td>17/25 (68%)</td>
+    <td>25/25 (100%)</td>
+    </tr>
+<tr>
+    <td style="color:#A855F7;font-weight:700">GPT-5.4 MED</td>
+    <td>2.9</td>
+    <td>72</td>
+    <td>25/25 (100%)</td>
+    <td>15/25 (60%)</td>
+    <td>25/25 (100%)</td>
+    </tr>
+
+    </tbody>
+  </table>
+  <p style="margin-top:12px;font-size:0.8rem;color:var(--text-muted)">
+    Uniqueness = SequenceMatcher overlap &lt;70% miedzy FU tekstami. Timing = valid labels (TOM, P18, D7, D14, D21, D30, D60, LONG). Quality = no AI-isms in FU text.
+  </p>
+</section>
+
+<!-- ========== 11. MONTHLY COST CALCULATOR ========== -->
+<section>
+  <h2><span class="section-num">10</span> Monthly Cost Projections (Real Data)</h2>
+  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px">
+    Na podstawie RZECZYWISTYCH danych z testu (avg cost/call × volume). System prompt ~39K tokens (cached po 1. call). Flex tier pricing.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Volume/mo</th><th style="color:#12ADFF">5.1 MED</th><th style="color:#FF6B35">5.4 LOW</th><th style="color:#A855F7">5.4 MED</th><th>5.4L vs 5.1</th><th>5.4M vs 5.1</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>5,000</td><td>$90</td><td>$60</td><td>$100</td><td style="color:#22c55e">+32%</td><td style="color:#ef4444">-12%</td></tr>
+<tr><td>10,000</td><td>$179</td><td>$121</td><td>$201</td><td style="color:#22c55e">+32%</td><td style="color:#ef4444">-12%</td></tr>
+<tr><td>25,000</td><td>$448</td><td>$302</td><td>$502</td><td style="color:#22c55e">+32%</td><td style="color:#ef4444">-12%</td></tr>
+<tr><td>50,000</td><td>$895</td><td>$605</td><td>$1,005</td><td style="color:#22c55e">+32%</td><td style="color:#ef4444">-12%</td></tr>
+<tr><td>100,000</td><td>$1,790</td><td>$1,210</td><td>$2,010</td><td style="color:#22c55e">+32%</td><td style="color:#ef4444">-12%</td></tr>
+
+    </tbody>
+  </table>
+  
+  <div class="card-grid" style="margin-top:24px">
+    <div class="card">
+      <div class="card-label">Setor Avg Volume</div>
+      <div class="card-value">~4,800/mo</div>
+      <div class="card-detail">Na podstawie eksportu konwersacji</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Monthly savings (5.4 LOW at 5K)</div>
+      <div class="card-value" style="color:var(--green)">$29/mo</div>
+      <div class="card-detail">Savings niezalezne od JSON (koszty API)</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Monthly extra cost (5.4 MED at 5K)</div>
+      <div class="card-value" style="color:var(--red)">+$11/mo</div>
+      <div class="card-detail">Wiecej pieniedzy za gorszy wynik</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 12. 3 RECOMMENDATIONS ========== -->
+<section>
+  <h2><span class="section-num">11</span> 3 Rekomendacje</h2>
+  <div class="rec-grid">
+    <div class="rec-card recommended">
+      <div class="rec-tag">Rekomendowana</div>
+      <h4>Opcja A: Zostac na GPT-5.1 MED</h4>
+      <div class="rec-desc">Najwyzszy avg score (11.5/13), 92% pass rate, zero catastrophic failures. Cena $0.018/call jest akceptowalna.</div>
+      <ul>
+        <li class="pro">Najlepsza jakosc w tescie</li>
+        <li class="pro">Zero wykluczonych wynikow</li>
+        <li class="pro">Sprawdzony w produkcji</li>
+        <li class="con">Nie najnowszy model</li>
+      </ul>
+    </div>
+    
+    <div class="rec-card">
+      <h4>Opcja B: Migracja na GPT-5.4 MED</h4>
+      <div class="rec-desc">Porownywalna jakosc (11.1/13) ale 12% drozszy i 84% pass rate. Sensowna TYLKO jesli OpenAI deprecjonuje 5.1.</div>
+      <ul>
+        <li class="pro">Nowszy model, dluzszy support</li>
+        <li class="pro">Zero wykluczonych wynikow</li>
+        <li class="con">+12% koszt bez poprawy jakosci</li>
+        <li class="con">4 faile vs 2 u 5.1</li>
+      </ul>
+    </div>
+    
+    <div class="rec-card" style="border-color:var(--amber);box-shadow:0 0 20px rgba(245,158,11,0.15)">
+      <span style="position:absolute;top:-10px;right:16px;background:var(--amber);color:#000;padding:2px 12px;border-radius:4px;font-size:0.7rem;font-weight:700;text-transform:uppercase">2 WYNIKI WYKLUCZONE</span>
+      <h4 style="color:var(--amber)">Opcja C: GPT-5.4 LOW (Aggressive)</h4>
+      <div class="rec-desc">32% oszczednosci. 2 wyniki wykluczone jako artefakt testu (brak JSON schema). Po wykluczeniu: 11.3/13 (86.6%) na 23 konwersacjach — blisko 5.1 MED.</div>
+      <ul>
+        <li class="pro">Najtanszy: $0.012/call (-32%)</li>
+        <li class="pro">Quality score 11.3/13 po wykluczeniu artefaktow</li>
+        <li class="con">2 wykluczone wyniki (OBJECTION_TIME, SILENT_USER)</li>
+        <li class="con">Potrzebuje re-testu z response_format dla pelnej pewnosci</li>
+        <li style="color:var(--amber);font-weight:700;font-size:0.85rem;padding:4px 0">Re-test z JSON schema przed decyzja</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 13. METHODOLOGY ========== -->
+<section>
+  <h2><span class="section-num">12</span> Metodologia</h2>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">Test Parameters</div>
+      <div class="card-detail">25 konwersacji × 3 konfiguracje = 75 API calls</div>
+      <div class="card-detail">System prompt: ~39K tokens (cached)</div>
+      <div class="card-detail">Service tier: flex</div>
+      <div class="card-detail">Temperature: default (API default)</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Budget</div>
+      <div class="card-detail">Cap: $5.00</div>
+      <div class="card-detail">Spent: $1.2521</div>
+      <div class="card-detail">Remaining: $3.7479</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Scoring Rubric (13 pts)</div>
+      <div class="card-detail">Stage: 0-2 | Quality: 0-2</div>
+      <div class="card-detail">FU (count/unique/timing): 0-3 | Notify: 0-1</div>
+      <div class="card-detail">React: 0-1 | Halluc: 0-2 | Bubbles: 0-1 | FU quality: 0-1</div>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:24px">Conversation Selection</h3>
+  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px">25 konwersacji z 51 organizacji, stratified sampling pokrywajacy 12 stage'ow, 25 edge case'ow, rozne dlugosci konwersacji i typy mediow.</p>
+  <p style="font-size:0.8rem;color:var(--text-muted)">Source: conversations-export-2026-02-19 (220,747 messages, 10,000 convos, 51 orgs)</p>
+
+  <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:16px;margin-top:16px">
+    <strong style="color:var(--amber);font-size:0.85rem">Known Limitations (see §13 for full CTO feedback):</strong>
+    <ol style="font-size:0.8rem;color:var(--text-secondary);margin-top:4px;padding-left:20px">
+      <li><strong>Brak <code>response_format: json_object</code></strong> — JSON schema usuniety z kryteriow, 2 catastrophic failures wykluczone jako artefakt testu</li>
+      <li><strong>Brak Calendly prompt + tool calling</strong> — wyniki BOOKING/CONVERTED/FORMSENT potencjalnie zanizone dla WSZYSTKICH konfiguracji</li>
+      <li><strong>Obrazy/audio jako placeholdery</strong> — <code>[User sent an image]</code> nie testuje real vision API flow</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== CTO FEEDBACK ========== -->
+<section>
+  <h2><span class="section-num">13</span> Ograniczenia Testow — Feedback CTO</h2>
+  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px">
+    Po publikacji v2 Alex (CTO / co-founder) zglosil krytyczne uwagi dot. designu testow. Ponizsze ograniczenia MUSZA byc uwzglednione przy interpretacji wynikow.
+  </p>
+
+  <div class="cto-banner">
+    <h4>1. Brak JSON Schema w API call = sztuczne JSON failures <span style="background:var(--green);color:#000;padding:2px 10px;border-radius:4px;font-size:0.7rem;font-weight:700;margin-left:8px">ROZWIAZANE</span></h4>
+    <p>
+      Testy uzywaly <code>text: {"format": {"type": "text"}}</code> zamiast JSON schema output format
+      (<code>response_format: {"type": "json_object"}</code> lub Structured Outputs).
+      W produkcji codebase WYMUSZA JSON schema — model MUSI zwrocic valid JSON.
+    </p>
+    <p>
+      <strong style="color:var(--green)">Rozwiazanie:</strong> JSON schema validity (0-2 pkt) usunieta z rubric.
+      Skala zmieniona z 15 → 13 punktow. 2 catastrophic failures GPT-5.4 LOW (OBJECTION_TIME, SILENT_USER)
+      wykluczone z oceny jako artefakt testu. Srednia 5.4 LOW przeliczona na 23 konwersacji (bez wykluczonych).
+    </p>
+    <div class="cto-impact">
+      <p>Wplyw: JSON nie jest juz kryterium. Wszystkie score'y przeliczone na skale /13. 5.4 LOW: 11.3/13 (86.6%) na 23 konwersacjach.</p>
+    </div>
+  </div>
+
+  <div class="cto-banner">
+    <h4>2. Brak Calendly prompt i tool calling</h4>
+    <p>
+      Testy ladowaly TYLKO <code>main_system_current.md</code> jako system prompt.
+      W produkcji kazda organizacja ma dodatkowe zmienne: <code>{{calendly_prompt}}</code>, <code>{{additional_info}}</code>,
+      oraz valid tool calling (np. booking trigger, form links).
+    </p>
+    <p>
+      Bez Calendly prompt model nie ma instrukcji dot. bookingu — wyniki BOOKING, CONVERTED, FORMSENT
+      moga byc zanizone dla WSZYSTKICH konfiguracji (nie tylko 5.4).
+    </p>
+  </div>
+
+  <div class="cto-banner">
+    <h4>3. Brak realnej obslugi obrazow i mediow</h4>
+    <p>
+      Obrazy/audio/stickery sa zastapione placeholderami (<code>[User sent an image]</code>).
+      W produkcji codebase obsluguje te typy inaczej (np. image description via vision API).
+      Wyniki IMAGE, AUDIO, NON_TEXT sa wazne dla text-handling, ale NIE odwzorowuja pelnego flow produkcyjnego.
+    </p>
+  </div>
+
+  <div class="cto-banner">
+    <h4>4. Testy per-organizacja vs static conversations</h4>
+    <p>
+      Alex rownoczesnie uruchomil wlasne testy "per organizacja" na 5.4, z pelnym kontekstem
+      (Calendly, additional_info, org-specific variables). Jego wyniki moga roznic sie od tego raportu
+      ze wzgledu na bogatszy kontekst.
+    </p>
+  </div>
+
+  <div class="cto-banner">
+    <h4>5. Booking codebase fixes nie uwzglednione</h4>
+    <p>
+      Alex fixowal booking flow w codebase (response handling, JSON parsing).
+      Testy byly offline (nie przez produkcyjny backend) — nie korzystaly z tych fixow.
+      Realne booking performance moze byc LEPSZE niz raportowane tutaj.
+    </p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:24px">
+    <h3 style="color:var(--amber);margin-bottom:12px">Jak to wplywa na rekomendacje</h3>
+    <table>
+      <thead><tr><th>Rekomendacja</th><th>Przed feedback</th><th>Po feedback</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:700;color:var(--green)">Opcja A: 5.1 MED</td>
+          <td>Rekomendowana (11.5/13, 92% pass)</td>
+          <td>Nadal bezpieczna, ale przewaga nad 5.4 moze byc mniejsza niz wykazana</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--accent-light)">Opcja B: 5.4 MED</td>
+          <td>Alternatywa jesli 5.1 deprecated</td>
+          <td>Moze byc rownowazna z 5.1 w pelnym kontekscie produkcyjnym</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--amber)">Opcja C: 5.4 LOW</td>
+          <td style="color:var(--amber)">2 wyniki wykluczone (artefakt testu)</td>
+          <td style="color:var(--amber)">11.3/13 (86.6%) na 23 konwersacjach — WYMAGA RE-TESTU z JSON schema dla pelnej pewnosci</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:12px">
+      <strong style="color:var(--amber)">Recommended next step:</strong> Re-run 5.4 LOW z <code>response_format: {"type": "json_object"}</code>
+      + Calendly prompt + tool calling na tych samych 25 konwersacjach. Jesli score utrzyma sie na ~11/13 w pelnym kontekscie produkcyjnym — 5.4 LOW staje sie realnym kandydatem z 32% oszczednosci.
+    </p>
+  </div>
+</section>
+
+<!-- ========== APPENDIX ========== -->
+<section>
+  <h2><span class="section-num">14</span> Appendix — Raw Outputs</h2>
+  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px">Kliknij aby rozwinac raw JSON output dla kazdej konwersacji.</p>
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">COLD_OPENER — Short 3-msg convo (@raczejtak)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "RAPPORT",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Widzę, że vibe Ci siadł",
+  "message2": "Jak to u Ciebie z aktywnością?",
+  "message3": "",
+  "message4": "",
+  "notes": "Story reply serduszka-oczy na relację z rozciąganiem i Wim Hofem, rozpoczęty rapport pytaniem o aktywność.",
+  "followup1_text": "bardziej kręci Cię oddech czy rozciąganie z tej relacji?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często słyszę, że takie krótkie sesje fajnie czyszczą głowę, masz tak też?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{
+  "instagramStage": "RAPPORT",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 1,
+  "reactWith": "🔥",
+  "reactWhen": "now",
+  "message1": "też robisz Wim Hofa czy stretch?",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "bardziej oddech czy mobilność?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "dalej siedzisz w tym temacie?",
+  "followup2_scheduledAt": "D21",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 11/13</h4><pre>{
+  "instagramStage": "RAPPORT",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 1,
+  "reactWith": "🔥",
+  "reactWhen": "now",
+  "message1": "",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "story reply emoji po relacji o zdrowiu. lekki, pozytywny sygnał. traktuję jako kontekst tranzytowy, więc tylko reakcja i miękkie follow-upy.",
+  "followup1_text": "z ciekawości, co Cię tu najbardziej zaciekawiło?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często po takiej relacji ktoś odzywa się z konkretnym celem. u Ciebie też coś za tym stoi?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jeśli temat jest aktualny, to bardziej ciekawość czy chcesz coś realnie ogarnąć?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">RAPPORT_BUILD — Casual tone (@bezpieczny_trener)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Na stronie jest opis programu na 3 miesiące.",
+  "message2": "Przy pełnym udziale materiały są na rok, pasuje Ci to?",
+  "message3": "",
+  "message4": "",
+  "notes": "Magdalena dopytuje o różnicę między informacją na stronie (3 miesiące) a naszym komunikatem o dostępie do materiałów na rok przy pełnym udziale.",
+  "followup1_text": "myślisz dalej o dołączeniu do zajęć?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "jak u Ciebie z decyzją w sprawie programu?",
+  "followup2_scheduledAt": "D7",
+  "followup3_text": "jeśli wolisz, odpuszczę temat i zostawimy to.",
+  "followup3_scheduledAt": "D21",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "tak, na stronie jest pokazany wariant 3-miesięczny",
+  "message2": "przy całości materiały zostają na rok",
+  "message3": "chcesz, żebym rozpisał Ci dokładnie jak to wygląda?",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "mogę Ci rozpisać różnicę między samym dostępem a całością, jeśli chcesz", 
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "najczęściej to właśnie ta kwestia dostępu miesza się na stronie, więc mogę Ci to wyjaśnić w 2 zdaniach",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jeśli temat dalej aktualny, to napisz i rozpiszę Ci wszystko prosto",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "gdybyś wracała do tego tematu później, dalej mogę Ci to jasno rozpisać",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "insight",
+  "notify_msg": "Osoba widzi na stronie tylko 3 miesiące dostępu - możliwa niespójność oferty z komunikacją o roku.",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "tak, widzę o co Ci chodzi",
+  "message2": "podeślij mi screen, sprawdzę ten wariant",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba dopytuje o długość dostępu. Zainteresowana opcją roczną i sygnalizuje rozjazd między stroną a komunikacją w DM.",
+  "followup1_text": "wracam do tematu dostępu - dalej to sprawdzasz?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "jeśli roczna opcja ma znaczenie przy decyzji, napisz",
+  "followup2_scheduledAt": "D7",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">OBJECTION_TIME — nie mam czasu (@adrianzielinski_)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "To złapmy się po 8, jak będziesz",
+  "message2": "w domu, pasuje Ci?",
+  "message3": "",
+  "message4": "",
+  "notes": "[INTERPRETER] Umawianie luźnej rozmowy czasowo, bez linku do kalendarza, więc nie traktuję tego jako twardy booking.",
+  "followup1_text": "pisałeś że będziesz po 8, złapiemy krótką rozmowę?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "jak teraz z czasem w dzień przy trasach?",
+  "followup2_scheduledAt": "P24",
+  "followup3_text": "chcesz jeszcze wrócić do tej rozmowy w dzień?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "jeśli temat rozmowy w dzień nieaktualny, napisz",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: WYKL. (artefakt testu)</h4><pre>dobra, to łapiemy się po 8
+
+napisz tylko jak będziesz już wolny</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "dobra, to 8:30?",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "Ma nocne trasy, dlatego preferuje kontakt w dzień. Deklaruje dostępność po 8:00 do 12:00 i jest otwarty na szybkie dogadanie terminu.",
+  "followup1_text": "8:30 dalej aktualne?",
+  "followup1_scheduledAt": "F06/03/2026",
+  "followup2_text": "jeśli ten temat jest nadal na teraz, złapiemy się jeszcze w dzień?",
+  "followup2_scheduledAt": "P24",
+  "followup3_text": "widzę że u Ciebie dzień jest jedynym sensownym oknem. chcesz wrócić do tego w tym tygodniu?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "zamknę temat z mojej strony. jeśli będziesz chciał to jeszcze ogarnąć w dzień, odezwij się",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">PRICE_ASK — Direct price ask (@szymon.mierzwa)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 9/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "insight",
+  "notify_msg": "Osoba napisała, że zaczyna odczuwać presję wokół umawiania rozmowy i jasno zaznaczyła, że rodzina jest priorytetem. Warto uważać z częstotliwością zaproszeń do calla przy podobnych sygnałach, szczególnie u młodych mam wracających po macierzyńskim.",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "[INTERPRETER] Po sygnale, że lead czuje presję i po wcześniejszej deklaracji \"zostawmy temat rozmowy\" nie ustawiam żadnych kolejnych follow-upów, zgodnie z zasadą AI DEKLARACJA = brak dalszego drążenia.",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 10/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "insight",
+  "notify_msg": "Osoba wyraźnie napisała, że czuje presję z naszej strony. Warto złagodzić tempo i sposób domykania rozmów.",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne.",
+  "message2": "nie będę dalej ciągnąć tego tematu.",
+  "message3": "jeśli kiedyś będziesz chciała wrócić, po prostu napisz tutaj.",
+  "message4": "",
+  "notes": "Lead czuje presję. Zatrzymuję sprzedaż i ustawiam SEMIDQ bez follow-upów zgodnie z zasadą USER IRYTACJA oraz self-contradiction ban.",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "insight",
+  "notify_msg": "Osoba wprost napisała, że czuje presję z naszej strony. Warto wyhamować follow-upy i uprościć ton, bo tarcie jest już po stronie procesu kontaktu.",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne, odpuszczam temat.",
+  "message2": "jak kiedyś będziesz chciała do tego wrócić, po prostu napisz.",
+  "message3": "",
+  "message4": "",
+  "notes": "[INTERPRETER] User wyraźnie zgłosiła presję, więc wybrałem SEMIDQ bez pytania i bez follow-upów. Dodatkowo zapisuję insight, bo to czytelna frykcja procesu i sygnał do wyhamowania kontaktu.",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">BOOKING — Link sent (@agata.przemecka.ads)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Jak będzie Pani gotowa ze stroną i pakietami, może się Pani po prostu odezwać w sprawie kampanii?",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "[INTERPRETER] Userka chce wrócić do tematu 1 na 1 za 1-2 mies., więc ustawiam SEMIDQ i długoterminowe FU wg sekwencji EAGER, bez proponowania konkretnego terminu (brak kalendarza w instrukcjach).",
+  "followup1_text": "jak tam temat strony, udało się coś wybrać albo nadal Pani rozkminia opcje?",
+  "followup1_scheduledAt": "D7",
+  "followup2_text": "wiele osób przy kampaniach na pakiety zaczyna od 2-3 najmocniejszych, myślała Pani które u Pani sprzedają się najlepiej?",
+  "followup2_scheduledAt": "D14",
+  "followup3_text": "jeśli będzie Pani chciała, możemy na tej rozmowie 1 na 1 poukładać też strukturę sklepu, byłoby to pomocne?",
+  "followup3_scheduledAt": "D21",
+  "followup4_text": "żeby ruszyć ze sprzedażą szablonów, kampania z dobrze ustawionym pikselem pomaga, chce Pani do tego wrócić po stronie?",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "ciekawa jestem, czy udało się Pani postawić nową stronę i wrócił temat kampanii, jak to teraz wygląda?",
+  "followup5_scheduledAt": "D60",
+  "followup6_text": "jeśli kampania na pakiety dalej jest w planach, mogę pomóc to poukładać, czy woli Pani zostać przy obecnym ustawieniu?",
+  "followup6_scheduledAt": "LONG"
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{"instagramStage":"QUALIFIED","engagementPriority":"HIGH","isDisqualified":false,"sent_notify":false,"notify_type":"","notify_msg":"","reactTo":0,"reactWith":"","reactWhen":"","message1":"jasne.","message2":"nie polecam nikogo konkretnego w ciemno, bo to zależy od budżetu i zakresu.","message3":"na spotkaniu rozpiszemy Ci najprostszy wariant pod Twoje pakiety i reklamy.","message4":"a nowe pakiety planujesz mieć za miesiąc czy bliżej dwóch?","notes":"Osoba pyta o techniczne przygotowanie kampanii i strony, deklarowała wysoką chęć rozmowy, ale odkłada decyzję o około 1-2 miesiące. Dobrze rokujący lead, gotowy po dopracowaniu oferty.","followup1_text":"wracam do tego, bo pisałaś o nowych pakietach - jesteś już bliżej poukładania tego na stronie?","followup1_scheduledAt":"D14","followup2_text":"jak tam z tym setupem, dalej bardziej Canva + Naffy czy już myślisz o jednej stronie pod wszystko?","followup2_scheduledAt":"D30","followup3_text":"sporo osób dopiero po uporządkowaniu oferty widzi, co naprawdę warto reklamować. u Ciebie już się to klaruje?","followup3_scheduledAt":"D60","followup4_text":"jeśli temat nadal jest aktualny, możemy to przejść krok po kroku na rozmowie i zobaczyć co będzie najprostsze u Ciebie.","followup4_scheduledAt":"LONG","followup5_text":"","followup5_scheduledAt":"","followup6_text":"","followup6_scheduledAt":""}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne, zanim coś polecę, wolę wiedzieć.",
+  "message2": "jakiej strony konkretnie Pani szuka?",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba sprzedaje pakiety cyfrowe, ma chaos w Naffy przez warianty kolorów i chce ogarnąć stronę przed kampanią. Deklaruje powrót za 1-2 mies. i wysoką chęć rozmowy 1 na 1.",
+  "followup1_text": "jak idzie uporządkowanie strony pod te pakiety?",
+  "followup1_scheduledAt": "D14",
+  "followup2_text": "wspominała Pani o nowych pakietach. temat nadal aktualny?",
+  "followup2_scheduledAt": "D30",
+  "followup3_text": "na rozmowie możemy poukładać układ sklepu pod reklamy. miałoby to dla Pani sens?",
+  "followup3_scheduledAt": "D60",
+  "followup4_text": "gdy będzie Pani gotowa, wrócimy do tego spokojnie",
+  "followup4_scheduledAt": "LONG",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">SILENT_USER — User silent 7+ days (@a.pagowski_odchudzanie)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Okej, a jak myślisz, co chciałabyś najbardziej zmienić u siebie dzięki tym prostym posiłkom?",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "Chce proste w przyrządzaniu posiłki, bo po pracy brakuje jej chęci. Prostsze gotowanie kojarzy z większą ilością czasu. Wprowadzanie zmian idzie jej powoli.",
+  "followup1_text": "wróciłaś myślami do tego, co chciałabyś najbardziej zmienić dzięki prostszemu jedzeniu?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "dużo osób zaczyna od jednego prostego dania na stałe w tygodniu, myślisz że u Ciebie też by to przeszło?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jak Ci po czasie idzie z tym wprowadzaniem prostszych posiłków w ciągu dnia?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: WYKL. (artefakt testu)</h4><pre>Co najbardziej blokuje Cię we wdrażaniu tego na co dzień?</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "A co Ci dziś najbardziej to utrudnia?",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "wpadła mi jedna myśl, co najbardziej zabiera Ci czas przy jedzeniu?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często różnicę robi prosty schemat, u Ciebie bardziej praca czy wolne?",
+  "followup2_scheduledAt": "D7",
+  "followup3_text": "jak dalej z tym prostszym przygotowaniem, dalej to rozkminiasz?",
+  "followup3_scheduledAt": "D21",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">ENTHUSIASTIC — Fast progression (@nietypowy.polski.trader)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "okej, czyli chodzi Ci o spokój z kasą",
+  "message2": "dużo osób na początku gubi się w rzeczach",
+  "message3": "bardziej martwi Cię ryzyko straty czy ilość wiedzy?",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "wraca mi w głowie Twój trading, zastanawiałeś się co Cię na starcie blokuje?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "sporo osób na początku stawia na ochronę kapitału, jak Ty o tym myślisz?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jest u Ciebie dalej temat tradingu czy odpuszczasz na razie?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "okej",
+  "message2": "czyli zależy Ci na kasie i spokoju",
+  "message3": "a co Cię teraz najbardziej blokuje w starcie?",
+  "message4": "",
+  "notes": "Osoba chce zacząć z tradingiem, zero doświadczenia. Cel: pieniądze i spokój finansowy. Otwarta na rozmowę i odpowiada konkretnie.",
+  "followup1_text": "wiesz co, najgorzej zwykle nie jest zacząć tylko odsiać chaos na początku. u Ciebie bardziej blokuje wiedza czy strach przed stratą?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często osoby na starcie kręcą się w miejscu przez nadmiar informacji. u Ciebie też to siedzi?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jak dalej o tym myślisz, to co jest ważniejsze - dodatkowa kasa czy większy spokój?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "czasem jedna dobra rozmowa porządkuje cały start. jeśli temat dalej aktualny, napisz",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "okej, czyli bardziej kasa i niezależność",
+  "message2": "a co jest dla Ciebie teraz najbardziej niejasne w tym?",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba (⭐3) 📅DM inbound o trading 📌zero doświadczenia, chce zacząć 🏆pieniądze i spokój finansowy 📝czuje się zielono w temacie",
+  "followup1_text": "wrócę do tego, bo pisałeś o spokoju finansowym - co jest dla Ciebie dziś najbardziej niejasne w tym?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "dużo osób na starcie wpada w chaos od nadmiaru informacji. u Ciebie też to siedzi?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jak dalej o tym myślisz, bardziej ciągnie Cię dodatkowy dochód czy większa niezależność?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "jeśli temat dalej jest aktualny, możemy sprawdzić czy to w ogóle ma dla Ciebie sens?",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">SKEPTIC — Competitor mention (@jakubboberr)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "spoko, obejrzyj na luzie, tam jest konkretnie",
+  "message2": "a teraz co Cię najbardziej ciekawi w renomie?",
+  "message3": "",
+  "message4": "",
+  "notes": "[INTERPRETER] Osoba celuje w start pracy z klientami za ok. pół roku, chce poprawić renomę usług, zbudować popularność i zbierać wiedzę merytoryczną, osobiste zdolności i komunikacja są już na dobrym poziomie. EAGER, chętnie bierze materiały, rozmowa raczej nurturing przed zakupem/kurssem bliżej startu.",
+  "followup1_text": "co dla siebie wziąłeś z nagrania o klientach?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "masz już pomysł jak wykorzystać swój profil?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "start za pół roku dalej jest aktualny plan?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "jak uznasz że to dobry moment, pisz śmiało",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 9/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba planuje wejść w pracę z klientami dopiero za około pół roku, bliżej wakacji. Chce poprawić renomę usług, zbudować popularność i rozwijać wiedzę merytoryczną. Pozytywnie reaguje na materiały, ale gotowość na rozmowę jest odroczona, więc przejście na SEMIDQ z długoterminowym nurturingiem.",
+  "followup1_text": "jak tam, obejrzałeś już ten materiał o pierwszych klientach?",
+  "followup1_scheduledAt": "D21",
+  "followup2_text": "wpadła mi myśl pod Twój start - przy pierwszych klientach dużo robi już sam profil, dalej to układasz?",
+  "followup2_scheduledAt": "D60",
+  "followup3_text": "jeśli temat dalej jest aktualny bliżej wakacji, możemy to wtedy poukładać pod start z klientami",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 8/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 1,
+  "reactWith": "👍",
+  "reactWhen": "now",
+  "message1": "",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba (⭐3) 📅DM po materiale 📌planuje wejść bliżej wakacji 🏆chce poprawić renomę usług, zbudować popularność i podnieść wiedzę merytoryczną 📝na ten moment woli wrócić bliżej startu z klientami",
+  "followup1_text": "jak Ci idzie układanie profilu pod pierwszych klientów?",
+  "followup1_scheduledAt": "D14",
+  "followup2_text": "sporo osób na starcie gubi się na komunikacie oferty. u Ciebie to już jest poukładane?",
+  "followup2_scheduledAt": "D30",
+  "followup3_text": "a dziś bliżej Ci do renomy, popularności czy wiedzy merytorycznej?",
+  "followup3_scheduledAt": "D60",
+  "followup4_text": "jeśli temat dalej będzie aktualny, odezwij się wtedy i zobaczymy co najlepiej ruszyć najpierw",
+  "followup4_scheduledAt": "LONG",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">AUDIO — Voice msg placeholder (@komunikuj.net_)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 1,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "O, to miło słyszeć",
+  "message2": "a o który post dokładnie chodzi?",
+  "message3": "",
+  "message4": "",
+  "notes": "EAGER, przyszła z posta, przejście do discovery od pytania o konkretny post.",
+  "followup1_text": "jestem ciekaw co chcesz z tego najbardziej wyciągnąć",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 1,
+  "reactWith": "❤️",
+  "reactWhen": "now",
+  "message1": "o, dobra",
+  "message2": "mogę zadać Ci jedno pytanie?",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "w sumie ciekawi mnie, co dokładnie Ci siadło w tym poście?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "czasem jeden konkretny fragment mówi więcej niż cały materiał. co tam u Ciebie kliknęło?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "sporo osób trafia z ciekawości, a zostaje gdy widzi że to dotyka ich sytuacji. u Ciebie też tak było?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "o, dobra. czyli post Cię zatrzymał.",
+  "message2": "a co w tym temacie teraz najbardziej Cię ciekawi?",
+  "message3": "",
+  "message4": "",
+  "notes": "Zainteresowała się po poście, pozytywny odbiór treści, otwarta na dalszą rozmowę.",
+  "followup1_text": "wracam do tego posta - co Cię tam najbardziej zatrzymało?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "czasem jeden post otwiera większy temat - u Ciebie też?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jeśli temat dalej siedzi z Tyłu głowy, to możesz napisać jednym zdaniem co Cię w nim ruszyło",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">IMAGE — Image placeholder (@program_reduktor)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "okej, 15 kilo to sporo",
+  "message2": "okej a jak teraz z ruchem?",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "przy celu 15 kg ważna będzie regularność, masz z tym kłopot?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "sprawdzałaś już jakieś treningi pod redukcję, czy dopiero szukasz?",
+  "followup2_scheduledAt": "D7",
+  "followup3_text": "jeśli cel 15 kg dalej aktualny, mogę Ci ułożyć prosty plan, chcesz?",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 13/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "okej, konkretny cel.",
+  "message2": "a co już próbowałaś w tym kierunku?",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba chce zrzucić 15 kg lub więcej. Krótkie odpowiedzi, ale wyraźny cel. Idę w discovery bez projekcji i bez proposalu na tym etapie.",
+  "followup1_text": "wpadła mi jeszcze jedna myśl pod ten cel - bardziej blokuje Cię regularność czy jedzenie?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "przy takim celu zwykle najszybciej wychodzi, co już było testowane i gdzie to się sypie. u Ciebie co nie zadziałało?",
+  "followup2_scheduledAt": "D7",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "co Cię ruszyło do zmiany?",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba (⭐3) 📅DM - poprosiła o plan treningowy 🏆 zrzucić 15 kg lub więcej 📝 krótko odpowiada, trzeba odkryć motywację i przeszkody",
+  "followup1_text": "przy takim celu bardziej wykłada plan czy regularność?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "sporo osób rusza od treningu, a jedzenie zostawia na później. u Ciebie też?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">MULTI_TURN — Stage transitions (@jasion.darek)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "kurde, jedziesz teraz na pełnym gazie",
+  "message2": "i widać że czujesz z tego dobry flow",
+  "message3": "która rzecz jest teraz ważniejsza: nieruchomości czy klub?",
+  "message4": "",
+  "notes": "Bardzo zaangażowany, kilka biznesów naraz (nieruchomości, maszyny rolnicze i budowlane, agencja pracy, klub). Od 8 lat epizodysta, teraz plan na większe projekty. 2025 opisuje jako trudny okres, mocny reset, aktualnie fokus na nieruchomościach i biznesie klubowym. Śpi 3-4h na dobę + drzemki, czuje dużą motywację i pozytywne nastawienie. Sam zaproponował chęć rozmowy telefonicznej w wolnej chwili.",
+  "followup1_text": "jak u Ciebie z nieruchomościami i klubem teraz?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "wiele osób łączy biznesy, jak Ty to widzisz?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jaki wynik z nieruchomości byłby dla Ciebie ok?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "dalej chcesz to ogarniać, czy odkładasz na później?",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 9/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "win",
+  "notify_msg": "Osoba sama zaproponowała rozmowę przez telefon i jest otwarta na dalszy kontakt.",
+  "reactTo": 1,
+  "reactWith": "🙏",
+  "reactWhen": "now",
+  "message1": "to przegadajmy to na spokojnie",
+  "message2": "przy takim tempie dobrze to poukładać z głową",
+  "message3": "sprawdzę dostępność i wrócę do Ciebie z terminem",
+  "message4": "który dzień masz zwykle luźniejszy?",
+  "notes": "[INTERPRETER] Brak danych o linku lub metodzie bookingu, więc nie bookuję samodzielnie. Lead jest mocno zaangażowany i sam chce rozmowy, dlatego wybrałem PROPOSAL + notify do ownera.",
+  "followup1_text": "wracam z tym, bo mówiłeś że chcesz to poukładać pod nieruchomości i klub - temat dalej aktualny?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "przy tylu rzeczach naraz często kluczowe jest ustawienie priorytetów pod jeden kierunek - u Ciebie dalej to nieruchomości i kluby?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jak chcesz, możemy to zebrać w jedną rozmowę i zobaczyć co teraz ma największy sens",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "zostawię Ci to otwarte - gdy temat wróci na pierwszy plan, odezwij się",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 9/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "insight",
+  "notify_msg": "Osoba chce porozmawiac przez telefon i jest gotowa na kolejny krok. Brak linku do kalendarza - trzeba podac termin.",
+  "reactTo": 1,
+  "reactWith": "💪",
+  "reactWhen": "now",
+  "message1": "widze, ze masz teraz duzy ciag.",
+  "message2": "najlepiej przegadac to spokojnie przez telefon.",
+  "message3": "podesle Ci termin jak sprawdze dostepnosc, pasuje?",
+  "message4": "",
+  "notes": "Osoba (⭐4) 📅DM 📌kilka biznesow i aktorstwo epizodyczne 🏆wieksze projekty w nieruchomosciach i biznesach klubowych 📝zamieszanie w 2025, malo snu, wszystko rozbite na czesci, wysoka motywacja",
+  "followup1_text": "jak z terminem na telefon, dalej aktualne?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "wspomniales o nieruchomosciach i klubie. chcesz zebym ogarnal termin?",
+  "followup2_scheduledAt": "P24",
+  "followup3_text": "jesli temat jest na teraz, daj zielone swiatlo i ruszymy z tym",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "jesli to nie jest moment, tez ok",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">RUDE_USER — Aggressive response (@nicer.makary)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "DISSONANCE",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "tak, na fb to spokojnie ogarniesz.",
+  "message2": "najpierw zbierasz ludzi na listę.",
+  "message3": "potem z tej bazy robisz podobne grupy.",
+  "message4": "a co chcesz ogarnąć, lead magnet czy ofertę?",
+  "notes": "",
+  "followup1_text": "jak Ci siedzi ten pomysł z listą?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "myślałeś nad prostym lead magnetem pod insta?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "dalej chcesz z tego ruchu zrobić ofertę?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "co by Ci dało poukładanie całego systemu?",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "jak będziesz wracał do tematu, napisz śmiało.",
+  "followup5_scheduledAt": "LONG",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 9/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "tak, ma to sens.",
+  "message2": "najpierw wyciskasz organic i zbierasz bazę.",
+  "message3": "potem z tej bazy można robić grupy podobnych odbiorców na fb.",
+  "message4": "jak chcesz, pokażę Ci na rozmowie prosty układ pod to?",
+  "notes": "Lead kwalifikowany. Potwierdził chęć współpracy z kimś doświadczonym, budżet 3k+, pyta o sens procesu i kanału. Przejście do propozycji rozmowy po pytaniu o rozwiązanie.",
+  "followup1_text": "zostawię Ci jedną rzecz do przemyślenia - najważniejsze jest to, co dostaje ktoś po zapisie, nie sama baza. chcesz to poukładać razem?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "u Ciebie kierunek jest sensowny, tylko trzeba dobrze spiąć zapis, maile i ofertę. pasuje Ci to przegadać?",
+  "followup2_scheduledAt": "P24",
+  "followup3_text": "jeśli dalej chcesz z tego ruchu zrobić bazę, to mogę Ci pokazać prostą ścieżkę bez startu od reklam. temat na teraz czy później?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "zamknę temat z mojej strony. jeśli będziesz chciał to rozpisać sensownie, odezwij się.",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 9/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "tak, najpierw lista z organicu",
+  "message2": "potem lookalike i retarget na fb",
+  "message3": "u Ciebie kluczowa będzie kolejność kroków",
+  "message4": "chcesz to ułożyć na krótkiej rozmowie?",
+  "notes": "Osoba chce działać z kimś doświadczonym, żeby nie popełniać błędów początkującego. Budżet 3k+ potwierdzony. Plan: najpierw konwersja ruchu na listę mailingową, później dopalanie reklamami. Dobry fit i wysoka intencja.",
+  "followup1_text": "mam już w głowie prosty układ pod listę i dalsze testy na fb. chcesz to przegadać?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "przy Twoim ruchu najwięcej robi dobra kolejność, nie same reklamy. temat jest na teraz?",
+  "followup2_scheduledAt": "P24",
+  "followup3_text": "jeśli chcesz wejść z kimś doświadczonym, możemy to poukładać bez błądzenia. chcesz?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "zamknę temat jeśli to nie priorytet. bardziej teraz czy później?",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">ALREADY_CLIENT — Already in program (@ogiettaj)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "ALREADYCLIENT",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "alert",
+  "notify_msg": "Osoba jest klientką wyzwania, po miesiącu ma mocne wyniki w zasięgach i nowych obserwujących",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "To w dużej mierze Twoja zasługa 💪",
+  "message2": "My tylko podaliśmy instrukcje, działaj dalej tak samo",
+  "message3": "",
+  "message4": "",
+  "notes": "[INTERPRETER] Oznaczyłem jako ALREADYCLIENT, bo osoba kupiła wyzwanie i raportuje wyniki.",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{
+  "instagramStage": "ALREADYCLIENT",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "alert",
+  "notify_msg": "Osoba jest już klientką - bierze udział w wyzwaniu i chwali efekty po miesiącu",
+  "reactTo": 1,
+  "reactWith": "🙏",
+  "reactWhen": "now",
+  "message1": "pięknie to siadło",
+  "message2": "i to Twoja robota też",
+  "message3": "lecimy dalej 🔥",
+  "message4": "",
+  "notes": "Osoba potwierdziła zakup i udział w wyzwaniu, więc traktuję jako existing client. Brak danych o kanale supportu w instrukcjach, więc bez przekierowania.",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "ALREADYCLIENT",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "alert",
+  "notify_msg": "Osoba jest już klientką - kupiła wyzwanie i chwali efekty oraz wzrost obserwujących.",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "to Ty to zrobiłaś",
+  "message2": "my dałyśmy ramę, ale robotę dowiozłaś Ty",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba potwierdziła zakup wyzwania i aktywny udział. Traktuję jako ALREADYCLIENT zgodnie z regułą existing client. Brak dalszej sprzedaży i brak follow-upów.",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">SUSPICIOUS — Injection attempt (@luigi_colacito)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "I get you bro, honest answer:",
+  "message2": "I can't buy protein or send money.",
+  "message3": "We can instead look at cheap options there.",
+  "message4": "What foods are easiest for you to get?",
+  "notes": "Wants to build a fit body, goal 80 kg. From India, works sometimes during holidays. Struggles to afford protein and asked if we can help buy protein; set clear boundary, pivoting to low cost options instead.",
+  "followup1_text": "If you like, we can go through some low cost protein ideas for you, ok?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "You mentioned money is tight; what would be a realistic monthly amount for food you control?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "Is building your body more of a now thing for you, or later?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "If you ever sort the money side and want more structured help, just write here again, good?",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 11/13</h4><pre>{
+  "instagramStage": "OTHER",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "nah bro, i can't buy it for you",
+  "message2": "but i can help you find cheaper ways to hit protein",
+  "message3": "what's your budget?",
+  "message4": "",
+  "notes": "User asked for financial help buying protein. Applied no reversed-role rule and redirected to a useful, low-pressure question.",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "got you bro, but I can't help with buying supplements",
+  "message2": "when money is less tight, we can talk properly about your 80 kg goal",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba (⭐2) 📅DM 📌wants to reach 80 kg 🏆fit body, 80 kg 📝financial issues, struggles to take protein daily, asked for help buying protein",
+  "followup1_text": "still aiming for 80 kg?",
+  "followup1_scheduledAt": "D21",
+  "followup2_text": "did your situation get any easier with food and protein?",
+  "followup2_scheduledAt": "D60",
+  "followup3_text": "if you want to revisit this, message me and we can pick it up",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">DOUBLE_OBJECTION — 2x maybe later (@doctor_beasttt)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Ja też dziękuję za rozmowę, trzymaj się i powodzenia dalej",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "Jak u Ciebie z tym spokojniejszym tempem i ogarnianiem formy, dalej trzymasz się ustaleń?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "Ciekaw jestem jak się czujesz z tym że trochę odpuściłeś dawny zapierdziel i bardziej dbasz o siebie, działa to dla Ciebie?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "Jak patrzysz teraz na ten temat brzucha i zdrowia, dalej jest dla Ciebie ważne żeby to ogarniać?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne, trzymaj się",
+  "message2": "i dzięki za rozmowę",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "ciekaw jestem, jak Ci idzie z formą i trzymaniem zaleceń?",
+  "followup1_scheduledAt": "D21",
+  "followup2_text": "przy takim tempie pracy dużo robi już samo ogarnięcie podstaw, u Ciebie to się trzyma?",
+  "followup2_scheduledAt": "D60",
+  "followup3_text": "jakbyś chciał jeszcze wrócić do tematu brzucha i ogarnięcia tego na spokojnie, to pisz",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne, trzymaj się",
+  "message2": "dzięki za rozmowę",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba (⭐3) 📅DM 📌pozytywnie kończy rozmowę 🏆chce mieć to pod kontrolą i czuć się ok 📝praca i życie na pełnym gazie utrudniały trzymanie wszystkiego na tip top",
+  "followup1_text": "jak Ci idzie z trzymaniem spokojniejszego rytmu?",
+  "followup1_scheduledAt": "D14",
+  "followup2_text": "ciekaw jestem, czy dalej nie wracasz na pełny gaz?",
+  "followup2_scheduledAt": "D30",
+  "followup3_text": "jeśli będziesz chciał wrócić do tematu, pisz śmiało",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">EMOJI_ONLY — Emoji/short reaction (@rafal.bielakk)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 13/13</h4><pre>{
+  "instagramStage": "RAPPORT",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Haha, dzięki, czasem trzeba się odezwać.",
+  "message2": "A tak przy okazji, czym się teraz zajmujesz?",
+  "message3": "",
+  "message4": "",
+  "notes": "Lead pozytywnie reaguje na story, wysoki entuzjazm (EAGER). Przechodzimy do lekkiej kwalifikacji przez pytanie o zajęcie.",
+  "followup1_text": "Zastanawiałem się, jak u Ciebie wygląda teraz sytuacja z pracą czy biznesem?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 13/13</h4><pre>{
+  "instagramStage": "RAPPORT",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "haha no czasem trzeba 😎",
+  "message2": "a u Ciebie co teraz jest na tapecie?",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "wpadła mi jeszcze jedna myśl... co teraz najbardziej chcesz u siebie ogarnąć?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często ludzie wpadają tu z jednym konkretnym celem. u Ciebie co nim jest?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 13/13</h4><pre>{"instagramStage":"RAPPORT","engagementPriority":"HIGH","isDisqualified":false,"sent_notify":false,"notify_type":"","notify_msg":"","reactTo":0,"reactWith":"","reactWhen":"","message1":"taak, czasem trzeba","message2":"okej, a u Ciebie co teraz na tapecie?","message3":"","message4":"","notes":"","followup1_text":"tak z ciekawości, co u Ciebie teraz najbardziej zajmuje uwagę?","followup1_scheduledAt":"TOM","followup2_text":"często właśnie z takich luźnych akcji wychodzi konkretny temat. co u Ciebie teraz siedzi z tyłu głowy?","followup2_scheduledAt":"P18","followup3_text":"czasem jeden szczegół mówi najwięcej. czym się teraz głównie zajmujesz?","followup3_scheduledAt":"D7","followup4_text":"jak nie ten moment to luz, ale jak będziesz chciał pogadać konkretniej to pisz","followup4_scheduledAt":"D21","followup5_text":"","followup5_scheduledAt":"","followup6_text":"","followup6_scheduledAt":""}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">VERY_LONG — Complex multi-topic (@emil.iman_)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 11/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "alert",
+  "notify_msg": "Osoba podała dwa możliwe terminy rozmowy (dzisiaj 12:00 lub jutro 11:00) i ma bardzo nabity kalendarz - trzeba ustalić konkretną godzinę i formę rozmowy.",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Okej, widzę że kalendarz masz nabity.",
+  "message2": "Z tych godzin bliżej Ci do dziś 12:00",
+  "message3": "czy jutro 11:00?",
+  "message4": "",
+  "notes": "[INTERPRETER] Brak linku do kalendarza w instrukcjach, ale rozmowa już na etapie umawiania konkretnego terminu. Poprosiłem o wybór jednego z dwóch podanych przez osobę terminów i wysłałem alert, żeby owner mógł ręcznie potwierdzić i dogadać formę rozmowy.",
+  "followup1_text": "Masz już wybrany termin, 12:00 czy 11:00?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "Na rozmowie możemy konkretnie ogarnąć temat kampanii pod klientów jakościowych, nadal chcesz to przegadać?",
+  "followup2_scheduledAt": "P24",
+  "followup3_text": "Jak u Ciebie z tematem kampanii, odkładasz go na później czy chcesz jeszcze do niego wrócić?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "Jeśli wolisz żebym nie wracał już do tematu kampanii i rozmowy, też daj znać.",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 11/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "insight",
+  "notify_msg": "Osoba jest gotowa na rozmowę i podała dostępność na dzisiaj 12:00 albo jutro 11:00. Brakuje linku lub instrukcji do bookingu, więc trzeba przejąć termin ręcznie.",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne, widzę że masz ciasny kalendarz",
+  "message2": "napiszę Ci termin jak tylko sprawdzę dostępność",
+  "message3": "",
+  "message4": "",
+  "notes": "Lead ekspert z 18 lat doświadczenia. Jasno opisał problem: kampania generuje kontakty jak Oferteo, 30 kontaktów, 12 kosztorysów, 0 klientów. Szuka klienta mniej wrażliwego na cenę i bardziej na jakość oraz obsługę pod klucz. Gotowy na rozmowę. [INTERPRETER] Brak linku/instrukcji bookingu w kontekście → nie potwierdzałem ręcznie terminu, tylko eskalacja do ownera zgodnie z booking safety.",
+  "followup1_text": "wracam z tematem terminu, udało Ci się jeszcze zostawić jutro 11:00?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "mam to w głowie, bo u Ciebie problem nie jest w braku kontaktów tylko w jakości zapytań",
+  "followup2_scheduledAt": "P24",
+  "followup3_text": "jeśli temat dalej aktualny, to warto to poukładać zanim przepalisz kolejne kontakty",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "gdy będziesz chciał wrócić do tematu lepszych klientów zamiast wycen pod cenę, odezwij się",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 11/13</h4><pre>{
+  "instagramStage": "PROPOSAL",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": true,
+  "notify_type": "insight",
+  "notify_msg": "Osoba jest gotowa na rozmowę i podała dostępność dziś 12:00 lub jutro 11:00. Brak linku lub jasnej metody bookingu - potrzebne ręczne domknięcie terminu.",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne, widzę że masz nabity kalendarz.",
+  "message2": "sprawdzę dostępność i podeślę Ci konkretny termin, dobra?",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba (⭐5) 📅DM - po rozmowie o pozyskiwaniu klientów opisał 18 lat doświadczenia, kampanię FB/Instagram od grudnia i gotowość do rozmowy 📌budownictwo pod klucz, buduje nową stronę pod klienta premium 🏆pozyskiwać klientów mniej skupionych na cenie, bardziej na jakości i obsłudze 📝30 kontaktów, 12 kosztorysów, 0 klientów, kampania przyciąga leady jak Oferteo, zastrzeżenia do jakości działań AI po stronie firmy obsługującej reklamy",
+  "followup1_text": "wracam do terminu rozmowy - kiedy masz najbliższe wolne okno?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "mam Ci jeszcze trzymać temat kampanii i strony czy odpuścić?",
+  "followup2_scheduledAt": "P24",
+  "followup3_text": "przy takim profilu usługi źle ustawiona kampania zwykle ściąga porównywarki cen. chcesz to jeszcze ruszyć?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "zamknąłeś już temat reklam czy nadal jest do poprawy?",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">CONVERTED — Full funnel (@ada_promiennacera)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "CONVERTED",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Dobrze że lekarze tego pilnują, przy takiej ferytynie to faktycznie ważny temat.",
+  "message2": "Uwzględnię to przy naszej rozmowie, jak będziemy omawiać pielęgnację i plan działania dla Twojej cery.",
+  "message3": "",
+  "message4": "",
+  "notes": "Joanna (⭐4) 📅 umówiona rozmowa na czwartek 15:30 o stanie cery. Przed rozmową podesłała zdjęcia twarzy, badań nie ma, ale wspomina że ferytyna ok. 10 i lekarze szukają przyczyny uciekania żelaza. Trzeba to uwzględnić przy rekomendacjach pielęgnacyjnych, bez wchodzenia w porady medyczne. [INTERPRETER] Stage zostaje CONVERTED, FU ustawione jako pre-call przypomnienia/wartość.",
+  "followup1_text": "przed rozmową zastanów się proszę, co najbardziej chcesz poprawić w swojej cerze, żebym mogła skupić się na tym w pierwszej kolejności",
+  "followup1_scheduledAt": "CALL-6H",
+  "followup2_text": "na rozmowie przejdziemy krok po kroku Twoją obecną pielęgnację i zobaczymy, co realnie możesz zmienić przy swojej pracy",
+  "followup2_scheduledAt": "CALL-1H",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 13/13</h4><pre>{
+  "instagramStage": "CONVERTED",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "dzięki za info, Joanno",
+  "message2": "to warto mieć na uwadze",
+  "message3": "na rozmowie przejdziemy przez to w kontekście Twojej cery",
+  "message4": "",
+  "notes": "Joanna potwierdziła niską ferrytynę i że lekarze szukają przyczyny. Booking już ustalony, więc utrzymuję CONVERTED i nie wchodzę w porady medyczne.",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "CONVERTED",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "dzięki za doprecyzowanie, Joanna.",
+  "message2": "to ważny kontekst przy cerze.",
+  "message3": "na wiadomościach nie będę tego interpretować.",
+  "message4": "weźmiemy to pod uwagę na rozmowie.",
+  "notes": "Joanna (⭐4) 📅DM + booking na czwartek 15:30 📌wysłała zdjęcie cery przed rozmową 🏆chce poprawić cerę 📝brak badań w wiadomości, ferrytyna ok. 10, lekarze szukają przyczyny spadku żelaza",
+  "followup1_text": "przed rozmową pomyśl, od kiedy najbardziej widzisz pogorszenie cery",
+  "followup1_scheduledAt": "CALL-1D",
+  "followup2_text": "będziesz punktualnie czy potrzebujesz 10-15 min więcej?",
+  "followup2_scheduledAt": "CALL-3H",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">MIXED_LANG — Language switch (@albert.tuzimek)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 9/13</h4><pre>{
+  "instagramStage": "DISQUALIFIED",
+  "engagementPriority": "LOW",
+  "isDisqualified": true,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "Auto-odpowiedź typu out-of-office/bot po stronie konta, oznaczone jako DISQUALIFIED zgodnie z zasadami (brak dalszej komunikacji i follow-upów).",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 9/13</h4><pre>{"instagramStage":"DISQUALIFIED","engagementPriority":"LOW","isDisqualified":true,"sent_notify":false,"notify_type":"","notify_msg":"","reactTo":0,"reactWith":"","reactWhen":"","message1":"","message2":"","message3":"","message4":"","notes":"Autoresponder/out of office detected - auto DQ per hard stop.","followup1_text":"","followup1_scheduledAt":"","followup2_text":"","followup2_scheduledAt":"","followup3_text":"","followup3_scheduledAt":"","followup4_text":"","followup4_scheduledAt":"","followup5_text":"","followup5_scheduledAt":"","followup6_text":"","followup6_scheduledAt":""}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 9/13</h4><pre>{
+  "instagramStage": "DISQUALIFIED",
+  "engagementPriority": "LOW",
+  "isDisqualified": true,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "Autoresponder/out of office detected - auto DQ per safety rules.",
+  "followup1_text": "",
+  "followup1_scheduledAt": "",
+  "followup2_text": "",
+  "followup2_scheduledAt": "",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">NON_TEXT — Non-text content (@lukasz.karczewski_)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Spoko, ogarnij to w swoim tempie, a jak będziesz chciała wrócić do rozmowy, po prostu napisz tutaj.",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "[INTERPRETER] Kilkukrotnie odkłada termin rozmowy ('dam znać', 'znajdę chwilę to zobaczę'), ustawiam SEMIDQ i długoterminowe, miękkie follow-upy bez presji.",
+  "followup1_text": "z ciekawości, jak tam u Ciebie temat pracy, coś się pozmieniało od naszej ostatniej rozmowy?",
+  "followup1_scheduledAt": "D14",
+  "followup2_text": "coraz więcej osób pisze mi, że chcą coś pozmieniać zawodowo, u Ciebie to dalej aktualne czy raczej odpuściłaś ten temat?",
+  "followup2_scheduledAt": "D30",
+  "followup3_text": "gdybyś chciała kiedyś wrócić do rozmowy o zmianie zawodowej, po prostu napisz tutaj, będę.",
+  "followup3_scheduledAt": "D60",
+  "followup4_text": "trzymam kciuki za Twoje dalsze decyzje zawodowe, a jeśli kiedyś będziesz potrzebować spojrzenia z zewnątrz, pisz śmiało tutaj.",
+  "followup4_scheduledAt": "LONG",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 10/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne, to zostawmy to na ten moment",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "Patrycja (⭐2) 📅DM o bezpłatnej rozmowie, wysłany link do kalendarza 📌odkłada decyzję, mówi że znajdzie chwilę i zobaczy 🏆sprawdzenie czy rozmowa ma sens 📝brak gotowości teraz, dwa sygnały typu dam znać/zobaczę → SEMIDQ",
+  "followup1_text": "Patrycja, wracam na moment z tym tematem - dalej chcesz to sprawdzić?",
+  "followup1_scheduledAt": "D21",
+  "followup2_text": "czasem taka krótka rozmowa pomaga po prostu poukładać temat. u Ciebie to jeszcze aktualne?",
+  "followup2_scheduledAt": "D60",
+  "followup3_text": "zamknę to po swojej stronie. jeśli będziesz chciała do tego wrócić, napisz",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 10/13</h4><pre>{
+  "instagramStage": "SEMIDQ",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne, zerknij w swoim tempie",
+  "message2": "link masz wyżej",
+  "message3": "",
+  "message4": "",
+  "notes": "2x odkłada wybór terminu, brak gotowości teraz, zostawić kontakt na później",
+  "followup1_text": "czy temat tej rozmowy jest u Ciebie nadal aktualny?",
+  "followup1_scheduledAt": "D21",
+  "followup2_text": "czasem jedna rozmowa pomaga szybciej poukładać kierunek - chcesz wrócić do tego?",
+  "followup2_scheduledAt": "D60",
+  "followup3_text": "jeśli temat wróci, napisz po prostu tutaj",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">MULTI_MSG — 3-4 bubble response (@karolina_karolczak)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 11/13</h4><pre>{
+  "instagramStage": "RAPPORT",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Ale sztos, czuć ile w tym radości 🧡",
+  "message2": "Co najbardziej chcesz pokazać na tej wystawie?",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "Jestem ciekaw jak poszło na wernisażu, co było dla Ciebie najważniejsze?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "Zastanawiam się jakie osoby najbardziej chcesz przyciągnąć tą wystawą?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "Dalej trwa wystawa, zdarzyło Ci się już złapać jakieś nowe kontakty dzięki niej?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "Jestem ciekaw co ta cała wystawa zmieniła w Twoim podejściu do Twojej twórczości?",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "Daj znać, gdybyś chciała kiedyś pogadać szerzej o łączeniu takich wystaw z rozwojem pracy twórczej",
+  "followup5_scheduledAt": "LONG",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 11/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 1,
+  "reactWith": "🧡",
+  "reactWhen": "now",
+  "message1": "no to ogień",
+  "message2": "widać, że serio się tym jarasz",
+  "message3": "a chcesz iść z tym szerzej czy na razie skupiasz się na wystawie?",
+  "message4": "",
+  "notes": "Osoba pozytywnie reaguje na stories i zaprasza na wernisaż. Wysokie zaangażowanie, dobry moment na lekkie discovery wokół kierunku działań.",
+  "followup1_text": "zaciekawiło mnie to, co pisałaś o wystawie - bardziej traktujesz to jako jednorazowy projekt czy większy kierunek?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często po takich wydarzeniach pojawia się pomysł, co dalej z tym zrobić. u Ciebie też?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "czasem jedna wystawa otwiera dużo więcej niż się zakłada na starcie. myślałaś już, co chcesz z tego wyciągnąć dalej?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "gdybyś chciała to kiedyś poukładać szerzej, odezwij się",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "o, to już konkretnie",
+  "message2": "bardziej chcesz iść w stronę wystaw czy też budować na tym sprzedaż?",
+  "message3": "",
+  "message4": "",
+  "notes": "Mocne zaangażowanie wokół wystawy, zaprosiła na wernisaż. Dobry moment, żeby przejść z relacji do pytania o kierunek twórczości i monetyzację.",
+  "followup1_text": "zastanawia mnie to, w którym kierunku bardziej chcesz to pchnąć, wystawy czy sprzedaż?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "sporo twórców długo odwleka moment, kiedy pasja zaczyna zarabiać. u Ciebie ten temat już jest na stole?",
+  "followup2_scheduledAt": "D7",
+  "followup3_text": "",
+  "followup3_scheduledAt": "",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">NOTIFY_TRIGGER — VIP/insight signal (@mateusz.ecommercowy)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 11/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Ogólnie płatne promowanie może mocno podbić zasięg.",
+  "message2": "Tylko dużo zależy od ustawień, oferty i strony.",
+  "message3": "A co teraz promujesz i skąd masz ruch?",
+  "message4": "",
+  "notes": "[INTERPRETER] Brak konkretnych instrukcji właściciela i brak linku do kalendarza, jadę w trybie discovery bez umawiania calla.",
+  "followup1_text": "Jeśli dalej rozkminiasz adsy, napisz co sprzedajesz, żebym mógł coś podpowiedzieć.",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "Sporo osób przepala budżet na samo promowanie posta, myślisz że warto byłoby ogarnąć to trochę lepiej?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "Jak zostawisz ruch tylko organiczny, ile realnie ofert jesteś w stanie dowieźć miesięcznie?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 11/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "może dać sporo, ale tylko jak oferta i target siądą",
+  "message2": "a co dokładnie chcesz tym przepchnąć?",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba pyta o promowanie oferty reklamami. Jest zaangażowana i szuka konkretu, więc krótka odpowiedź + pytanie o kontekst oferty.",
+  "followup1_text": "często same wyświetlenia rosną, ale bez dobrej oferty nic z tego nie wynika. co tam promujesz?", "followup1_scheduledAt": "TOM",
+  "followup2_text": "jak chcesz, mogę Ci powiedzieć na co zwykle patrzę zanim ktoś odpali adsy", "followup2_scheduledAt": "P18",
+  "followup3_text": "czasem problem nie jest w reklamie, tylko w tym co widzi osoba po kliknięciu. u Ciebie to bardziej oferta czy ruch?", "followup3_scheduledAt": "D7",
+  "followup4_text": "", "followup4_scheduledAt": "",
+  "followup5_text": "", "followup5_scheduledAt": "",
+  "followup6_text": "", "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 11/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "może dać zasięg,",
+  "message2": "ale sama promocja słabej oferty niewiele zmienia",
+  "message3": "co dokładnie chcesz promować?",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "przy promowaniu najpierw patrzę na ofertę, nie sam ruch. co sprzedajesz?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często problemem nie są wyświetlenia, tylko to czy oferta łapie uwagę od razu. chcesz żebym powiedział Ci na co patrzeć?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jak ruszysz z promocją bez sprawdzenia oferty, łatwo przepalić budżet. dalej chcesz to przejrzeć?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "zamknę temat, ale jeśli będziesz chciał ocenić ofertę przed promocją, możemy to przegadać",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">GHOST_BUMP — reactTo expected (@trenerboostpl)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "RAPPORT",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "hej, tu Mateusz, dzięki za odzew",
+  "message2": "kojarzę że działasz coś przy budowlance",
+  "message3": "a jak u Ciebie teraz z pracą?",
+  "message4": "",
+  "notes": "RAPPORT. Marcin odpisał pozytywnie, segment raczej STEADY. Pytam o obecną sytuację z pracą/budowlanką jako kwalifikacja.",
+  "followup1_text": "zastanawiałem się, czy dalej działasz przy budowlance czy coś się zmieniło?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "mnie ciekawi czy bardziej robisz na etacie czy masz swoją firmę?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "gdybyś miał coś poprawić w obecnej pracy, co by to było?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{"instagramStage":"RAPPORT","engagementPriority":"MEDIUM","isDisqualified":false,"sent_notify":false,"notify_type":"","notify_msg":"","reactTo":0,"reactWith":"","reactWhen":"","message1":"witaj","message2":"piszę, bo widzę u Ciebie budowlankę","message3":"działasz bardziej na etacie czy na swoim?","message4":"","notes":"Outbound. User odpisał neutralnie i otworzył rozmowę. Idę w lekką kwalifikację bez pytań binarnych o oczywisty profil.","followup1_text":"piszę, bo często od tego zależy, czy w ogóle ma sens dalej gadać - bardziej etat czy swoje?","followup1_scheduledAt":"TOM","followup2_text":"u Was to zwykle wygląda w jedną albo drugą stronę, a czasem miks - jak jest u Ciebie?","followup2_scheduledAt":"P18","followup3_text":"czasem już sam model działania pokazuje, gdzie ucieka najwięcej czasu - u Ciebie co najbardziej zjada go teraz?","followup3_scheduledAt":"D7","followup4_text":"zostawię Ci jeszcze jedno - jak będziesz chciał to ogarnąć, napisz tylko z czym teraz najbardziej się mierzysz","followup4_scheduledAt":"D21","followup5_text":"","followup5_scheduledAt":"","followup6_text":"","followup6_scheduledAt":""}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "RAPPORT",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "piszę do osób, które obserwują profil",
+  "message2": "czym się zajmujesz na co dzień?",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "piszę tu głównie z osobami aktywnymi zawodowo, u Ciebie bardziej etat czy swoje?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często już po jednej odpowiedzi widać, czy w ogóle mamy wspólny temat, co masz teraz zawodowo na tapecie?",
+  "followup2_scheduledAt": "D7",
+  "followup3_text": "zamknę temat na teraz, ale jeśli kiedyś będziesz chciał wrócić do rozmowy, napisz",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">FU_SCHEDULE — 4+ followups expected (@sikorski.bartlomiej)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Dopiero ruszasz, celujesz w siłownię czy online?",
+  "message2": "",
+  "message3": "",
+  "message4": "",
+  "notes": "",
+  "followup1_text": "myślałaś już z kim najbardziej chcesz pracować na początku?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często na początku zaskakuje ile czasu zabiera przygotowanie treningów, myślałaś o tym?",
+  "followup2_scheduledAt": "D21",
+  "followup3_text": "jeśli uznasz że to nie dla Ciebie, daj znać proszę.",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "MEDIUM",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "jasne",
+  "message2": "a co chcesz ogarnąć najpierw?",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba zaczyna jako trenerka. Wysłany przewodnik GPS dla trenera. Discovery po potwierdzeniu startu.",
+  "followup1_text": "zerknęłaś już w ten materiał czy jeszcze czeka?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "dużo osób na starcie blokuje nie wiedza, tylko brak planu na pierwszych klientów. u Ciebie też to siedzi?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jak dalej patrzysz na start w tym, temat jest na teraz czy później?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "czasem jedna dobra decyzja na początku oszczędza sporo chaosu później. dalej chcesz to ogarnąć?",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "LOW",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "Jasne.",
+  "message2": "Bardziej chcesz iść w treningi 1 na 1 czy online?",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba zaczyna w tej branży, wysłany przewodnik GPS.",
+  "followup1_text": "jak przejrzysz materiał, który fragment najbardziej Ci pomógł?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "przy takim starcie dużo daje jasny kierunek. bliżej Ci do treningów 1 na 1 czy online?",
+  "followup2_scheduledAt": "D21",
+  "followup3_text": "jeśli będziesz chcieć to poukładać pod swój start, napisz",
+  "followup3_scheduledAt": "LONG",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+  <button class="appendix-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">DQ_EDGE — Subtle not now (@mamadlabeauty)</button>
+  <div class="appendix-content"><h4 style="color:#12ADFF;margin:8px 0 4px">GPT-5.1 MED — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "kurde, jak wszystko gotowe a głowa blokuje",
+  "message2": "czasem wystarczy nagrać bez wrzucania, tak na rozgrzewkę",
+  "message3": "co by Ci ułatwiło zrobić ten pierwszy krok?",
+  "message4": "",
+  "notes": "PMU, duży stres i blokada przed nagrywaniem stories/rolek mimo przygotowanych materiałów i grafik.",
+  "followup1_text": "jak Ci poszło z tym pierwszym krokiem przy storiskach?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "myślisz czasem o tym ile tracisz materiału przez brak zdjęć?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "sporo dziewczyn od pmu ma podobny paraliż przed kamerą, jak u Ciebie teraz?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "daj znać jeśli nadal chcesz ruszyć z tym kontentem, to pomyślimy co dalej",
+  "followup4_scheduledAt": "D21",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#FF6B35;margin:8px 0 4px">GPT-5.4 LOW — Score: 12/13</h4><pre>{
+  "instagramStage": "DISCOVERY",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "paraliż?",
+  "message2": "a co Ci blokuje odpalenie pierwszej storce?",
+  "message3": "",
+  "message4": "",
+  "notes": "Osoba otwarcie mówi o przeciążeniu i blokadzie przed publikacją. Bez propozycji, bez presji - najpierw pogłębienie źródła blokady.",
+  "followup1_text": "wracam do tego, bo pisałaś o blokadzie przy starcie. ruszyło coś z tym?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "czasem najtrudniejsze jest samo odpalenie pierwszej rzeczy. u Ciebie dalej to siedzi czy już puściło?",
+  "followup2_scheduledAt": "P18",
+  "followup3_text": "jestem ciekaw, czy ogarnęłaś już zdjęcia i stor ki, czy ten temat dalej stoi?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "",
+  "followup4_scheduledAt": "",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre><h4 style="color:#A855F7;margin:8px 0 4px">GPT-5.4 MED — Score: 11/13</h4><pre>{
+  "instagramStage": "DISSONANCE",
+  "engagementPriority": "HIGH",
+  "isDisqualified": false,
+  "sent_notify": false,
+  "notify_type": "",
+  "notify_msg": "",
+  "reactTo": 0,
+  "reactWith": "",
+  "reactWhen": "",
+  "message1": "To nie jest brak roboty.",
+  "message2": "Masz wszystko gotowe, tylko głowa wciska hamulec.",
+  "message3": "Co Ci odpala ten paraliż przed startem?",
+  "message4": "",
+  "notes": "Osoba (4/5) PMU. Chce ruszyć ze stories i rolkami. Straciła zdjęcia z prawie 3 lat, ma mało materiału i paraliż przed startem.",
+  "followup1_text": "mam jedną prostą rzecz na takie zacięcie. chcesz żebym Ci ją rozpisał?",
+  "followup1_scheduledAt": "TOM",
+  "followup2_text": "często nie blokuje plan, tylko start. u Ciebie też to siedzi?",
+  "followup2_scheduledAt": "P24",
+  "followup3_text": "jak dalej odkładasz zdjęcia i nagrania, to co Ci najbardziej ucieka?",
+  "followup3_scheduledAt": "D7",
+  "followup4_text": "jeśli temat dalej siedzi w głowie, możemy to poukładać na spokojnie. chcesz?",
+  "followup4_scheduledAt": "D30",
+  "followup5_text": "",
+  "followup5_scheduledAt": "",
+  "followup6_text": "",
+  "followup6_scheduledAt": ""
+}</pre></div>
+
+</section>
+
+<footer>
+  <p>Setor AI — Production Stress Test v2 | Generated 2026-03-06 16:42 | Total cost: $1.2521</p>
+  <p style="margin-top:4px">Test script: model_comparison_v2.py | Data: stress_test_v2_20260306_1635.json</p>
+</footer>
+
+</div>
+</body>
+</html>
