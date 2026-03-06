@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLAUDE VILLA PRO — Bali Villa Report</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f7f7f7;--card:#fff;--text:#222;--muted:#717171;--accent:#ff385c;
+  --green:#00a699;--yellow:#ffb400;--red:#ff385c;--border:#ebebeb;
+  --shadow:0 6px 20px rgba(0,0,0,.08);--radius:12px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+a{color:inherit;text-decoration:none}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;padding:40px 20px;text-align:center;position:relative;overflow:hidden}
+.header::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.header h1{font-size:2.5rem;font-weight:800;letter-spacing:-.5px;position:relative;z-index:1}
+.header p{font-size:1.1rem;opacity:.85;margin-top:8px;position:relative;z-index:1}
+.header .meta{display:flex;justify-content:center;gap:24px;margin-top:16px;flex-wrap:wrap;position:relative;z-index:1}
+.header .meta span{background:rgba(255,255,255,.12);padding:6px 14px;border-radius:20px;font-size:.85rem;backdrop-filter:blur(4px)}
+
+/* CONTROLS */
+.controls{max-width:1200px;margin:24px auto;padding:0 20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.controls label{font-weight:600;font-size:.9rem}
+.btn-group{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.btn-group button{border:none;background:var(--card);padding:8px 16px;font-size:.85rem;cursor:pointer;font-weight:500;transition:.2s}
+.btn-group button:hover{background:#f0f0f0}
+.btn-group button.active{background:var(--text);color:#fff}
+.sort-btns{margin-left:auto;display:flex;gap:8px}
+.sort-btns button{border:1px solid var(--border);background:var(--card);padding:8px 14px;border-radius:8px;font-size:.85rem;cursor:pointer;font-weight:500;transition:.2s}
+.sort-btns button:hover,.sort-btns button.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* GRID */
+.grid{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:24px}
+
+/* CARD */
+.card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;position:relative}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.12)}
+.card.eliminated{opacity:.5;filter:grayscale(.7)}
+.card.eliminated .eliminated-banner{display:flex}
+
+.eliminated-banner{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-15deg);background:var(--red);color:#fff;padding:10px 30px;font-weight:700;font-size:1.1rem;z-index:10;border-radius:4px;white-space:nowrap;letter-spacing:1px}
+
+/* CAROUSEL */
+.carousel{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#eee}
+.carousel-track{display:flex;transition:transform .3s ease;height:100%;width:100%}
+.carousel-track img{min-width:100%;height:100%;object-fit:cover;flex-shrink:0}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:2;transition:.2s}
+.carousel-btn:hover{background:#fff;transform:translateY(-50%) scale(1.1)}
+.carousel-prev{left:8px}
+.carousel-next{right:8px}
+.carousel-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:2}
+.carousel-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);transition:.2s}
+.carousel-dots span.active{background:#fff;transform:scale(1.2)}
+
+/* BADGES */
+.score-badge{position:absolute;top:12px;right:12px;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;z-index:3;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.score-badge.high{background:var(--green)}
+.score-badge.mid{background:var(--yellow)}
+.score-badge.low{background:var(--red)}
+.rank-badge{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:20px;font-weight:700;font-size:.85rem;z-index:3}
+
+/* WARNING */
+.warning-banner{background:#fff3cd;color:#856404;padding:8px 12px;font-size:.82rem;display:flex;align-items:center;gap:6px;font-weight:500}
+
+/* CARD BODY */
+.card-body{padding:16px}
+.card-body h3{font-size:1.1rem;font-weight:700;margin-bottom:4px;line-height:1.3}
+.location{color:var(--muted);font-size:.9rem;margin-bottom:12px;display:flex;align-items:center;gap:4px}
+.rating{display:inline-flex;align-items:center;gap:4px;font-size:.9rem;font-weight:600}
+.rating svg{fill:var(--text)}
+.details-row{display:flex;gap:16px;margin:12px 0;flex-wrap:wrap}
+.detail{font-size:.85rem;color:var(--muted);display:flex;align-items:center;gap:4px}
+.detail strong{color:var(--text)}
+
+/* SCORE BARS */
+.score-section{margin:16px 0}
+.score-bar-row{display:flex;align-items:center;gap:8px;margin:6px 0}
+.score-bar-label{font-size:.78rem;color:var(--muted);width:100px;text-align:right;flex-shrink:0}
+.score-bar-bg{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.score-bar-fill.workspace{background:#4A90D9}
+.score-bar-fill.aesthetics{background:#9B59B6}
+.score-bar-fill.location-bar{background:#27AE60}
+.score-bar-fill.value{background:#F39C12}
+.score-bar-fill.comfort{background:#E74C3C}
+.score-bar-val{font-size:.78rem;font-weight:600;width:28px;flex-shrink:0}
+
+/* AMENITIES */
+.amenities{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.amenity{background:#f0f0f0;padding:4px 10px;border-radius:16px;font-size:.75rem;font-weight:500;white-space:nowrap}
+.amenity.highlight{background:#e8f5e9;color:#2e7d32;font-weight:600}
+
+/* DISTANCE */
+.distances{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.dist-box{background:#f8f8f8;padding:8px 10px;border-radius:8px;text-align:center}
+.dist-box .gym-name{font-size:.72rem;color:var(--muted);font-weight:500}
+.dist-box .gym-time{font-size:1rem;font-weight:700}
+.dist-box .gym-time.close{color:var(--green)}
+.dist-box .gym-time.medium{color:var(--yellow)}
+.dist-box .gym-time.far{color:var(--red)}
+
+/* BUTTONS */
+.card-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.card-actions a{flex:1;text-align:center;padding:10px 8px;border-radius:8px;font-weight:600;font-size:.85rem;transition:.2s;min-width:100px}
+.btn-airbnb{background:var(--accent);color:#fff}
+.btn-airbnb:hover{background:#e0294d}
+.btn-maps{background:#4285f4;color:#fff}
+.btn-maps:hover{background:#3367d6}
+.btn-love{background:#25d366;color:#fff}
+.btn-love:hover{background:#1da851}
+
+/* WORKSPACE HIGHLIGHT */
+.workspace-tag{display:inline-flex;align-items:center;gap:4px;background:#e3f2fd;color:#1565c0;padding:4px 10px;border-radius:16px;font-size:.78rem;font-weight:600;margin:4px 0}
+
+/* TOP PICK */
+.card.top-pick{border:2px solid var(--green)}
+.top-pick-tag{position:absolute;top:72px;right:12px;background:var(--green);color:#fff;padding:4px 10px;border-radius:12px;font-size:.72rem;font-weight:700;z-index:3;letter-spacing:.5px}
+
+/* METHODOLOGY */
+.methodology{max-width:1200px;margin:40px auto;padding:20px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.methodology h2{font-size:1.3rem;margin-bottom:12px}
+.methodology p,.methodology li{font-size:.9rem;color:var(--muted);line-height:1.6}
+.methodology ul{padding-left:20px}
+.methodology .cat-weights{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:12px 0}
+.cat-weight{padding:8px;border-radius:6px;font-size:.85rem;font-weight:500}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .grid{grid-template-columns:1fr;padding:12px}
+  .header h1{font-size:1.8rem}
+  .controls{flex-direction:column;align-items:stretch}
+  .sort-btns{margin-left:0;flex-wrap:wrap}
+  .card-actions{flex-direction:column}
+  .card-actions a{min-width:unset}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>CLAUDE VILLA PRO</h1>
+  <p>Bali Villa Hunt — Canggu / Pererenan / Munggu</p>
+  <div class="meta">
+    <span>3 osoby (Maciej, Blazej, Arek)</span>
+    <span>3+ sypialnie</span>
+    <span>Max 8K PLN/sypialnia/mies.</span>
+    <span>Marzec-Kwiecien 2026</span>
+  </div>
+</div>
+
+<div class="controls">
+  <label>Daty:</label>
+  <div class="btn-group" id="dateFilter">
+    <button class="active" data-dates="14.03-10.04">14.03 — 10.04</button>
+    <button data-dates="14.03-20.04">14.03 — 20.04</button>
+    <button data-dates="22.03-20.04">22.03 — 20.04</button>
+  </div>
+  <div class="sort-btns" id="sortBtns">
+    <button class="active" data-sort="score">Wynik</button>
+    <button data-sort="workspace">Workspace</button>
+    <button data-sort="distance">Odleglosc</button>
+    <button data-sort="rating">Oceny</button>
+  </div>
+</div>
+
+<div class="grid" id="villaGrid"></div>
+
+<div class="methodology">
+  <h2>Metodologia oceny</h2>
+  <p>Kazda willa oceniana w 30 kryteriach, 5 kategorii z wagami:</p>
+  <div class="cat-weights">
+    <div class="cat-weight" style="background:#e3f2fd;color:#1565c0">Workspace & Produktywnosc — 35%</div>
+    <div class="cat-weight" style="background:#f3e5f5;color:#7b1fa2">Estetyka & Design — 20%</div>
+    <div class="cat-weight" style="background:#e8f5e9;color:#2e7d32">Lokalizacja — 15%</div>
+    <div class="cat-weight" style="background:#fff8e1;color:#f57f17">Wartosc — 15%</div>
+    <div class="cat-weight" style="background:#fce4ec;color:#c62828">Komfort & Udogodnienia — 15%</div>
+  </div>
+  <h3 style="margin-top:16px;font-size:1rem">Hard Filters (eliminacja):</h3>
+  <ul>
+    <li>Otwarty salon bez AC / bez mozliwosci zamkniecia = ELIMINACJA</li>
+    <li>Wiecej niz 10 min jazdy od OBU silowni = ELIMINACJA</li>
+    <li>Mniej niz 3 sypialnie = ELIMINACJA</li>
+  </ul>
+  <h3 style="margin-top:16px;font-size:1rem">Silownie:</h3>
+  <ul>
+    <li><strong>Omni Gym</strong> — Munggu (~-8.631, 115.107)</li>
+    <li><strong>Reload Sanctuary</strong> — Canggu (~-8.650, 115.134)</li>
+  </ul>
+  <p style="margin-top:12px"><strong>Uwaga:</strong> Ceny szacowane na podstawie okolicy (~$80-180/noc za 3BR w Canggu). Dokladne ceny sprawdz bezposrednio na Airbnb dla wybranych dat. Oceny workspace oparte na zdjeciach i opisach — brak gwarancji co do jakosci biurka/krzesla.</p>
+</div>
+
+<script>
+const villas = [
+  {
+    id: "617383035017747319",
+    name: "Majestic 4BR — Sauna, Rooftop Bar, Bilard",
+    location: "Kuta Utara, Canggu",
+    bedrooms: 4,
+    bathrooms: 4,
+    rating: 4.94,
+    reviews: 109,
+    lat: -8.652,
+    lon: 115.142,
+    omniMin: 10,
+    reloadMin: 2,
+    score: 87,
+    workspace: 78,
+    aesthetics: 92,
+    locationScore: 82,
+    value: 75,
+    comfort: 95,
+    eliminated: false,
+    topPick: true,
+    warning: "",
+    priceEstNight: "$150-200",
+    priceEstMonth: "~$4500-6000",
+    amenities: ["Pool 12x4m","Sauna","Rooftop Bar","Bilard","WiFi 150Mbps","AC all rooms","Netflix","Parking 5 cars","800m2"],
+    highlights: ["Sauna + ice bath","Rooftop bar ricefield view","Pool 12x4m","4BR = extra room"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-617383035017747319/original/33164fd3-3ebc-483d-8311-c5a512f3f351.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-617383035017747319/original/763dfa18-a343-4a5a-bdc4-d313b2d10d84.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-617383035017747319/original/50ee8840-34e1-4038-981d-2cf8be7accc8.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-617383035017747319/original/8c3656ad-0145-40f5-8ab3-b3b8d4fa99cd.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-617383035017747319/original/29ba2bec-6eff-44be-b328-8b02d630b3b2.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-617383035017747319/original/6418b5c7-d831-4736-812a-636d6d02cafd.jpeg"
+    ]
+  },
+  {
+    id: "51289012",
+    name: "Sea Garden TSG — 300m2 Echo Beach",
+    location: "Kuta Utara, Echo Beach",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 4.88,
+    reviews: 83,
+    lat: -8.648,
+    lon: 115.131,
+    omniMin: 7,
+    reloadMin: 1,
+    score: 82,
+    workspace: 72,
+    aesthetics: 80,
+    locationScore: 90,
+    value: 80,
+    comfort: 85,
+    eliminated: false,
+    topPick: true,
+    warning: "",
+    priceEstNight: "$100-150",
+    priceEstMonth: "~$3000-4500",
+    amenities: ["Pool","Garden","Lawn","300m2","3BR en-suite","Echo Beach"],
+    highlights: ["Najblizej Reload (~1min)","83 reviews","En-suite bathrooms","Ogrod+lawn"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/3e5a67de-b610-45a9-aaca-d27c8682c0cb.png",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/d8c0053d-34ec-4526-813f-93b80a33a59f.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/c3468a8c-9c85-4d9d-b92f-4eebb2917fd8.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/23867a3d-4383-4587-8257-6b4c35aeac76.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/8d6450ad-a72c-43e5-9bb0-222acb289e37.jpeg",
+      "https://a0.muscache.com/im/pictures/a21616e6-89cc-4cfe-b562-8d53f22cf845.jpg"
+    ]
+  },
+  {
+    id: "41695932",
+    name: "Villa Kimaya — Fiber Internet, 3BR en-suite",
+    location: "Canggu Padonan",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 4.86,
+    reviews: 92,
+    lat: -8.634,
+    lon: 115.156,
+    omniMin: 11,
+    reloadMin: 6,
+    score: 79,
+    workspace: 85,
+    aesthetics: 82,
+    locationScore: 65,
+    value: 78,
+    comfort: 82,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$120-170",
+    priceEstMonth: "~$3600-5000",
+    amenities: ["Fiber Internet","Pool","3BR en-suite","Staff","Berawa area"],
+    highlights: ["Fiber optic internet","92 reviews","Staff included","Brand new renovation"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDE2OTU5MzI%3D/original/edbb9729-f441-464a-b177-e6c842b17b08.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDE2OTU5MzI%3D/original/957519ed-eedb-4fe8-bb9d-ca9241d70b11.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDE2OTU5MzI%3D/original/cac372f1-0ec0-4098-ab60-2f74b8a0de32.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDE2OTU5MzI%3D/original/aea596d0-bbd3-4dcd-aac0-a4d551b5d1ac.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDE2OTU5MzI%3D/original/3c44a69e-d1a2-426f-a400-e4aa45532344.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDE2OTU5MzI%3D/original/71b3481d-3251-448d-bb4f-d059e7cca18a.jpeg"
+    ]
+  },
+  {
+    id: "1450429185785474177",
+    name: "Villa New Life — Sauna + Ice Bath",
+    location: "Kuta Utara, Canggu",
+    bedrooms: 4,
+    bathrooms: 4,
+    rating: 4.80,
+    reviews: 5,
+    lat: -8.649,
+    lon: 115.139,
+    omniMin: 8,
+    reloadMin: 1,
+    score: 78,
+    workspace: 65,
+    aesthetics: 80,
+    locationScore: 88,
+    value: 72,
+    comfort: 88,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$130-180",
+    priceEstMonth: "~$3900-5400",
+    amenities: ["Sauna","Ice Bath","Pool","Gazebo","Enclosed Living","4BR","AC"],
+    highlights: ["Sauna + ice bath","~1min od Reload","Enclosed living room","4 sypialnie"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ1MDQyOTE4NTc4NTQ3NDE3Nw==/original/dac9e56a-23ca-406c-99ca-7428f4c3282a.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ1MDQyOTE4NTc4NTQ3NDE3Nw==/original/be139b53-6bd7-4170-8d3b-7dec21006639.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ1MDQyOTE4NTc4NTQ3NDE3Nw==/original/15df7619-f808-48d7-90e1-73f920d9f5db.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1450429185785474177/original/d20614af-5ac2-4e7d-a4be-476503535ef8.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1450429185785474177/original/d2f94b01-af57-46b0-b781-a24ccb25497f.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1450429185785474177/original/e32419cf-c5c0-4ab1-b14d-54acc4fc9137.jpeg"
+    ]
+  },
+  {
+    id: "1525091076210825859",
+    name: "Villa Eira — Ricefield Views, Luxury Bathtubs",
+    location: "Kuta Utara, Canggu",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 4.83,
+    reviews: 6,
+    lat: -8.645,
+    lon: 115.143,
+    omniMin: 9,
+    reloadMin: 2,
+    score: 77,
+    workspace: 68,
+    aesthetics: 88,
+    locationScore: 80,
+    value: 74,
+    comfort: 78,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$120-160",
+    priceEstMonth: "~$3600-4800",
+    amenities: ["3BR en-suite","Bathtub each room","Rice field view","Pool","Central Canggu"],
+    highlights: ["Luxury bathtub w kazdym pokoju","Widok na pola ryzowe","~2min od Reload","Stylowy design"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1525091076210825859/original/83effdbe-a2d1-46f5-8436-61a95c45c369.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1525091076210825859/original/20ffad2e-6963-44e5-93b0-71341e306db4.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1525091076210825859/original/6b616776-203a-4047-9584-a3e78ee178f7.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1525091076210825859/original/3589f2b0-e4c6-45f7-8de6-6e0087ba296f.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1525091076210825859/original/44f4746a-811d-4cdb-ae9e-9c810a645b26.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1525091076210825859/original/da4f8fed-2a16-47ed-a60c-15552cfe0ce4.jpeg"
+    ]
+  },
+  {
+    id: "1396012220990316490",
+    name: "Canggu Designer Villa by Anastasia",
+    location: "Pererenan",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 5.0,
+    reviews: 4,
+    lat: -8.647,
+    lon: 115.127,
+    omniMin: 6,
+    reloadMin: 4,
+    score: 76,
+    workspace: 70,
+    aesthetics: 90,
+    locationScore: 78,
+    value: 72,
+    comfort: 72,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$110-150",
+    priceEstMonth: "~$3300-4500",
+    amenities: ["Pool","Garden","Art interiors","Fast WiFi","Concierge","850m to beach"],
+    highlights: ["5.0 rating","Designer interiors","850m od plazy","Concierge service"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1396012220990316490/original/a716a153-7eb5-445c-877a-ce696fb16955.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1396012220990316490/original/cb675e8f-ed2b-4fc9-b86c-c930adeb879d.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1396012220990316490/original/ab40f1c1-c685-4ca1-9406-1d62f544d284.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1396012220990316490/original/ed3db283-8557-4438-b1b9-94b2e934b74f.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1396012220990316490/original/84ad0f86-8353-4847-85c6-3e0fd6aa7111.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1396012220990316490/original/4da1f6fe-bda3-4f0d-86af-05eb7faf5bd8.jpeg"
+    ]
+  },
+  {
+    id: "48685085",
+    name: "Wowsome Villa — 40m2 Pool, Pererenan",
+    location: "Pererenan / Mengwi",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 5.0,
+    reviews: 4,
+    lat: -8.641,
+    lon: 115.129,
+    omniMin: 6,
+    reloadMin: 4,
+    score: 75,
+    workspace: 68,
+    aesthetics: 78,
+    locationScore: 80,
+    value: 76,
+    comfort: 75,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$100-140",
+    priceEstMonth: "~$3000-4200",
+    amenities: ["40m2 Pool","Indoor/Outdoor social","5min beach","Long stay friendly"],
+    highlights: ["40m2 pool","5.0 rating","5 min od plazy","Indoor+outdoor social spaces"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-48685085/original/8fc14c94-2da5-4055-b694-37a6838ad092.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-48685085/original/723ac405-b0e5-4cce-b6fe-4fbfbb43e41e.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-48685085/original/1836f3b8-2339-45fb-9122-e31ecc180d5c.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-48685085/original/12d86fa8-5a71-4147-b2f1-40ddc1d3fe03.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-48685085/original/faca4472-e229-4b5b-893d-debac5122183.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-48685085/original/1becad72-f51d-4806-a625-f4b75527a380.jpeg"
+    ]
+  },
+  {
+    id: "1042550605030359563",
+    name: "Stylish 3BR Modern — Pererenan Canggu",
+    location: "Pererenan / Mengwi",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 4.82,
+    reviews: 11,
+    lat: -8.639,
+    lon: 115.135,
+    omniMin: 7,
+    reloadMin: 4,
+    score: 74,
+    workspace: 74,
+    aesthetics: 76,
+    locationScore: 78,
+    value: 74,
+    comfort: 70,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$90-130",
+    priceEstMonth: "~$2700-3900",
+    amenities: ["Pool","Co-working nearby","New sidewalks","Restaurants","Fitness"],
+    highlights: ["Blisko co-workingu","Nowe chodniki","Restauracje w zasiegu","Modern sanctuary"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTA0MjU1MDYwNTAzMDM1OTU2Mw%3D%3D/original/06c79254-3e19-4ccb-b1ad-578c737e906c.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTA0MjU1MDYwNTAzMDM1OTU2Mw%3D%3D/original/39d726e8-1b50-430f-bbf0-5f638873f060.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTA0MjU1MDYwNTAzMDM1OTU2Mw%3D%3D/original/2ad7d18b-6809-4ffe-80eb-8602e58a3135.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTA0MjU1MDYwNTAzMDM1OTU2Mw%3D%3D/original/a12632de-f159-4fb2-ae22-0b652ea88258.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTA0MjU1MDYwNTAzMDM1OTU2Mw%3D%3D/original/04d36e99-9d77-4cca-9f86-65472a5ad414.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTA0MjU1MDYwNTAzMDM1OTU2Mw%3D%3D/original/489648b4-d095-463e-a720-1d33fa5321e9.jpeg"
+    ]
+  },
+  {
+    id: "1480064268798874150",
+    name: "Villa Les Palm — Digital Nomads",
+    location: "South Kuta, Canggu",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 4.86,
+    reviews: 7,
+    lat: -8.660,
+    lon: 115.140,
+    omniMin: 10,
+    reloadMin: 3,
+    score: 73,
+    workspace: 76,
+    aesthetics: 74,
+    locationScore: 72,
+    value: 72,
+    comfort: 72,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$100-140",
+    priceEstMonth: "~$3000-4200",
+    amenities: ["Pool","Rooftop","Modern tropical","Digital nomad friendly"],
+    highlights: ["Digital nomad focus","Pool + rooftop","Modern tropical design","~3min od Reload"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MDA2NDI2ODc5ODg3NDE1MA==/original/ae4ebf9b-a9ea-4aeb-99b0-8ff26fbf9391.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MDA2NDI2ODc5ODg3NDE1MA==/original/679c6be0-53b8-4f7c-bf02-468b41522ab1.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MDA2NDI2ODc5ODg3NDE1MA==/original/300fd6cd-d246-4362-a129-513e477c44fd.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MDA2NDI2ODc5ODg3NDE1MA==/original/b480dfb3-4a91-4d11-baad-397564aaf84c.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MDA2NDI2ODc5ODg3NDE1MA==/original/a049da8c-7017-4ab0-ae0d-bebcaaa07b9a.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MDA2NDI2ODc5ODg3NDE1MA==/original/31d3365e-7bdc-480a-9081-b4116cc9116d.jpeg"
+    ]
+  },
+  {
+    id: "1223506432437403173",
+    name: "Luxury 3BR — 5min FINNS Beach Club",
+    location: "Canggu",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 4.83,
+    reviews: 18,
+    lat: -8.661,
+    lon: 115.147,
+    omniMin: 12,
+    reloadMin: 4,
+    score: 72,
+    workspace: 62,
+    aesthetics: 78,
+    locationScore: 68,
+    value: 72,
+    comfort: 78,
+    eliminated: false,
+    topPick: false,
+    warning: "Budowa obok! Manager (6 mar): sasiedni budynek zburzony, nie wiadomo kiedy zacznie sie nowa budowa. Front = 'finished building stage, minimal activity.'",
+    priceEstNight: "$110-160",
+    priceEstMonth: "~$3300-4800",
+    amenities: ["Pool","Open-plan living","5min FINNS","Modern amenities"],
+    highlights: ["5 min od FINNS Beach Club","18 reviews","Open-plan living","Pool"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1223506432437403173/original/2644023c-199a-4d72-a4fe-fa6a5adfd9ad.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1223506432437403173/original/34f4c538-276c-42bc-975c-fcbc9a61a2d6.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1223506432437403173/original/4cead542-fe17-41b1-aeca-c1260b7912f5.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1223506432437403173/original/d2b11f74-a90b-46be-9503-3f2054198dce.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTIyMzUwNjQzMjQzNzQwMzE3Mw%3D%3D/original/34fff7d1-4c56-4038-a74d-659d0adeb86f.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTIyMzUwNjQzMjQzNzQwMzE3Mw%3D%3D/original/4c32824e-3502-4a03-a36e-5b0dbe6b8259.jpeg"
+    ]
+  },
+  {
+    id: "1420597040994097085",
+    name: "3BR Seseh Munggu — Pool Table",
+    location: "Seseh Munggu / Mengwi",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 4.79,
+    reviews: 14,
+    lat: -8.625,
+    lon: 115.122,
+    omniMin: 4,
+    reloadMin: 7,
+    score: 71,
+    workspace: 62,
+    aesthetics: 70,
+    locationScore: 76,
+    value: 76,
+    comfort: 72,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$85-120",
+    priceEstMonth: "~$2500-3600",
+    amenities: ["Pool","Pool Table","3BR/3BA","Front terrace","Kitchen","Living room"],
+    highlights: ["Pool table","~4min od Omni","3BR/3BA en-suite","Dobra cena"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1420597040994097085/original/1dba0d82-e9e0-4160-adfe-7be236b37cf8.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1420597040994097085/original/082e57ca-31c3-4f44-a73b-0c1548fe3491.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1420597040994097085/original/78eff301-7bf3-4ac4-b850-58343506b726.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1420597040994097085/original/55931730-27ff-4538-b04d-49b3e58c90aa.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1420597040994097085/original/456ccfda-2930-467d-870c-67fb3d339b53.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQyMDU5NzA0MDk5NDA5NzA4NQ==/original/b574f325-a759-4d6c-a6d5-812e519651da.jpeg"
+    ]
+  },
+  {
+    id: "1370761985872214617",
+    name: "Villa Ikigai — Kaba Kaba, Rice Fields",
+    location: "Kediri, Kaba Kaba",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 5.0,
+    reviews: 2,
+    lat: -8.591,
+    lon: 115.126,
+    omniMin: 10,
+    reloadMin: 12,
+    score: 0,
+    workspace: 60,
+    aesthetics: 82,
+    locationScore: 40,
+    value: 70,
+    comfort: 68,
+    eliminated: true,
+    topPick: false,
+    warning: "ELIMINACJA: >10 min od OBU silowni (Omni ~10min, Reload ~12min)",
+    priceEstNight: "$90-130",
+    priceEstMonth: "~$2700-3900",
+    amenities: ["Rice field views","Sunrise views","Roof terrace","Brand new","Modern"],
+    highlights: ["5.0 rating","Rice field sunrise","Brand new villa","Roof terrace sunset"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1370761985872214617/original/1daa64f6-ed19-40ac-898b-ca203f785bc9.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1370761985872214617/original/937eaead-b2c4-4296-a117-c806928b1c32.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1370761985872214617/original/a9e2979d-84d6-405c-9939-4beee10a02a1.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1370761985872214617/original/af85ec1b-7201-4c15-882a-d34058cecc83.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1370761985872214617/original/d0178870-a0aa-43a5-b6ac-1daa02eba187.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1370761985872214617/original/4d3a4ed5-64f0-48b8-9395-0e40db4ac38d.jpeg"
+    ]
+  },
+  {
+    id: "948267172790043476",
+    name: "3BR Garden Villa — 3min Beach",
+    location: "Mengwi",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 5.0,
+    reviews: 1,
+    lat: -8.648,
+    lon: 115.120,
+    omniMin: 5,
+    reloadMin: 5,
+    score: 70,
+    workspace: 58,
+    aesthetics: 72,
+    locationScore: 80,
+    value: 76,
+    comfort: 68,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$80-120",
+    priceEstMonth: "~$2400-3600",
+    amenities: ["Pool","Rooftop terrace","Ocean views","Modern design","2min to beach"],
+    highlights: ["5.0 rating","2min walk to beach","Rooftop ocean views","Good for both gyms"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/be8722d9-403c-4eea-a45a-a4b374fa5403.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/67302060-4c4f-4fbd-a0c0-0e8b562de092.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/81713ec4-58b1-46e9-8697-412f6f9596aa.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/cb9b5bbd-ffee-4181-b174-03cc8935fc58.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/7eebadb2-c356-4bcc-a2a3-b38d048712c8.png",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/6eef597d-5c3f-4fff-ab84-a58ca768a6fb.jpeg"
+    ]
+  },
+  {
+    id: "998789499934327261",
+    name: "3BR Bohemian — Free Breakfast",
+    location: "Kuta Utara, Berawa",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 4.72,
+    reviews: 32,
+    lat: -8.662,
+    lon: 115.139,
+    omniMin: 10,
+    reloadMin: 3,
+    score: 68,
+    workspace: 55,
+    aesthetics: 72,
+    locationScore: 70,
+    value: 78,
+    comfort: 68,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$75-110",
+    priceEstMonth: "~$2200-3300",
+    amenities: ["Free Breakfast","Pool","7min walk Berawa Beach","Atlas/FINNS nearby","Parking"],
+    highlights: ["FREE breakfast codziennie","32 reviews","7min walk to beach","Najtansze"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-998789499934327261/original/f3a80fd0-1fc8-4090-9de0-0795bc689f09.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-998789499934327261/original/f0ead799-cab4-4858-a095-24cfec4c678f.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-998789499934327261/original/2f87e8e5-efa5-44ee-b437-daeaba5238cf.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTk4Nzg5NDk5OTM0MzI3MjYx/original/ed7a090e-82c9-486e-9e8f-ff9e4873e465.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-998789499934327261/original/1daf575d-a099-4d81-93fc-027044a32bac.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-998789499934327261/original/fa355751-7b7b-42c9-8b70-6732e8c1434d.jpeg"
+    ]
+  },
+  {
+    id: "977835106940110947",
+    name: "Modern Living — Serene Pererenan",
+    location: "Pererenan",
+    bedrooms: 2,
+    bathrooms: 2,
+    rating: 4.61,
+    reviews: 18,
+    lat: -8.623,
+    lon: 115.145,
+    omniMin: 9,
+    reloadMin: 5,
+    score: 0,
+    workspace: 60,
+    aesthetics: 74,
+    locationScore: 72,
+    value: 68,
+    comfort: 60,
+    eliminated: true,
+    topPick: false,
+    warning: "ELIMINACJA: Tylko 2 sypialnie (3 guests) — potrzeba min. 3",
+    priceEstNight: "$80-110",
+    priceEstMonth: "~$2400-3300",
+    amenities: ["Pool","Sunken living","Master bathtub","Balcony","Modern design"],
+    highlights: ["Sunken living area","Modern design","Master bedroom bathtub","Outdoor shower"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/f9105d99-5d18-4b76-bc41-28b75730dc37.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/28a66968-379b-4dd5-b4cf-4f3341d5b14e.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/06e4ddcc-12c1-4dcd-a873-10589451de11.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/4824b9db-56f7-48ee-b397-e8447c44523c.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/69dc0f34-184a-495e-b0a7-62036e872806.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/a988900f-ea88-47e8-a586-06c72de151ed.jpeg"
+    ]
+  },
+  {
+    id: "1633105224119789767",
+    name: "Jewel of Pererenan — 5BR Pool+Beach",
+    location: "Mengwi / Pererenan",
+    bedrooms: 5,
+    bathrooms: 5,
+    rating: 4.70,
+    reviews: 3,
+    lat: -8.646,
+    lon: 115.124,
+    omniMin: 5,
+    reloadMin: 5,
+    score: 69,
+    workspace: 60,
+    aesthetics: 72,
+    locationScore: 80,
+    value: 62,
+    comfort: 75,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$160-220",
+    priceEstMonth: "~$4800-6600",
+    amenities: ["5BR","Pool","Near beach","Large property"],
+    highlights: ["5 sypialni — duzo miejsca","Blisko plazy","Dobre do obu silowni","Pool"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1633105224119789767/original/12591784-521f-4818-95f8-079fa956a6ed.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1633105224119789767/original/ab347266-a86c-4f2a-96f9-9a8b05be0178.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1633105224119789767/original/f27d3fcd-ef0c-4c64-84bf-b79f87b22674.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1633105224119789767/original/e40100d5-1598-4fa1-9cd7-8bf530b765f3.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1633105224119789767/original/f63d2caf-e976-49c3-9a6e-59efc4318a2e.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1633105224119789767/original/b2dfebb9-3b46-494b-9f96-910c202fe991.jpeg"
+    ]
+  },
+  {
+    id: "669747741119173249",
+    name: "Rumah Simba — Tropical Luxury Jacuzzi",
+    location: "Munggu",
+    bedrooms: 3,
+    bathrooms: 3,
+    rating: 4.71,
+    reviews: 31,
+    lat: -8.640,
+    lon: 115.124,
+    omniMin: 5,
+    reloadMin: 5,
+    score: 67,
+    workspace: 52,
+    aesthetics: 85,
+    locationScore: 78,
+    value: 60,
+    comfort: 68,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$100-150",
+    priceEstMonth: "~$3000-4500",
+    amenities: ["Jacuzzi","Ricefield views","Mediterranean+Japanese style","Photo location"],
+    highlights: ["Jacuzzi","Mediterranean+Japanese+Minimal mix","Rice field views","Fashion brand owners"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-648717217190706413/original/7a25a660-8c74-456c-adf5-9194bd2705a6.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-648717217190706413/original/41ff605d-46ea-4d35-aa17-a5de2651905b.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-648717217190706413/original/eee72b9d-9cbb-414e-9f61-572a311dfdd0.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-648717217190706413/original/34c522db-a5a6-4ff8-adbc-0fe950bd8d9f.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-648717217190706413/original/7dcfb772-63f8-4d07-ad3e-7e53d3c3cf07.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-648717217190706413/original/d1f4f336-c76b-4a52-a553-d1712140d4ba.jpeg"
+    ]
+  },
+  {
+    id: "44383036",
+    name: "Amira Villa Munggu — Minimalist",
+    location: "Kediri / Munggu",
+    bedrooms: 3,
+    bathrooms: 2,
+    rating: 4.76,
+    reviews: 54,
+    lat: -8.609,
+    lon: 115.138,
+    omniMin: 9,
+    reloadMin: 8,
+    score: 64,
+    workspace: 55,
+    aesthetics: 62,
+    locationScore: 60,
+    value: 78,
+    comfort: 65,
+    eliminated: false,
+    topPick: false,
+    warning: "",
+    priceEstNight: "$60-90",
+    priceEstMonth: "~$1800-2700",
+    amenities: ["Minimalist","50min airport","20min Tanah Lot","10min Seseh Beach"],
+    highlights: ["54 reviews","Najtansza opcja","Minimalistyczny design","Blisko Tanah Lot"],
+    photos: [
+      "https://a0.muscache.com/im/pictures/f03fd6ef-ee4b-4bf9-bbfd-47f3939b24c1.jpg",
+      "https://a0.muscache.com/im/pictures/05fe1030-bef2-42ca-9b18-d46561a95aed.jpg",
+      "https://a0.muscache.com/im/pictures/e7470a1a-df64-4ccf-b145-5aa47c5ca081.jpg",
+      "https://a0.muscache.com/im/pictures/f80e9e72-72ec-43de-a7a7-99bf86041758.jpg",
+      "https://a0.muscache.com/im/pictures/bcae0097-7e8f-4ef1-bbd5-a335fe92dafa.jpg",
+      "https://a0.muscache.com/im/pictures/73a7b22c-8f67-4930-8fcf-ac2f2ce35048.jpg"
+    ]
+  }
+];
+
+// Sort active villas first, then by score
+function getDisplayVillas(sortKey) {
+  const copy = [...villas];
+  copy.sort((a, b) => {
+    if (a.eliminated !== b.eliminated) return a.eliminated ? 1 : -1;
+    switch(sortKey) {
+      case 'workspace': return b.workspace - a.workspace;
+      case 'distance': return Math.min(a.omniMin,a.reloadMin) - Math.min(b.omniMin,b.reloadMin);
+      case 'rating': return (b.rating*b.reviews) - (a.rating*a.reviews);
+      default: return b.score - a.score;
+    }
+  });
+  return copy;
+}
+
+function createCarousel(photos, villaId) {
+  return `
+    <div class="carousel" id="carousel-${villaId}">
+      <div class="carousel-track" style="transform:translateX(0%)">
+        ${photos.map(p => `<img src="${p}" alt="Villa photo" loading="lazy">`).join('')}
+      </div>
+      <button class="carousel-btn carousel-prev" onclick="slideCarousel('${villaId}',-1)">&lt;</button>
+      <button class="carousel-btn carousel-next" onclick="slideCarousel('${villaId}',1)">&gt;</button>
+      <div class="carousel-dots">
+        ${photos.map((_,i) => `<span class="${i===0?'active':''}" data-idx="${i}"></span>`).join('')}
+      </div>
+    </div>`;
+}
+
+const carouselState = {};
+function slideCarousel(id, dir) {
+  if (!carouselState[id]) carouselState[id] = 0;
+  const villa = villas.find(v => v.id === id);
+  const max = villa.photos.length - 1;
+  carouselState[id] = Math.max(0, Math.min(max, carouselState[id] + dir));
+  const track = document.querySelector(`#carousel-${id} .carousel-track`);
+  track.style.transform = `translateX(-${carouselState[id] * 100}%)`;
+  const dots = document.querySelectorAll(`#carousel-${id} .carousel-dots span`);
+  dots.forEach((d,i) => d.classList.toggle('active', i === carouselState[id]));
+}
+
+function scoreClass(s) { return s >= 75 ? 'high' : s >= 50 ? 'mid' : 'low'; }
+function distClass(m) { return m <= 3 ? 'close' : m <= 7 ? 'medium' : 'far'; }
+
+function createCard(v, rank) {
+  const airbnbUrl = `https://www.airbnb.com/rooms/${v.id}`;
+  const mapsUrl = `https://www.google.com/maps?q=${v.lat},${v.lon}`;
+  const waMsg = encodeURIComponent(`Ta mi sie podoba! ${v.name}\n${airbnbUrl}`);
+  const waUrl = `https://api.whatsapp.com/send?text=${waMsg}`;
+
+  return `
+  <div class="card ${v.eliminated ? 'eliminated' : ''} ${v.topPick ? 'top-pick' : ''}" data-score="${v.score}" data-workspace="${v.workspace}" data-distance="${Math.min(v.omniMin,v.reloadMin)}" data-rating="${v.rating*v.reviews}">
+    ${v.eliminated ? '<div class="eliminated-banner">ELIMINACJA</div>' : ''}
+    ${v.topPick ? '<div class="top-pick-tag">TOP PICK</div>' : ''}
+    <span class="rank-badge">#${rank}</span>
+    ${!v.eliminated ? `<div class="score-badge ${scoreClass(v.score)}">${v.score}</div>` : ''}
+    ${createCarousel(v.photos, v.id)}
+    ${v.warning ? `<div class="warning-banner">&#9888; ${v.warning}</div>` : ''}
+    <div class="card-body">
+      <h3>${v.name}</h3>
+      <div class="location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${v.location}
+      </div>
+      <div class="details-row">
+        <div class="detail"><strong>${v.bedrooms}</strong> syp.</div>
+        <div class="detail"><strong>${v.bathrooms}</strong> laz.</div>
+        <div class="rating">
+          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          ${v.rating} <span style="color:var(--muted);font-weight:400">(${v.reviews})</span>
+        </div>
+      </div>
+      <div class="workspace-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Workspace: ${v.workspace}/100
+      </div>
+      <div class="score-section">
+        <div class="score-bar-row">
+          <span class="score-bar-label">Workspace</span>
+          <div class="score-bar-bg"><div class="score-bar-fill workspace" style="width:${v.workspace}%"></div></div>
+          <span class="score-bar-val">${v.workspace}</span>
+        </div>
+        <div class="score-bar-row">
+          <span class="score-bar-label">Estetyka</span>
+          <div class="score-bar-bg"><div class="score-bar-fill aesthetics" style="width:${v.aesthetics}%"></div></div>
+          <span class="score-bar-val">${v.aesthetics}</span>
+        </div>
+        <div class="score-bar-row">
+          <span class="score-bar-label">Lokalizacja</span>
+          <div class="score-bar-bg"><div class="score-bar-fill location-bar" style="width:${v.locationScore}%"></div></div>
+          <span class="score-bar-val">${v.locationScore}</span>
+        </div>
+        <div class="score-bar-row">
+          <span class="score-bar-label">Wartosc</span>
+          <div class="score-bar-bg"><div class="score-bar-fill value" style="width:${v.value}%"></div></div>
+          <span class="score-bar-val">${v.value}</span>
+        </div>
+        <div class="score-bar-row">
+          <span class="score-bar-label">Komfort</span>
+          <div class="score-bar-bg"><div class="score-bar-fill comfort" style="width:${v.comfort}%"></div></div>
+          <span class="score-bar-val">${v.comfort}</span>
+        </div>
+      </div>
+      <div class="distances">
+        <div class="dist-box">
+          <div class="gym-name">Omni Gym</div>
+          <div class="gym-time ${distClass(v.omniMin)}">~${v.omniMin} min</div>
+        </div>
+        <div class="dist-box">
+          <div class="gym-name">Reload Sanctuary</div>
+          <div class="gym-time ${distClass(v.reloadMin)}">~${v.reloadMin} min</div>
+        </div>
+      </div>
+      <div class="amenities">
+        ${v.amenities.map(a => `<span class="amenity${v.highlights.includes(a) ? ' highlight' : ''}">${a}</span>`).join('')}
+      </div>
+      <div class="details-row" style="margin-top:8px">
+        <div class="detail">Noc: <strong>${v.priceEstNight}</strong></div>
+        <div class="detail">Miesiac: <strong>${v.priceEstMonth}</strong></div>
+      </div>
+      <div class="card-actions">
+        <a href="${airbnbUrl}" target="_blank" class="btn-airbnb">Airbnb</a>
+        <a href="${mapsUrl}" target="_blank" class="btn-maps">Maps</a>
+        <a href="${waUrl}" target="_blank" class="btn-love">Ta mi sie podoba!</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderGrid(sortKey = 'score') {
+  const grid = document.getElementById('villaGrid');
+  const sorted = getDisplayVillas(sortKey);
+  grid.innerHTML = sorted.map((v, i) => createCard(v, i + 1)).join('');
+}
+
+// Sort buttons
+document.getElementById('sortBtns').addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#sortBtns button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  renderGrid(e.target.dataset.sort);
+});
+
+// Date buttons (visual only — prices are estimates)
+document.getElementById('dateFilter').addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#dateFilter button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+});
+
+// Initial render
+renderGrid();
+
+// Touch swipe support for carousels
+document.addEventListener('touchstart', function(e) {
+  const carousel = e.target.closest('.carousel');
+  if (!carousel) return;
+  carousel._touchStartX = e.touches[0].clientX;
+}, {passive: true});
+document.addEventListener('touchend', function(e) {
+  const carousel = e.target.closest('.carousel');
+  if (!carousel || !carousel._touchStartX) return;
+  const diff = carousel._touchStartX - e.changedTouches[0].clientX;
+  const id = carousel.id.replace('carousel-', '');
+  if (Math.abs(diff) > 50) slideCarousel(id, diff > 0 ? 1 : -1);
+  carousel._touchStartX = null;
+}, {passive: true});
+</script>
+
+</body>
+</html>
