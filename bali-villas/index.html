@@ -3,231 +3,429 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CLAUDE VILLA PRO — Bali Villa Report</title>
+<title>CLAUDE VILLA PRO — Bali 2026</title>
+<meta name="description" content="16 najlepszych willi na Bali — Canggu, Pererenan, Seseh, Berawa. GTA Vice City style. Marzec-kwiecien 2026.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌴</text></svg>">
+<link href="https://fonts.cdnfonts.com/css/pricedown" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pacifico&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f7f7f7;--card:#fff;--text:#222;--muted:#717171;--accent:#ff385c;
-  --green:#00a699;--yellow:#ffb400;--red:#ff385c;--border:#ebebeb;
-  --shadow:0 6px 20px rgba(0,0,0,.08);--radius:12px;
+  --bg:#0a0a0f;
+  --card:#12121f;
+  --text:#ffffff;
+  --muted:#c4b5dc;
+  --accent:#ff69b4;
+  --neon-cyan:#00ffff;
+  --neon-pink:#ff69b4;
+  --money-green:#33ff33;
+  --border:#1e1e30;
+  --radius:3px;
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+body{font-family:'Courier New',monospace;background:var(--bg);color:var(--text);line-height:1.5;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
-/* HEADER */
-.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;padding:40px 20px;text-align:center;position:relative;overflow:hidden}
-.header::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
-.header h1{font-size:2.5rem;font-weight:800;letter-spacing:-.5px;position:relative;z-index:1}
-.header p{font-size:1.1rem;opacity:.85;margin-top:8px;position:relative;z-index:1}
-.header .meta{display:flex;justify-content:center;gap:24px;margin-top:16px;flex-wrap:wrap;position:relative;z-index:1}
-.header .meta span{background:rgba(255,255,255,.12);padding:6px 14px;border-radius:20px;font-size:.85rem;backdrop-filter:blur(4px)}
+/* ===== SCANLINE CRT OVERLAY ===== */
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:9999}
 
-/* CONTROLS */
-.controls{max-width:1200px;margin:24px auto;padding:0 20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.controls label{font-weight:600;font-size:.9rem}
-.btn-group{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.btn-group button{border:none;background:var(--card);padding:8px 16px;font-size:.85rem;cursor:pointer;font-weight:500;transition:.2s}
-.btn-group button:hover{background:#f0f0f0}
-.btn-group button.active{background:var(--text);color:#fff}
-.sort-btns{margin-left:auto;display:flex;gap:8px}
-.sort-btns button{border:1px solid var(--border);background:var(--card);padding:8px 14px;border-radius:8px;font-size:.85rem;cursor:pointer;font-weight:500;transition:.2s}
-.sort-btns button:hover,.sort-btns button.active{background:var(--text);color:#fff;border-color:var(--text)}
+/* ===== PRICEDOWN FONT HELPER ===== */
+.font-gta{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-weight:400;letter-spacing:2px}
 
-/* GRID */
-.grid{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:24px}
+/* ========================================
+   SPLASH SCREEN — GTA VC COMIC PANEL GRID
+   ======================================== */
+.splash{position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:10001;cursor:pointer;overflow:hidden}
+.splash.hidden{opacity:0;pointer-events:none;transition:opacity .8s}
+.splash-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr;width:100%;height:100%;gap:3px;padding:3px;position:absolute;top:0;left:0;z-index:0}
+.splash-panel{background-size:cover;background-position:center;position:relative;overflow:hidden}
+.splash-panel::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,105,180,.05),transparent 40%,rgba(10,10,15,.3))}
+.splash-panel:nth-child(1){grid-row:1/3}
+.splash-panel:nth-child(4){grid-column:2/4}
+.splash-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;text-align:center}
+.splash-title-top{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:clamp(1.5rem,4vw,3rem);color:#fff;letter-spacing:10px;text-transform:uppercase;line-height:1;text-shadow:3px 3px 0 #000}
+.splash-title-main{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:clamp(3rem,10vw,8rem);color:#fff;letter-spacing:6px;text-transform:uppercase;line-height:.85;text-shadow:4px 4px 0 #000,8px 8px 0 rgba(0,0,0,.3);margin:4px 0}
+.splash-title-cursive{font-family:'Pacifico',cursive;font-size:clamp(2rem,7vw,5.5rem);color:#ff7eb8;text-shadow:0 0 40px rgba(255,126,184,.6),0 0 80px rgba(255,126,184,.3),3px 3px 0 rgba(0,0,0,.5);line-height:1;margin-top:-10px;animation:neonPulse 3s ease-in-out infinite}
+.splash-subtitle{color:rgba(255,255,255,.4);font-size:.9rem;margin-top:40px;letter-spacing:4px;text-transform:uppercase;font-family:'Courier New',monospace;animation:blink 1.5s ease-in-out infinite}
+.splash-sunset{position:absolute;inset:0;background:linear-gradient(180deg,#4ab8e8 0%,#87ceeb 10%,#f5a623 30%,#ff6b35 45%,#ff2d95 60%,#2d0a3e 80%,#000 100%);opacity:.15;z-index:1;pointer-events:none}
 
-/* CARD */
-.card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;position:relative}
-.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.12)}
-.card.eliminated{opacity:.5;filter:grayscale(.7)}
+/* ========================================
+   CHARACTER SELECT SCREEN
+   ======================================== */
+.char-select{position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:10000;display:none;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.char-select.active{display:flex}
+.char-select-bg{position:absolute;inset:0;background:linear-gradient(180deg,#1a0033 0%,#0a0a1a 40%,#0a0a0f 100%);z-index:0}
+.char-select-title{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);color:var(--neon-pink);letter-spacing:6px;text-transform:uppercase;margin-bottom:10px;position:relative;z-index:2;text-shadow:0 0 30px rgba(255,105,180,.5)}
+.char-select-subtitle{font-family:'Courier New',monospace;font-size:.85rem;color:rgba(255,255,255,.4);letter-spacing:3px;text-transform:uppercase;margin-bottom:40px;position:relative;z-index:2}
+.char-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;position:relative;z-index:2;max-width:800px;padding:0 20px}
+.char-card{text-align:center;cursor:pointer;transition:all .3s;padding:20px;border:2px solid transparent;border-radius:var(--radius)}
+.char-card:hover{border-color:var(--neon-pink);box-shadow:0 0 40px rgba(255,105,180,.2);transform:translateY(-8px)}
+.char-card.selected{border-color:var(--neon-cyan);box-shadow:0 0 40px rgba(0,255,255,.3)}
+.char-avatar{width:140px;height:140px;border-radius:var(--radius);margin:0 auto 16px;background:var(--card);border:2px solid var(--border);overflow:hidden;position:relative}
+.char-avatar img{width:100%;height:100%;object-fit:cover}
+.char-avatar-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;background:linear-gradient(135deg,#1a0033,#2d0a3e)}
+.char-name{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:1.6rem;color:#fff;letter-spacing:4px;text-transform:uppercase;margin-bottom:4px;text-shadow:2px 2px 0 #000}
+.char-role{font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.char-select-hint{font-family:'Courier New',monospace;font-size:.78rem;color:rgba(255,255,255,.3);margin-top:40px;letter-spacing:2px;position:relative;z-index:2}
+
+/* ========================================
+   HEADER — GTA VICE CITY
+   ======================================== */
+.header{background:#000;color:#fff;padding:40px 20px 30px;text-align:center;position:relative;overflow:hidden;min-height:280px}
+.header .sunset-strip{position:absolute;inset:0;background:linear-gradient(180deg,#4ab8e8 0%,#f5a623 25%,#ff6b35 40%,#ff2d95 55%,#2d0a3e 75%,#000 100%);opacity:.3;z-index:0}
+.header .palms{position:absolute;bottom:0;left:0;right:0;height:100%;z-index:1;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 400'%3E%3Cg fill='%23000' opacity='.7'%3E%3Cpath d='M60 400V180c0-5-15-60-55-75 45 5 60 40 62 50-5-20 0-70 30-95-15 35-18 65-15 80 10-25 40-55 70-60-30 20-50 45-55 65 15-15 45-30 65-28-25 12-45 30-50 45 5-5 25-15 40-12-18 8-30 18-32 28V400H60z'/%3E%3Cpath d='M1140 400V200c0-5-12-50-45-62 38 4 50 33 52 42-4-17 0-58 25-78-12 29-15 54-12 66 8-20 33-45 58-50-25 17-42 38-46 54 12-12 38-25 54-23-21 10-38 25-42 37 4-4 21-12 33-10-15 7-25 15-27 23V400h-50z'/%3E%3Cpath d='M350 400V240c0-4-10-40-35-50 30 3 40 27 41 34-3-13 0-46 20-62-10 23-12 43-10 53 7-16 27-36 46-40-20 13-33 30-37 43 10-10 30-20 43-18-17 8-30 20-33 30 3-3 17-10 27-8-12 5-20 12-21 18V400h-41z'/%3E%3Cpath d='M850 400V260c0-3-8-35-30-43 25 3 34 23 35 29-3-11 0-40 17-54-8 20-10 37-8 46 5-14 23-31 40-34-17 11-29 26-32 37 8-8 26-17 37-16-14 7-26 17-29 26 3-3 14-9 23-7-10 5-17 10-18 16V400h-35z'/%3E%3C/g%3E%3C/svg%3E") center bottom/cover no-repeat}
+.title-block{position:relative;z-index:3;margin-bottom:16px}
+.title-top{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:2rem;letter-spacing:8px;text-transform:uppercase;color:#fff;line-height:1;text-shadow:2px 2px 0 #000,4px 4px 0 rgba(0,0,0,.3)}
+.header h1{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5.5rem);letter-spacing:4px;position:relative;z-index:3;text-transform:uppercase;line-height:.9;color:#fff;text-shadow:3px 3px 0 #000,6px 6px 0 rgba(0,0,0,.2);margin:4px 0}
+.title-cursive{font-family:'Pacifico',cursive;font-size:clamp(2rem,5vw,3.5rem);color:#ff7eb8;position:relative;z-index:3;text-shadow:0 0 30px rgba(255,126,184,.6),0 0 60px rgba(255,126,184,.3),2px 2px 0 rgba(0,0,0,.5);line-height:1;letter-spacing:2px;animation:neonPulse 3s ease-in-out infinite}
+.header .meta{display:flex;justify-content:center;gap:12px;margin-top:24px;flex-wrap:wrap;position:relative;z-index:3}
+.header .meta span{background:rgba(0,0,0,.6);border:1px solid rgba(255,126,184,.3);padding:6px 16px;border-radius:var(--radius);font-size:.8rem;color:#ff7eb8;font-weight:500;font-family:'Courier New',monospace;letter-spacing:.5px}
+
+/* GTA HUD — top right */
+.gta-hud{position:absolute;top:16px;right:20px;text-align:right;z-index:5;font-family:'Pricedown Bl','Bebas Neue',monospace}
+.hud-money{font-size:1.6rem;color:#8cff8c;letter-spacing:1px;text-shadow:2px 2px 0 #000;margin-top:-4px}
+.hud-player{font-size:.85rem;color:var(--neon-cyan);letter-spacing:1px;text-shadow:1px 1px 0 #000;margin-top:4px;font-family:'Courier New',monospace}
+.hud-stars{display:flex;gap:4px;justify-content:flex-end;margin-top:4px}
+.star-empty{display:block;width:16px;height:16px;background:rgba(255,255,255,.15);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+
+/* MASTER SOUND TOGGLE */
+.sound-toggle{position:absolute;bottom:16px;right:20px;z-index:5;background:rgba(0,0,0,.7);border:1px solid rgba(255,126,184,.3);color:#ff7eb8;padding:8px 14px;border-radius:var(--radius);cursor:pointer;font-family:'Courier New',monospace;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:6px;transition:.3s}
+.sound-toggle:hover{background:rgba(255,126,184,.15);border-color:#ff7eb8}
+.sound-toggle.on{border-color:#8cff8c;color:#8cff8c}
+
+/* ===== CONTROLS — GTA MENU STYLE ===== */
+.controls{max-width:1200px;margin:20px auto;padding:0 20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.controls label{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:1rem;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:2px}
+.btn-group{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.btn-group button{border:none;background:var(--card);padding:8px 16px;font-size:.82rem;cursor:pointer;font-family:'Courier New',monospace;transition:.3s;color:var(--muted)}
+.btn-group button:hover{background:#1e1e30;color:var(--neon-cyan)}
+.btn-group button.active{background:var(--neon-pink);color:#fff;text-shadow:0 0 10px rgba(255,105,180,.5)}
+.sort-btns{margin-left:auto;display:flex;gap:6px}
+.sort-btns button{border:1px solid var(--border);background:var(--card);padding:8px 14px;border-radius:var(--radius);font-size:.82rem;cursor:pointer;font-family:'Courier New',monospace;transition:.3s;color:var(--muted)}
+.sort-btns button:hover{background:#1e1e30;color:var(--neon-cyan);border-color:var(--neon-cyan)}
+.sort-btns button.active{background:var(--neon-pink);color:#fff;border-color:var(--neon-pink);box-shadow:0 0 16px rgba(255,105,180,.3)}
+
+/* ===== GRID ===== */
+.grid{max-width:1400px;margin:0 auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:24px}
+
+/* ===== CARD — GTA MISSION STYLE ===== */
+.card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.5);transition:transform .3s,box-shadow .3s;position:relative;border:1px solid var(--border)}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(255,105,180,.12),0 4px 12px rgba(0,0,0,.4);border-color:rgba(255,105,180,.4)}
+.card.eliminated{opacity:.35;filter:grayscale(.8)}
 .card.eliminated .eliminated-banner{display:flex}
-
-.eliminated-banner{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-15deg);background:var(--red);color:#fff;padding:10px 30px;font-weight:700;font-size:1.1rem;z-index:10;border-radius:4px;white-space:nowrap;letter-spacing:1px}
+.eliminated-banner{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-15deg);background:rgba(255,0,0,.85);color:#fff;padding:10px 30px;font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:1.2rem;z-index:10;border-radius:var(--radius);white-space:nowrap;letter-spacing:4px;text-transform:uppercase;box-shadow:0 0 30px rgba(255,0,0,.4)}
 
 /* CAROUSEL */
-.carousel{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#eee}
-.carousel-track{display:flex;transition:transform .3s ease;height:100%;width:100%}
-.carousel-track img{min-width:100%;height:100%;object-fit:cover;flex-shrink:0}
-.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:2;transition:.2s}
-.carousel-btn:hover{background:#fff;transform:translateY(-50%) scale(1.1)}
+.carousel{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:#080810}
+.carousel-track{display:flex;transition:transform .4s cubic-bezier(.25,.8,.25,1);height:100%}
+.carousel-track img{width:100%;min-width:100%;height:100%;object-fit:cover;flex-shrink:0;display:block}
+.carousel-counter{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;padding:3px 10px;border-radius:var(--radius);font-size:.72rem;z-index:3;letter-spacing:1px;font-family:'Courier New',monospace}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(10,10,15,.85);border:1px solid rgba(255,105,180,.3);color:var(--neon-cyan);width:34px;height:34px;border-radius:var(--radius);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;z-index:2;transition:.3s}
+.carousel-btn:hover{background:rgba(255,105,180,.3);border-color:var(--neon-pink);color:#fff;box-shadow:0 0 20px rgba(255,105,180,.3)}
 .carousel-prev{left:8px}
 .carousel-next{right:8px}
-.carousel-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:2}
-.carousel-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);transition:.2s}
-.carousel-dots span.active{background:#fff;transform:scale(1.2)}
+.carousel-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
+.carousel-dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);transition:.3s;cursor:pointer}
+.carousel-dots span.active{background:var(--neon-pink);transform:scale(1.4);box-shadow:0 0 8px rgba(255,105,180,.5)}
 
 /* BADGES */
-.score-badge{position:absolute;top:12px;right:12px;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;z-index:3;box-shadow:0 2px 8px rgba(0,0,0,.2)}
-.score-badge.high{background:var(--green)}
-.score-badge.mid{background:var(--yellow)}
-.score-badge.low{background:var(--red)}
-.rank-badge{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:20px;font-weight:700;font-size:.85rem;z-index:3}
+.score-badge{position:absolute;top:10px;right:10px;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:1.3rem;color:#fff;z-index:3;border:2px solid rgba(255,255,255,.2)}
+.score-badge.high{background:linear-gradient(135deg,#00cc99,#00e5ff);box-shadow:0 0 16px rgba(0,255,204,.3)}
+.score-badge.mid{background:linear-gradient(135deg,#ff9500,#ffb400);box-shadow:0 0 16px rgba(255,180,0,.3)}
+.score-badge.low{background:linear-gradient(135deg,#ff2d95,#ff6b6b);box-shadow:0 0 16px rgba(255,45,149,.3)}
+.rank-badge{position:absolute;top:10px;left:10px;background:rgba(10,10,15,.85);color:var(--neon-cyan);padding:3px 10px;border-radius:var(--radius);font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:.9rem;z-index:3;border:1px solid rgba(0,255,255,.3);letter-spacing:1px}
+
+/* TOP PICK */
+.card.top-pick{border:2px solid var(--neon-cyan);box-shadow:0 0 20px rgba(0,255,255,.08)}
+.top-pick-tag{position:absolute;top:66px;right:10px;background:linear-gradient(135deg,var(--neon-cyan),#00ffcc);color:#0a0a0f;padding:3px 10px;border-radius:var(--radius);font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:.7rem;z-index:3;letter-spacing:2px;text-transform:uppercase;box-shadow:0 0 12px rgba(0,255,255,.3)}
 
 /* WARNING */
-.warning-banner{background:#fff3cd;color:#856404;padding:8px 12px;font-size:.82rem;display:flex;align-items:center;gap:6px;font-weight:500}
+.warning-banner{background:rgba(255,180,0,.08);color:#ffb400;padding:8px 12px;font-size:.78rem;display:flex;align-items:center;gap:6px;font-family:'Courier New',monospace;border-bottom:1px solid rgba(255,180,0,.15)}
 
 /* CARD BODY */
-.card-body{padding:16px}
-.card-body h3{font-size:1.1rem;font-weight:700;margin-bottom:4px;line-height:1.3}
-.location{color:var(--muted);font-size:.9rem;margin-bottom:8px;display:flex;align-items:center;gap:4px}
-.villa-comment{font-size:.88rem;color:#2e7d32;font-weight:500;font-style:italic;margin-bottom:12px;line-height:1.4;padding:6px 10px;background:#f0faf0;border-radius:6px;border-left:3px solid var(--green)}
-.rating{display:inline-flex;align-items:center;gap:4px;font-size:.9rem;font-weight:600}
-.rating svg{fill:var(--text)}
-.details-row{display:flex;gap:16px;margin:12px 0;flex-wrap:wrap}
-.detail{font-size:.85rem;color:var(--muted);display:flex;align-items:center;gap:4px}
+.card-body{padding:14px}
+.card-body h3{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;line-height:1.2;color:#fff}
+.location{color:var(--muted);font-size:.82rem;margin-bottom:8px;display:flex;align-items:center;gap:4px;font-family:'Courier New',monospace}
+.location svg{stroke:var(--neon-pink)}
+.villa-comment{font-size:.82rem;color:var(--neon-cyan);margin-bottom:12px;line-height:1.4;padding:8px 10px;background:rgba(0,255,255,.04);border-radius:var(--radius);border-left:3px solid var(--neon-cyan);font-family:'Courier New',monospace}
+.rating{display:inline-flex;align-items:center;gap:4px;font-size:.85rem;font-family:'Courier New',monospace;color:#ffb400}
+.rating svg{fill:#ffb400}
+.details-row{display:flex;gap:16px;margin:10px 0;flex-wrap:wrap}
+.detail{font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:4px;font-family:'Courier New',monospace}
 .detail strong{color:var(--text)}
 
 /* SCORE BARS */
-.score-section{margin:16px 0}
-.score-bar-row{display:flex;align-items:center;gap:8px;margin:6px 0}
-.score-bar-label{font-size:.78rem;color:var(--muted);width:100px;text-align:right;flex-shrink:0}
-.score-bar-bg{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
-.score-bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
-.score-bar-fill.workspace{background:#4A90D9}
-.score-bar-fill.aesthetics{background:#9B59B6}
-.score-bar-fill.location-bar{background:#27AE60}
-.score-bar-fill.value{background:#F39C12}
-.score-bar-fill.comfort{background:#E74C3C}
-.score-bar-val{font-size:.78rem;font-weight:600;width:28px;flex-shrink:0}
+.score-section{margin:12px 0}
+.score-bar-row{display:flex;align-items:center;gap:8px;margin:5px 0}
+.score-bar-label{font-size:.72rem;color:var(--muted);width:90px;text-align:right;flex-shrink:0;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.5px}
+.score-bar-bg{flex:1;height:6px;background:rgba(255,255,255,.05);border-radius:var(--radius);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:var(--radius);transition:width .6s cubic-bezier(.25,.8,.25,1)}
+.score-bar-fill.workspace{background:linear-gradient(90deg,#00e5ff,#00ffcc)}
+.score-bar-fill.aesthetics{background:linear-gradient(90deg,#b347d9,#ff2d95)}
+.score-bar-fill.location-bar{background:linear-gradient(90deg,#00cc99,#00ff88)}
+.score-bar-fill.value{background:linear-gradient(90deg,#ff9500,#ffb400)}
+.score-bar-fill.comfort{background:linear-gradient(90deg,#ff2d95,#ff6b6b)}
+.score-bar-val{font-size:.75rem;font-family:'Courier New',monospace;width:28px;flex-shrink:0;color:var(--text)}
 
 /* AMENITIES */
-.amenities{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-.amenity{background:#f0f0f0;padding:4px 10px;border-radius:16px;font-size:.75rem;font-weight:500;white-space:nowrap}
-.amenity.highlight{background:#e8f5e9;color:#2e7d32;font-weight:600}
+.amenities{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.amenity{background:rgba(255,255,255,.04);padding:3px 8px;border-radius:var(--radius);font-size:.7rem;white-space:nowrap;color:var(--muted);border:1px solid rgba(255,255,255,.06);font-family:'Courier New',monospace}
+.amenity.highlight{background:rgba(0,255,255,.06);color:var(--neon-cyan);border-color:rgba(0,255,255,.15)}
 
-/* DISTANCE — single gym box */
-.gym-distance{background:#f8f8f8;padding:10px 14px;border-radius:8px;margin:12px 0;display:flex;align-items:center;gap:10px}
-.gym-distance .gym-icon{font-size:1.3rem}
-.gym-distance .gym-label{font-size:.78rem;color:var(--muted);font-weight:500}
-.gym-distance .gym-time{font-size:1.1rem;font-weight:700;margin-left:auto}
-.gym-distance .gym-time.close{color:var(--green)}
-.gym-distance .gym-time.medium{color:var(--yellow)}
-.gym-distance .gym-time.far{color:var(--red)}
-.gym-distance .gym-name-small{font-size:.72rem;color:var(--muted);margin-left:auto;text-align:right}
+/* GYM DISTANCE */
+.gym-distance{background:rgba(255,255,255,.03);padding:10px 12px;border-radius:var(--radius);margin:10px 0;display:flex;align-items:center;gap:10px;border:1px solid var(--border)}
+.gym-distance .gym-icon{font-size:1.2rem}
+.gym-distance .gym-label{font-size:.72rem;color:var(--muted);font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.5px}
+.gym-distance .gym-time{font-size:1rem;font-family:'Pricedown Bl','Bebas Neue',sans-serif;letter-spacing:1px}
+.gym-distance .gym-time.close{color:var(--neon-cyan);text-shadow:0 0 8px rgba(0,255,255,.3)}
+.gym-distance .gym-time.medium{color:#ffb400}
+.gym-distance .gym-time.far{color:var(--neon-pink);text-shadow:0 0 8px rgba(255,105,180,.3)}
+.gym-distance .gym-name-small{font-size:.7rem;color:var(--muted);font-family:'Courier New',monospace}
+.gym-ig-link{font-size:.68rem;color:var(--neon-pink);font-family:'Courier New',monospace;text-decoration:none;transition:.3s;display:inline-flex;align-items:center;gap:3px}
+.gym-ig-link:hover{color:#fff;text-shadow:0 0 8px rgba(255,105,180,.5)}
 
-/* PRICE */
-.price-box{background:linear-gradient(135deg,#f8f9fa,#e9ecef);padding:12px 14px;border-radius:8px;margin:12px 0;display:flex;align-items:center;justify-content:space-between}
-.price-box .price-label{font-size:.78rem;color:var(--muted);font-weight:500}
-.price-box .price-value{font-size:1.2rem;font-weight:800;color:var(--text)}
-.price-box .price-unit{font-size:.72rem;color:var(--muted);font-weight:400}
+/* PRICE — GTA MONEY COUNTER */
+.price-box{background:rgba(0,0,0,.6);padding:12px;border-radius:var(--radius);margin:10px 0;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(51,255,51,.12);position:relative;overflow:hidden}
+.price-box::before{content:'$';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'Pricedown Bl','Bebas Neue',monospace;font-size:2rem;color:#33ff33;opacity:.15}
+.price-box .price-label{font-size:.72rem;color:rgba(51,255,51,.5);font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:1px}
+.price-box .price-value{font-family:'Pricedown Bl','Bebas Neue',monospace;font-size:1.5rem;color:#33ff33;letter-spacing:2px;text-shadow:0 0 10px rgba(51,255,51,.4),0 0 20px rgba(51,255,51,.15)}
+.price-box .price-unit{font-size:.68rem;color:rgba(51,255,51,.4);font-family:'Courier New',monospace}
 
-/* BUTTONS */
-.card-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
-.card-actions a{flex:1;text-align:center;padding:10px 8px;border-radius:8px;font-weight:600;font-size:.85rem;transition:.2s;min-width:100px}
-.btn-airbnb{background:var(--accent);color:#fff}
-.btn-airbnb:hover{background:#e0294d}
-.btn-maps{background:#4285f4;color:#fff}
-.btn-maps:hover{background:#3367d6}
-.btn-love{background:#25d366;color:#fff}
-.btn-love:hover{background:#1da851}
+/* ===== CTA — "TA JEST SPOKO!" ===== */
+.card-actions{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.card-actions a{flex:1;text-align:center;padding:10px 8px;border-radius:var(--radius);font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:.9rem;transition:.3s;min-width:80px;text-transform:uppercase;letter-spacing:1px}
+.btn-airbnb{background:linear-gradient(135deg,var(--neon-pink),#ff6b6b);color:#fff;box-shadow:0 0 10px rgba(255,105,180,.15)}
+.btn-airbnb:hover{box-shadow:0 0 24px rgba(255,105,180,.35);transform:translateY(-1px)}
+.btn-maps{background:rgba(0,255,255,.1);color:var(--neon-cyan);border:1px solid rgba(0,255,255,.2);box-shadow:0 0 10px rgba(0,255,255,.1)}
+.btn-maps:hover{box-shadow:0 0 24px rgba(0,255,255,.3);background:rgba(0,255,255,.15);transform:translateY(-1px)}
+.btn-love{background:linear-gradient(135deg,var(--neon-pink),#ff3399);color:#fff;box-shadow:0 0 16px rgba(255,105,180,.2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:6px;font-size:.85rem}
+.btn-love:hover{box-shadow:0 0 32px rgba(255,105,180,.4);transform:translateY(-2px)}
+.btn-love .heart-icon{font-size:1.2rem;animation:heartPulse 1.5s ease-in-out infinite}
+@keyframes heartPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.btn-love-glow{animation:btnGlow 2s ease-in-out infinite}
+@keyframes btnGlow{0%,100%{box-shadow:0 0 16px rgba(255,105,180,.2)}50%{box-shadow:0 0 32px rgba(255,105,180,.45)}}
 
-/* WORKSPACE HIGHLIGHT */
-.workspace-tag{display:inline-flex;align-items:center;gap:4px;background:#e3f2fd;color:#1565c0;padding:4px 10px;border-radius:16px;font-size:.78rem;font-weight:600;margin:4px 0}
+/* WORKSPACE TAG */
+.workspace-tag{display:inline-flex;align-items:center;gap:4px;background:rgba(0,255,255,.06);color:var(--neon-cyan);padding:3px 8px;border-radius:var(--radius);font-size:.72rem;font-family:'Courier New',monospace;margin:4px 0;border:1px solid rgba(0,255,255,.15);text-transform:uppercase;letter-spacing:.5px}
 
-/* TOP PICK */
-.card.top-pick{border:2px solid var(--green)}
-.top-pick-tag{position:absolute;top:72px;right:12px;background:var(--green);color:#fff;padding:4px 10px;border-radius:12px;font-size:.72rem;font-weight:700;z-index:3;letter-spacing:.5px}
+/* AVAILABILITY DATES */
+.avail-tag{display:flex;align-items:center;gap:6px;background:rgba(51,255,51,.06);color:var(--money-green);padding:6px 10px;border-radius:var(--radius);font-size:.78rem;font-family:'Courier New',monospace;margin:8px 0;border:1px solid rgba(51,255,51,.15);letter-spacing:.5px}
+.avail-tag .avail-icon{font-size:1rem}
+.avail-tag .avail-dates{font-weight:700;letter-spacing:1px}
+.avail-tag.unavailable{background:rgba(255,45,149,.06);color:var(--neon-pink);border-color:rgba(255,45,149,.15)}
 
-/* METHODOLOGY */
-.methodology{max-width:1200px;margin:40px auto;padding:20px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
-.methodology h2{font-size:1.3rem;margin-bottom:12px}
-.methodology p,.methodology li{font-size:.9rem;color:var(--muted);line-height:1.6}
+/* ===== METHODOLOGY ===== */
+.methodology{max-width:1200px;margin:40px auto 100px;padding:20px;background:var(--card);border-radius:var(--radius);box-shadow:0 4px 16px rgba(0,0,0,.5);border:1px solid var(--border)}
+.methodology h2{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:1.6rem;color:var(--neon-pink);letter-spacing:3px;margin-bottom:12px}
+.methodology h3{color:var(--neon-cyan);font-family:'Pricedown Bl','Bebas Neue',sans-serif;letter-spacing:2px;font-size:1rem}
+.methodology p,.methodology li{font-size:.82rem;color:var(--muted);line-height:1.6;font-family:'Courier New',monospace}
 .methodology ul{padding-left:20px}
 .methodology .cat-weights{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:12px 0}
-.cat-weight{padding:8px;border-radius:6px;font-size:.85rem;font-weight:500}
+.cat-weight{padding:8px;border-radius:var(--radius);font-size:.8rem;font-family:'Courier New',monospace}
 
-/* RESPONSIVE */
+/* ========================================
+   RADIO BAR — GTA STATION STYLE (bottom)
+   ======================================== */
+.radio-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,15,.95);border-top:1px solid var(--border);z-index:9998;display:flex;align-items:center;padding:8px 20px;gap:12px;backdrop-filter:blur(10px);transition:transform .3s}
+.radio-bar.hidden{transform:translateY(100%)}
+.radio-station{font-family:'Pricedown Bl','Bebas Neue',sans-serif;font-size:.9rem;color:var(--neon-pink);letter-spacing:2px;white-space:nowrap;min-width:100px}
+.radio-song{font-family:'Courier New',monospace;font-size:.78rem;color:var(--neon-cyan);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.radio-controls{display:flex;gap:8px;align-items:center}
+.radio-btn{background:none;border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:var(--radius);cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:.3s;font-family:'Courier New',monospace}
+.radio-btn:hover{border-color:var(--neon-pink);color:var(--neon-pink)}
+.radio-btn.active{border-color:var(--neon-cyan);color:var(--neon-cyan)}
+
+/* ===== ANIMATIONS ===== */
+@keyframes neonPulse{0%,100%{text-shadow:0 0 30px rgba(255,126,184,.4),3px 3px 0 rgba(0,0,0,.5)}50%{text-shadow:0 0 50px rgba(255,126,184,.7),3px 3px 0 rgba(0,0,0,.5)}}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--neon-pink),#b347d9);border-radius:var(--radius)}
+::-webkit-scrollbar-thumb:hover{background:var(--neon-pink)}
+
+/* ===== RESPONSIVE ===== */
 @media(max-width:768px){
   .grid{grid-template-columns:1fr;padding:12px}
-  .header h1{font-size:1.8rem}
+  .header{min-height:220px;padding:30px 15px 20px}
+  .header h1{font-size:2.5rem}
   .controls{flex-direction:column;align-items:stretch}
   .sort-btns{margin-left:0;flex-wrap:wrap}
   .card-actions{flex-direction:column}
   .card-actions a{min-width:unset}
+  .header .meta{gap:6px}
+  .header .meta span{font-size:.7rem;padding:4px 8px}
+  .splash-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,1fr)}
+  .splash-panel:nth-child(1){grid-row:1/3;grid-column:1/3}
+  .splash-panel:nth-child(4){grid-column:1/3}
+  .char-grid{grid-template-columns:repeat(3,1fr);gap:16px}
+  .char-avatar{width:80px;height:80px}
+  .char-name{font-size:1.1rem}
+  .radio-bar{padding:6px 12px;gap:8px}
+  .radio-station{font-size:.75rem;min-width:70px}
+  .radio-song{font-size:.7rem}
+  .gta-hud{display:none}
 }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>CLAUDE VILLA PRO</h1>
-  <p>Bali Villa Hunt — Canggu / Pererenan / Munggu</p>
-  <div class="meta">
-    <span>3 osoby (Maciej, Blazej, Arek)</span>
-    <span>3+ sypialnie</span>
-    <span>Max 8K PLN/os./mies.</span>
-    <span>Marzec-Kwiecien 2026</span>
+<!-- ========================================
+     SPLASH SCREEN — GTA VC COMIC PANEL GRID
+     ======================================== -->
+<div class="splash" id="splashScreen">
+  <div class="splash-sunset"></div>
+  <div class="splash-grid" id="splashGrid">
+    <!-- Panels filled dynamically with villa photos -->
+  </div>
+  <div class="splash-center">
+    <div class="splash-title-top">claude</div>
+    <div class="splash-title-main">Villa Pro</div>
+    <div class="splash-title-cursive">Bali</div>
+    <div class="splash-subtitle">Kliknij aby kontynuowac</div>
   </div>
 </div>
 
-<div class="controls">
-  <label>Daty:</label>
-  <div class="btn-group" id="dateFilter">
-    <button class="active" data-dates="14.03-10.04">14.03 — 10.04</button>
-    <button data-dates="14.03-20.04">14.03 — 20.04</button>
-    <button data-dates="22.03-20.04">22.03 — 20.04</button>
+<!-- ========================================
+     CHARACTER SELECT SCREEN
+     ======================================== -->
+<div class="char-select" id="charSelect">
+  <div class="char-select-bg"></div>
+  <div class="char-select-title">Wybierz postac</div>
+  <div class="char-select-subtitle">Player select</div>
+  <div class="char-grid">
+    <div class="char-card" data-player="maciej" onclick="selectCharacter('maciej')">
+      <div class="char-avatar">
+        <div class="char-avatar-placeholder">M</div>
+      </div>
+      <div class="char-name">Maciej</div>
+      <div class="char-role">CEO / Hustler</div>
+    </div>
+    <div class="char-card" data-player="blazej" onclick="selectCharacter('blazej')">
+      <div class="char-avatar">
+        <div class="char-avatar-placeholder">B</div>
+      </div>
+      <div class="char-name">Blazej</div>
+      <div class="char-role">Bro / Enforcer</div>
+    </div>
+    <div class="char-card" data-player="arek" onclick="selectCharacter('arek')">
+      <div class="char-avatar">
+        <div class="char-avatar-placeholder">A</div>
+      </div>
+      <div class="char-name">Arek</div>
+      <div class="char-role">OG / Specialist</div>
+    </div>
   </div>
+  <div class="char-select-hint">Kliknij aby wybrac gracza</div>
+</div>
+
+<!-- ========================================
+     MAIN CONTENT
+     ======================================== -->
+<div id="mainContent" style="display:none">
+
+<div class="header">
+  <div class="sunset-strip"></div>
+  <div class="palms"></div>
+  <div class="title-block">
+    <div class="title-top">claude</div>
+    <h1>Villa Pro</h1>
+    <div class="title-cursive">Bali</div>
+  </div>
+  <div class="meta">
+    <span>16 willi — 3 osoby</span>
+    <span>3+ sypialnie — AC salon</span>
+    <span>14.03 — 24.04.2026 (41 nocy)</span>
+  </div>
+  <div class="gta-hud">
+    <div class="hud-money" id="hudMoney">$24,000</div>
+    <div class="hud-player" id="hudPlayer"></div>
+    <div class="hud-stars">
+      <span class="star-empty"></span><span class="star-empty"></span><span class="star-empty"></span><span class="star-empty"></span><span class="star-empty"></span><span class="star-empty"></span>
+    </div>
+  </div>
+  <button class="sound-toggle" id="soundToggle" title="Master Sound">
+    <span>&#9835;</span>
+    <span id="soundLabel">SOUND OFF</span>
+  </button>
+</div>
+
+<div class="controls">
+  <label>Sortuj:</label>
   <div class="sort-btns" id="sortBtns">
     <button class="active" data-sort="score">Wynik</button>
     <button data-sort="workspace">Workspace</button>
     <button data-sort="distance">Odleglosc</button>
     <button data-sort="rating">Oceny</button>
+    <button data-sort="price">Cena</button>
   </div>
 </div>
 
 <div class="grid" id="villaGrid"></div>
 
 <div class="methodology">
-  <h2>Metodologia oceny</h2>
+  <h2>Metodologia</h2>
   <p>Kazda willa oceniana w 30 kryteriach, 5 kategorii z wagami:</p>
   <div class="cat-weights">
-    <div class="cat-weight" style="background:#e3f2fd;color:#1565c0">Workspace & Produktywnosc — 35%</div>
-    <div class="cat-weight" style="background:#f3e5f5;color:#7b1fa2">Estetyka & Design — 20%</div>
-    <div class="cat-weight" style="background:#e8f5e9;color:#2e7d32">Lokalizacja — 15%</div>
-    <div class="cat-weight" style="background:#fff8e1;color:#f57f17">Wartosc — 15%</div>
-    <div class="cat-weight" style="background:#fce4ec;color:#c62828">Komfort & Udogodnienia — 15%</div>
+    <div class="cat-weight" style="background:rgba(0,229,255,.08);color:#00e5ff;border:1px solid rgba(0,229,255,.15)">Workspace & Produktywnosc — 35%</div>
+    <div class="cat-weight" style="background:rgba(179,71,217,.08);color:#b347d9;border:1px solid rgba(179,71,217,.15)">Estetyka & Design — 20%</div>
+    <div class="cat-weight" style="background:rgba(0,255,136,.08);color:#00ff88;border:1px solid rgba(0,255,136,.15)">Lokalizacja — 15%</div>
+    <div class="cat-weight" style="background:rgba(255,180,0,.08);color:#ffb400;border:1px solid rgba(255,180,0,.15)">Wartosc — 15%</div>
+    <div class="cat-weight" style="background:rgba(255,45,149,.08);color:#ff2d95;border:1px solid rgba(255,45,149,.15)">Komfort & Udogodnienia — 15%</div>
   </div>
-  <h3 style="margin-top:16px;font-size:1rem">Hard Filters (eliminacja):</h3>
+  <h3 style="margin-top:16px">Hard Filters (eliminacja):</h3>
   <ul>
     <li>Otwarty salon bez AC / bez mozliwosci zamkniecia = ELIMINACJA</li>
     <li>Wiecej niz 10 min jazdy od OBU silowni = ELIMINACJA</li>
     <li>Mniej niz 3 sypialnie = ELIMINACJA</li>
   </ul>
-  <h3 style="margin-top:16px;font-size:1rem">Silownie:</h3>
+  <h3 style="margin-top:16px">Silownie:</h3>
   <ul>
-    <li><strong>Omni Gym</strong> — Munggu (~-8.631, 115.107)</li>
-    <li><strong>Reload Sanctuary</strong> — Canggu (~-8.650, 115.134)</li>
+    <li><strong>Omni Gym</strong> — Munggu <a href="https://www.instagram.com/omni_bali/" target="_blank" class="gym-ig-link">@omni_bali</a></li>
+    <li><strong>Reload Sanctuary</strong> — Canggu <a href="https://www.instagram.com/reloadsanctuary/" target="_blank" class="gym-ig-link">@reloadsanctuary</a></li>
   </ul>
-  <p style="margin-top:12px"><strong>Uwaga:</strong> Ceny szacowane na podstawie okolicy (~$80-180/noc za 3BR w Canggu), przeliczone na PLN (~4 PLN/$1) i podzielone na 3 osoby. Dokladne ceny sprawdz bezposrednio na Airbnb. Oceny workspace oparte na zdjeciach i opisach.</p>
+  <p style="margin-top:12px"><strong>Ceny:</strong> Pobrane z Airbnb dla dat 14.03-24.04.2026 (41 nocy, 3 osoby), przeliczone na PLN (~4.05 PLN/$1).</p>
 </div>
 
+</div><!-- /mainContent -->
+
+<!-- ========================================
+     RADIO BAR (fixed bottom)
+     ======================================== -->
+<div class="radio-bar hidden" id="radioBar">
+  <div class="radio-station" id="radioStation">FLASH FM</div>
+  <div class="radio-song" id="radioSong">Wlacz radio...</div>
+  <div class="radio-controls">
+    <button class="radio-btn" id="radioPrev" title="Previous">&#9664;</button>
+    <button class="radio-btn" id="radioPlayPause" title="Play/Pause">&#9654;</button>
+    <button class="radio-btn" id="radioNext" title="Next">&#9654;</button>
+  </div>
+</div>
+
+<!-- YouTube Player (hidden) -->
+<div id="ytPlayer" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;"></div>
+
 <script>
+// ============================================
+// VILLA DATA
+// ============================================
 const villas = [
   {
     id: "617383035017747319",
     name: "Majestic 4BR — Sauna, Rooftop Bar, Bilard",
     location: "Kuta Utara, Canggu",
-    bedrooms: 4,
-    bathrooms: 4,
-    rating: 4.94,
-    reviews: 109,
-    lat: -8.652,
-    lon: 115.142,
-    omniMin: 10,
-    reloadMin: 2,
-    score: 87,
-    workspace: 78,
-    aesthetics: 92,
-    locationScore: 82,
-    value: 75,
-    comfort: 95,
-    eliminated: false,
-    topPick: true,
-    warning: "",
-    pricePLN: "6000-8000",
-    comment: "Krol willi — 800m2, sauna, rooftop bar z widokiem na pola ryzowe, basen 12x4m i bilard w jednym pakiecie.",
-    amenities: ["Pool 12x4m","Sauna","Rooftop Bar","Bilard","WiFi 150Mbps","AC all rooms","Netflix","Parking 5 cars","800m2"],
+    bedrooms: 4, bathrooms: 4,
+    rating: 4.94, reviews: 109,
+    lat: -8.652, lon: 115.142,
+    omniMin: 10, reloadMin: 2,
+    score: 87, workspace: 78, aesthetics: 92, locationScore: 82, value: 75, comfort: 95,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: 38,745 PLN/os — powyżej limitu 10,000 PLN",
+    pricePerNight: 700, priceTotal: 116235, pricePerPerson: 38745,
+    availability: "14.03 — 24.04.2026",
+    comment: "Krol willi — 800m2, sauna, rooftop bar z widokiem na pola ryzowe, basen 12x4m i bilard.",
+    amenities: ["Pool 12x4m","Sauna","Rooftop Bar","Bilard","WiFi 150Mbps","AC all rooms","Netflix","800m2"],
     highlights: ["Sauna + ice bath","Rooftop bar ricefield view","Pool 12x4m","4BR = extra room"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/miso/Hosting-617383035017747319/original/50ee8840-34e1-4038-981d-2cf8be7accc8.jpeg",
       "https://a0.muscache.com/im/pictures/miso/Hosting-617383035017747319/original/33164fd3-3ebc-483d-8311-c5a512f3f351.jpeg",
@@ -241,61 +439,45 @@ const villas = [
     id: "51289012",
     name: "Sea Garden TSG — 300m2 Echo Beach",
     location: "Kuta Utara, Echo Beach",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 4.88,
-    reviews: 83,
-    lat: -8.648,
-    lon: 115.131,
-    omniMin: 7,
-    reloadMin: 1,
-    score: 82,
-    workspace: 72,
-    aesthetics: 80,
-    locationScore: 90,
-    value: 80,
-    comfort: 85,
-    eliminated: false,
-    topPick: true,
-    warning: "",
-    pricePLN: "4000-6000",
-    comment: "Najblizej Reload (~1 min!), 83 sprawdzone recenzje, en-suite lazienki i ogrod z trawnikiem — sprawdzony hit.",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.88, reviews: 83,
+    lat: -8.648, lon: 115.131,
+    omniMin: 7, reloadMin: 1,
+    score: 82, workspace: 72, aesthetics: 80, locationScore: 90, value: 80, comfort: 85,
+    eliminated: true, topPick: true, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 250, priceTotal: 41513, pricePerPerson: 13838,
+    availability: "14.03 — 24.04.2026",
+    comment: "Najblizej Reload (~1 min!), 83 sprawdzone recenzje, en-suite lazienki i ogrod z trawnikiem.",
     amenities: ["Pool","Garden","Lawn","300m2","3BR en-suite","Echo Beach"],
     highlights: ["Najblizej Reload (~1min)","83 reviews","En-suite bathrooms","Ogrod+lawn"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
-      "https://a0.muscache.com/im/pictures/a21616e6-89cc-4cfe-b562-8d53f22cf845.jpg",
       "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/3e5a67de-b610-45a9-aaca-d27c8682c0cb.png",
       "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/d8c0053d-34ec-4526-813f-93b80a33a59f.jpeg",
       "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/c3468a8c-9c85-4d9d-b92f-4eebb2917fd8.jpeg",
       "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/23867a3d-4383-4587-8257-6b4c35aeac76.jpeg",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/8d6450ad-a72c-43e5-9bb0-222acb289e37.jpeg"
+      "https://a0.muscache.com/im/pictures/miso/Hosting-51289012/original/8d6450ad-a72c-43e5-9bb0-222acb289e37.jpeg",
+      "https://a0.muscache.com/im/pictures/a21616e6-89cc-4cfe-b562-8d53f22cf845.jpg",
+      "https://a0.muscache.com/im/pictures/796c79b4-bb2d-4efa-b996-8a8932fd1d78.jpg",
+      "https://a0.muscache.com/im/pictures/4c11a609-0378-4de6-ad3d-46d6c51445b0.jpg"
     ]
   },
   {
     id: "41695932",
-    name: "Villa Kimaya — Fiber Internet, 3BR en-suite",
+    name: "Villa Kimaya — Fiber Internet, 3BR",
     location: "Canggu Padonan",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 4.86,
-    reviews: 92,
-    lat: -8.634,
-    lon: 115.156,
-    omniMin: 11,
-    reloadMin: 6,
-    score: 79,
-    workspace: 85,
-    aesthetics: 82,
-    locationScore: 65,
-    value: 78,
-    comfort: 82,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "4800-6700",
-    comment: "Najlepszy workspace — fiber internet, swiezy remont, 92 recenzje i profesjonalny staff w cenie.",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.86, reviews: 92,
+    lat: -8.634, lon: 115.156,
+    omniMin: 11, reloadMin: 6,
+    score: 79, workspace: 85, aesthetics: 82, locationScore: 65, value: 78, comfort: 82,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: 28,616 PLN/os — powyżej limitu 10,000 PLN",
+    pricePerNight: 517, priceTotal: 85848, pricePerPerson: 28616,
+    availability: "14.03 — 24.04.2026",
+    comment: "Najlepszy workspace — fiber internet, swiezy remont, 92 recenzje i profesjonalny staff.",
     amenities: ["Fiber Internet","Pool","3BR en-suite","Staff","Berawa area"],
     highlights: ["Fiber optic internet","92 reviews","Staff included","Brand new renovation"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDE2OTU5MzI%3D/original/cac372f1-0ec0-4098-ab60-2f74b8a0de32.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDE2OTU5MzI%3D/original/edbb9729-f441-464a-b177-e6c842b17b08.jpeg",
@@ -309,27 +491,18 @@ const villas = [
     id: "1450429185785474177",
     name: "Villa New Life — Sauna + Ice Bath",
     location: "Kuta Utara, Canggu",
-    bedrooms: 4,
-    bathrooms: 4,
-    rating: 4.80,
-    reviews: 5,
-    lat: -8.649,
-    lon: 115.139,
-    omniMin: 8,
-    reloadMin: 1,
-    score: 78,
-    workspace: 65,
-    aesthetics: 80,
-    locationScore: 88,
-    value: 72,
-    comfort: 88,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "5200-7200",
+    bedrooms: 4, bathrooms: 4,
+    rating: 4.80, reviews: 5,
+    lat: -8.649, lon: 115.139,
+    omniMin: 8, reloadMin: 1,
+    score: 78, workspace: 65, aesthetics: 80, locationScore: 88, value: 72, comfort: 88,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 152, priceTotal: 25268, pricePerPerson: 8423,
+    availability: "14.03 — 24.04.2026",
     comment: "Sauna + ice bath + zamkniety salon z AC — idealna regeneracja po treningu, 1 min od Reload.",
     amenities: ["Sauna","Ice Bath","Pool","Gazebo","Enclosed Living","4BR","AC"],
     highlights: ["Sauna + ice bath","~1min od Reload","Enclosed living room","4 sypialnie"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ1MDQyOTE4NTc4NTQ3NDE3Nw==/original/dac9e56a-23ca-406c-99ca-7428f4c3282a.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ1MDQyOTE4NTc4NTQ3NDE3Nw==/original/be139b53-6bd7-4170-8d3b-7dec21006639.jpeg",
@@ -343,27 +516,18 @@ const villas = [
     id: "1525091076210825859",
     name: "Villa Eira — Ricefield Views, Luxury Bathtubs",
     location: "Kuta Utara, Canggu",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 4.83,
-    reviews: 6,
-    lat: -8.645,
-    lon: 115.143,
-    omniMin: 9,
-    reloadMin: 2,
-    score: 77,
-    workspace: 68,
-    aesthetics: 88,
-    locationScore: 80,
-    value: 74,
-    comfort: 78,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "4800-6400",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.83, reviews: 6,
+    lat: -8.645, lon: 115.143,
+    omniMin: 9, reloadMin: 2,
+    score: 77, workspace: 68, aesthetics: 88, locationScore: 80, value: 74, comfort: 78,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: 28,007 PLN/os — powyżej limitu 10,000 PLN",
+    pricePerNight: 506, priceTotal: 84021, pricePerPerson: 28007,
+    availability: "14.03 — 24.04.2026",
     comment: "Luxury bathtub w KAZDEJ sypialni plus widok na pola ryzowe — najbardziej relaksujaca opcja.",
     amenities: ["3BR en-suite","Bathtub each room","Rice field view","Pool","Central Canggu"],
     highlights: ["Luxury bathtub w kazdym pokoju","Widok na pola ryzowe","~2min od Reload","Stylowy design"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1525091076210825859/original/83effdbe-a2d1-46f5-8436-61a95c45c369.jpeg",
       "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1525091076210825859/original/20ffad2e-6963-44e5-93b0-71341e306db4.jpeg",
@@ -377,27 +541,18 @@ const villas = [
     id: "1396012220990316490",
     name: "Canggu Designer Villa by Anastasia",
     location: "Pererenan",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 5.0,
-    reviews: 4,
-    lat: -8.647,
-    lon: 115.127,
-    omniMin: 6,
-    reloadMin: 4,
-    score: 76,
-    workspace: 70,
-    aesthetics: 90,
-    locationScore: 78,
-    value: 72,
-    comfort: 72,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "4400-6000",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 4,
+    lat: -8.647, lon: 115.127,
+    omniMin: 6, reloadMin: 4,
+    score: 76, workspace: 70, aesthetics: 90, locationScore: 78, value: 72, comfort: 72,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 180, priceTotal: 29889, pricePerPerson: 9963,
+    availability: "14.03 — 24.04.2026",
     comment: "Jedyna willa z perfekcyjnym 5.0 i designerskimi wnetrzami — concierge i 850m od plazy.",
     amenities: ["Pool","Garden","Art interiors","Fast WiFi","Concierge","850m to beach"],
     highlights: ["5.0 rating","Designer interiors","850m od plazy","Concierge service"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1396012220990316490/original/cb675e8f-ed2b-4fc9-b86c-c930adeb879d.jpeg",
       "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1396012220990316490/original/a716a153-7eb5-445c-877a-ce696fb16955.jpeg",
@@ -411,27 +566,18 @@ const villas = [
     id: "48685085",
     name: "Wowsome Villa — 40m2 Pool, Pererenan",
     location: "Pererenan / Mengwi",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 5.0,
-    reviews: 4,
-    lat: -8.641,
-    lon: 115.129,
-    omniMin: 6,
-    reloadMin: 4,
-    score: 75,
-    workspace: 68,
-    aesthetics: 78,
-    locationScore: 80,
-    value: 76,
-    comfort: 75,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "4000-5600",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 4,
+    lat: -8.641, lon: 115.129,
+    omniMin: 6, reloadMin: 4,
+    score: 75, workspace: 68, aesthetics: 78, locationScore: 80, value: 76, comfort: 75,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 250, priceTotal: 41513, pricePerPerson: 13838,
+    availability: "14.03 — 24.04.2026",
     comment: "Ogromny 40m2 basen prywatny i 5.0 rating — swietna na dlugie pobyty z indoor+outdoor social space.",
     amenities: ["40m2 Pool","Indoor/Outdoor social","5min beach","Long stay friendly"],
     highlights: ["40m2 pool","5.0 rating","5 min od plazy","Indoor+outdoor social spaces"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-48685085/original/8fc14c94-2da5-4055-b694-37a6838ad092.jpeg",
       "https://a0.muscache.com/im/pictures/miso/Hosting-48685085/original/723ac405-b0e5-4cce-b6fe-4fbfbb43e41e.jpeg",
@@ -443,29 +589,20 @@ const villas = [
   },
   {
     id: "1042550605030359563",
-    name: "Stylish 3BR Modern — Pererenan Canggu",
+    name: "Stylish 3BR Modern — Pererenan",
     location: "Pererenan / Mengwi",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 4.82,
-    reviews: 11,
-    lat: -8.639,
-    lon: 115.135,
-    omniMin: 7,
-    reloadMin: 4,
-    score: 74,
-    workspace: 74,
-    aesthetics: 76,
-    locationScore: 78,
-    value: 74,
-    comfort: 70,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "3600-5200",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.82, reviews: 11,
+    lat: -8.639, lon: 115.135,
+    omniMin: 7, reloadMin: 4,
+    score: 74, workspace: 74, aesthetics: 76, locationScore: 78, value: 74, comfort: 70,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 158, priceTotal: 26236, pricePerPerson: 8745,
+    availability: "14.03 — 24.04.2026",
     comment: "Modern sanctuary w samym centrum Pererenan — co-working i restauracje na wyciagniecie reki.",
     amenities: ["Pool","Co-working nearby","New sidewalks","Restaurants","Fitness"],
     highlights: ["Blisko co-workingu","Nowe chodniki","Restauracje w zasiegu","Modern sanctuary"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTA0MjU1MDYwNTAzMDM1OTU2Mw%3D%3D/original/39d726e8-1b50-430f-bbf0-5f638873f060.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTA0MjU1MDYwNTAzMDM1OTU2Mw%3D%3D/original/06c79254-3e19-4ccb-b1ad-578c737e906c.jpeg",
@@ -479,27 +616,18 @@ const villas = [
     id: "1480064268798874150",
     name: "Villa Les Palm — Digital Nomads",
     location: "South Kuta, Canggu",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 4.86,
-    reviews: 7,
-    lat: -8.660,
-    lon: 115.140,
-    omniMin: 10,
-    reloadMin: 3,
-    score: 73,
-    workspace: 76,
-    aesthetics: 74,
-    locationScore: 72,
-    value: 72,
-    comfort: 72,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "4000-5600",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.86, reviews: 7,
+    lat: -8.660, lon: 115.140,
+    omniMin: 10, reloadMin: 3,
+    score: 73, workspace: 76, aesthetics: 74, locationScore: 72, value: 72, comfort: 72,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 180, priceTotal: 29889, pricePerPerson: 9963,
+    availability: "14.03 — 24.04.2026",
     comment: "Stworzona z mysla o digital nomadach — rooftop do pracy, modern tropical design i 3 min od Reload.",
     amenities: ["Pool","Rooftop","Modern tropical","Digital nomad friendly"],
     highlights: ["Digital nomad focus","Pool + rooftop","Modern tropical design","~3min od Reload"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MDA2NDI2ODc5ODg3NDE1MA==/original/679c6be0-53b8-4f7c-bf02-468b41522ab1.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MDA2NDI2ODc5ODg3NDE1MA==/original/ae4ebf9b-a9ea-4aeb-99b0-8ff26fbf9391.jpeg",
@@ -513,27 +641,19 @@ const villas = [
     id: "1223506432437403173",
     name: "Luxury 3BR — 5min FINNS Beach Club",
     location: "Canggu",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 4.83,
-    reviews: 18,
-    lat: -8.661,
-    lon: 115.147,
-    omniMin: 12,
-    reloadMin: 4,
-    score: 72,
-    workspace: 62,
-    aesthetics: 78,
-    locationScore: 68,
-    value: 72,
-    comfort: 78,
-    eliminated: false,
-    topPick: false,
-    warning: "Budowa obok! Manager (6 mar): sasiedni budynek zburzony, nie wiadomo kiedy zacznie sie nowa budowa. Front = 'finished building stage, minimal activity.'",
-    pricePLN: "4400-6400",
-    comment: "5 min spacerem od FINNS Beach Club — uwaga na potencjalna budowe w sasiedztwie.",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.83, reviews: 18,
+    lat: -8.661, lon: 115.147,
+    omniMin: 12, reloadMin: 4,
+    score: 0, workspace: 62, aesthetics: 78, locationScore: 68, value: 72, comfort: 78,
+    eliminated: true, topPick: false,
+    warning: "ELIMINACJA: Otwarty salon bez AC + budowa obok",
+    pricePerNight: 200, priceTotal: 33210, pricePerPerson: 11070,
+    availability: "14.03 — 24.04.2026",
+    comment: "Open-plan living = brak scian salonu, AC nie zadziala. Dodatkowo budowa w sasiedztwie.",
     amenities: ["Pool","Open-plan living","5min FINNS","Modern amenities"],
     highlights: ["5 min od FINNS Beach Club","18 reviews","Open-plan living","Pool"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/miso/Hosting-1223506432437403173/original/4cead542-fe17-41b1-aeca-c1260b7912f5.jpeg",
       "https://a0.muscache.com/im/pictures/miso/Hosting-1223506432437403173/original/2644023c-199a-4d72-a4fe-fa6a5adfd9ad.jpeg",
@@ -547,27 +667,18 @@ const villas = [
     id: "1420597040994097085",
     name: "3BR Seseh Munggu — Pool Table",
     location: "Seseh Munggu / Mengwi",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 4.79,
-    reviews: 14,
-    lat: -8.625,
-    lon: 115.122,
-    omniMin: 4,
-    reloadMin: 7,
-    score: 71,
-    workspace: 62,
-    aesthetics: 70,
-    locationScore: 76,
-    value: 76,
-    comfort: 72,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "3300-4800",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.79, reviews: 14,
+    lat: -8.625, lon: 115.122,
+    omniMin: 4, reloadMin: 7,
+    score: 71, workspace: 62, aesthetics: 70, locationScore: 76, value: 76, comfort: 72,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 61, priceTotal: 10129, pricePerPerson: 3376,
+    availability: "14.03 — 24.04.2026",
     comment: "Pool table + najblizej Omni Gym (~4 min) — dobra cena i 3 pelne en-suite lazienki.",
     amenities: ["Pool","Pool Table","3BR/3BA","Front terrace","Kitchen","Living room"],
     highlights: ["Pool table","~4min od Omni","3BR/3BA en-suite","Dobra cena"],
+    nearestGymIG: "https://www.instagram.com/omni_bali/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1420597040994097085/original/082e57ca-31c3-4f44-a73b-0c1548fe3491.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1420597040994097085/original/1dba0d82-e9e0-4160-adfe-7be236b37cf8.jpeg",
@@ -581,27 +692,19 @@ const villas = [
     id: "1370761985872214617",
     name: "Villa Ikigai — Kaba Kaba, Rice Fields",
     location: "Kediri, Kaba Kaba",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 5.0,
-    reviews: 2,
-    lat: -8.591,
-    lon: 115.126,
-    omniMin: 10,
-    reloadMin: 12,
-    score: 0,
-    workspace: 60,
-    aesthetics: 82,
-    locationScore: 40,
-    value: 70,
-    comfort: 68,
-    eliminated: true,
-    topPick: false,
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 2,
+    lat: -8.591, lon: 115.126,
+    omniMin: 10, reloadMin: 12,
+    score: 0, workspace: 60, aesthetics: 82, locationScore: 40, value: 70, comfort: 68,
+    eliminated: true, topPick: false,
     warning: "ELIMINACJA: >10 min od OBU silowni (Omni ~10min, Reload ~12min)",
-    pricePLN: "3600-5200",
+    pricePerNight: 155, priceTotal: 25738, pricePerPerson: 8579,
+    availability: "14.03 — 24.04.2026",
     comment: "Piekne wschody slonca nad polami ryzowymi, ale za daleko od obu silowni.",
     amenities: ["Rice field views","Sunrise views","Roof terrace","Brand new","Modern"],
     highlights: ["5.0 rating","Rice field sunrise","Brand new villa","Roof terrace sunset"],
+    nearestGymIG: "https://www.instagram.com/omni_bali/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1370761985872214617/original/1daa64f6-ed19-40ac-898b-ca203f785bc9.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1370761985872214617/original/937eaead-b2c4-4296-a117-c806928b1c32.jpeg",
@@ -615,61 +718,45 @@ const villas = [
     id: "948267172790043476",
     name: "3BR Garden Villa — 3min Beach",
     location: "Mengwi",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 5.0,
-    reviews: 1,
-    lat: -8.648,
-    lon: 115.120,
-    omniMin: 5,
-    reloadMin: 5,
-    score: 70,
-    workspace: 58,
-    aesthetics: 72,
-    locationScore: 80,
-    value: 76,
-    comfort: 68,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "3200-4800",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 1,
+    lat: -8.648, lon: 115.120,
+    omniMin: 5, reloadMin: 5,
+    score: 70, workspace: 58, aesthetics: 72, locationScore: 80, value: 76, comfort: 68,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 120, priceTotal: 19861, pricePerPerson: 6620,
+    availability: "14.03 — 24.04.2026",
     comment: "Rooftop z widokiem na ocean i 2 min walk to beach — rownowaga miedzy oboma silowniami.",
     amenities: ["Pool","Rooftop terrace","Ocean views","Modern design","2min to beach"],
     highlights: ["5.0 rating","2min walk to beach","Rooftop ocean views","Good for both gyms"],
+    nearestGymIG: "https://www.instagram.com/omni_bali/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/be8722d9-403c-4eea-a45a-a4b374fa5403.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/67302060-4c4f-4fbd-a0c0-0e8b562de092.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/81713ec4-58b1-46e9-8697-412f6f9596aa.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/cb9b5bbd-ffee-4181-b174-03cc8935fc58.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/7eebadb2-c356-4bcc-a2a3-b38d048712c8.png",
-      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/6eef597d-5c3f-4fff-ab84-a58ca768a6fb.jpeg"
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/6eef597d-5c3f-4fff-ab84-a58ca768a6fb.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/75e42a88-dadb-47c6-8deb-45bd772145a2.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTQ4MjY3MTcyNzkwMDQzNDc2/original/e8a15d22-6b05-41bd-8d3a-67b2fe6a3b88.jpeg"
     ]
   },
   {
     id: "998789499934327261",
     name: "3BR Bohemian — Free Breakfast",
     location: "Kuta Utara, Berawa",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 4.72,
-    reviews: 32,
-    lat: -8.662,
-    lon: 115.139,
-    omniMin: 10,
-    reloadMin: 3,
-    score: 68,
-    workspace: 55,
-    aesthetics: 72,
-    locationScore: 70,
-    value: 78,
-    comfort: 68,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "2900-4400",
-    comment: "Jedyna willa z DARMOWYM sniadaniem codziennie — bohemian vibe, 32 recenzje i najtansza w zestawieniu.",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.72, reviews: 32,
+    lat: -8.662, lon: 115.139,
+    omniMin: 10, reloadMin: 3,
+    score: 68, workspace: 55, aesthetics: 72, locationScore: 70, value: 78, comfort: 68,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 200, priceTotal: 33210, pricePerPerson: 11070,
+    availability: "14.03 — 24.04.2026",
+    comment: "Jedyna willa z DARMOWYM sniadaniem codziennie — bohemian vibe, 32 recenzje i najtansza.",
     amenities: ["Free Breakfast","Pool","7min walk Berawa Beach","Atlas/FINNS nearby","Parking"],
     highlights: ["FREE breakfast codziennie","32 reviews","7min walk to beach","Najtansze"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/miso/Hosting-998789499934327261/original/fa355751-7b7b-42c9-8b70-6732e8c1434d.jpeg",
       "https://a0.muscache.com/im/pictures/miso/Hosting-998789499934327261/original/f3a80fd0-1fc8-4090-9de0-0795bc689f09.jpeg",
@@ -683,61 +770,43 @@ const villas = [
     id: "977835106940110947",
     name: "Modern Living — Serene Pererenan",
     location: "Pererenan",
-    bedrooms: 2,
-    bathrooms: 2,
-    rating: 4.61,
-    reviews: 18,
-    lat: -8.623,
-    lon: 115.145,
-    omniMin: 9,
-    reloadMin: 5,
-    score: 0,
-    workspace: 60,
-    aesthetics: 74,
-    locationScore: 72,
-    value: 68,
-    comfort: 60,
-    eliminated: true,
-    topPick: false,
-    warning: "ELIMINACJA: Tylko 2 sypialnie (3 guests) — potrzeba min. 3",
-    pricePLN: "3200-4400",
+    bedrooms: 2, bathrooms: 2,
+    rating: 4.61, reviews: 18,
+    lat: -8.623, lon: 115.145,
+    omniMin: 9, reloadMin: 5,
+    score: 0, workspace: 60, aesthetics: 74, locationScore: 72, value: 68, comfort: 60,
+    eliminated: true, topPick: false,
+    warning: "ELIMINACJA: Tylko 2 sypialnie — potrzeba min. 3",
+    pricePerNight: 180, priceTotal: 29889, pricePerPerson: 9963,
+    availability: "14.03 — 24.04.2026",
     comment: "Sunken living area i nowoczesny design, ale tylko 2 sypialnie — za malo dla 3 osob.",
     amenities: ["Pool","Sunken living","Master bathtub","Balcony","Modern design"],
     highlights: ["Sunken living area","Modern design","Master bedroom bathtub","Outdoor shower"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/06e4ddcc-12c1-4dcd-a873-10589451de11.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/f9105d99-5d18-4b76-bc41-28b75730dc37.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/28a66968-379b-4dd5-b4cf-4f3341d5b14e.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/4824b9db-56f7-48ee-b397-e8447c44523c.jpeg",
-      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/69dc0f34-184a-495e-b0a7-62036e872806.jpeg",
-      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/a988900f-ea88-47e8-a586-06c72de151ed.jpeg"
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTc3ODM1MTA2OTQwMTEwOTQ3/original/69dc0f34-184a-495e-b0a7-62036e872806.jpeg"
     ]
   },
   {
     id: "1633105224119789767",
     name: "Jewel of Pererenan — 5BR Pool+Beach",
     location: "Mengwi / Pererenan",
-    bedrooms: 5,
-    bathrooms: 5,
-    rating: 4.70,
-    reviews: 3,
-    lat: -8.646,
-    lon: 115.124,
-    omniMin: 5,
-    reloadMin: 5,
-    score: 69,
-    workspace: 60,
-    aesthetics: 72,
-    locationScore: 80,
-    value: 62,
-    comfort: 75,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "6400-8800",
-    comment: "5 sypialni = kazdy ma swoj pokoj + 2 dodatkowe goscinne lub biura — najweksza przestrzen.",
+    bedrooms: 5, bathrooms: 5,
+    rating: 4.70, reviews: 3,
+    lat: -8.646, lon: 115.124,
+    omniMin: 5, reloadMin: 5,
+    score: 69, workspace: 60, aesthetics: 72, locationScore: 80, value: 62, comfort: 75,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 261, priceTotal: 43388, pricePerPerson: 14463,
+    availability: "14.03 — 24.04.2026",
+    comment: "5 sypialni = kazdy ma swoj pokoj + 2 dodatkowe goscinne lub biura.",
     amenities: ["5BR","Pool","Near beach","Large property"],
     highlights: ["5 sypialni — duzo miejsca","Blisko plazy","Dobre do obu silowni","Pool"],
+    nearestGymIG: "https://www.instagram.com/omni_bali/",
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1633105224119789767/original/ab347266-a86c-4f2a-96f9-9a8b05be0178.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1633105224119789767/original/12591784-521f-4818-95f8-079fa956a6ed.jpeg",
@@ -751,27 +820,18 @@ const villas = [
     id: "669747741119173249",
     name: "Rumah Simba — Tropical Luxury Jacuzzi",
     location: "Munggu",
-    bedrooms: 3,
-    bathrooms: 3,
-    rating: 4.71,
-    reviews: 31,
-    lat: -8.640,
-    lon: 115.124,
-    omniMin: 5,
-    reloadMin: 5,
-    score: 67,
-    workspace: 52,
-    aesthetics: 85,
-    locationScore: 78,
-    value: 60,
-    comfort: 68,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "4000-6000",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.71, reviews: 31,
+    lat: -8.640, lon: 115.124,
+    omniMin: 5, reloadMin: 5,
+    score: 67, workspace: 52, aesthetics: 85, locationScore: 78, value: 60, comfort: 68,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: 16,882 PLN/os — powyżej limitu 10,000 PLN",
+    pricePerNight: 305, priceTotal: 50645, pricePerPerson: 16882,
+    availability: "14.03 — 24.04.2026",
     comment: "Jedyna willa z jacuzzi i unikatowy mix stylow Mediterranean+Japanese — Instagram dream.",
     amenities: ["Jacuzzi","Ricefield views","Mediterranean+Japanese style","Photo location"],
     highlights: ["Jacuzzi","Mediterranean+Japanese+Minimal mix","Rice field views","Fashion brand owners"],
+    nearestGymIG: "https://www.instagram.com/omni_bali/",
     photos: [
       "https://a0.muscache.com/im/pictures/miso/Hosting-648717217190706413/original/7a25a660-8c74-456c-adf5-9194bd2705a6.jpeg",
       "https://a0.muscache.com/im/pictures/miso/Hosting-648717217190706413/original/41ff605d-46ea-4d35-aa17-a5de2651905b.jpeg",
@@ -785,27 +845,18 @@ const villas = [
     id: "44383036",
     name: "Amira Villa Munggu — Minimalist",
     location: "Kediri / Munggu",
-    bedrooms: 3,
-    bathrooms: 2,
-    rating: 4.76,
-    reviews: 54,
-    lat: -8.609,
-    lon: 115.138,
-    omniMin: 9,
-    reloadMin: 8,
-    score: 64,
-    workspace: 55,
-    aesthetics: 62,
-    locationScore: 60,
-    value: 78,
-    comfort: 65,
-    eliminated: false,
-    topPick: false,
-    warning: "",
-    pricePLN: "2400-3600",
-    comment: "Najtansza willa w zestawieniu — minimalistyczna, 54 recenzje, blisko Tanah Lot i 20 min od lotniska.",
+    bedrooms: 3, bathrooms: 2,
+    rating: 4.76, reviews: 54,
+    lat: -8.609, lon: 115.138,
+    omniMin: 9, reloadMin: 8,
+    score: 64, workspace: 55, aesthetics: 62, locationScore: 60, value: 78, comfort: 65,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 27, priceTotal: 4483, pricePerPerson: 1494,
+    availability: "14.03 — 24.04.2026",
+    comment: "Najtansza willa w zestawieniu — minimalistyczna, 54 recenzje, blisko Tanah Lot.",
     amenities: ["Minimalist","50min airport","20min Tanah Lot","10min Seseh Beach"],
     highlights: ["54 reviews","Najtansza opcja","Minimalistyczny design","Blisko Tanah Lot"],
+    nearestGymIG: "https://www.instagram.com/omni_bali/",
     photos: [
       "https://a0.muscache.com/im/pictures/e7470a1a-df64-4ccf-b145-5aa47c5ca081.jpg",
       "https://a0.muscache.com/im/pictures/f03fd6ef-ee4b-4bf9-bbfd-47f3939b24c1.jpg",
@@ -814,18 +865,1133 @@ const villas = [
       "https://a0.muscache.com/im/pictures/bcae0097-7e8f-4ef1-bbd5-a335fe92dafa.jpg",
       "https://a0.muscache.com/im/pictures/73a7b22c-8f67-4930-8fcf-ac2f2ce35048.jpg"
     ]
+  },
+  {
+    id: "549495671091466589",
+    name: "Concrete Retreat — Industrial Luxe Canggu",
+    location: "Canggu / Berawa",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.88, reviews: 132,
+    lat: -8.643, lon: 115.139,
+    omniMin: 8, reloadMin: 4,
+    score: 80, workspace: 75, aesthetics: 82, locationScore: 85, value: 72, comfort: 82,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 190, priceTotal: 31550, pricePerPerson: 10517,
+    availability: "14.03 — 24.04.2026",
+    comment: "Industrialny beton + drewno, 132 recenzje — solidny wybór blisko Echo Beach.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Workspace","Parking"],
+    highlights: ["132 reviews","Industrial design","Blisko Echo Beach","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-549495671091466589/original/f8e09b03-30ff-4903-baed-cac06c3d5299.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-549495671091466589/original/0efdd638-9a1b-4e93-842d-1d7b899bb26f.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-549495671091466589/original/2b126afd-59da-41b2-8d99-b596e9d4dea5.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-549495671091466589/original/9864d407-f749-401a-bc00-bb040376961f.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-549495671091466589/original/537b4f18-1fa0-4240-a4c6-59921157c503.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-549495671091466589/original/0e66f44f-27d5-4fd2-bca4-fe91ee298095.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-549495671091466589/original/c06108ae-0f4f-4747-bf29-c9e95ad722f1.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-549495671091466589/original/abcad2a5-1fa2-42db-926f-6c4364b57fc4.jpeg"
+    ]
+  },
+  {
+    id: "548889403287286409",
+    name: "Villa Aenah — Tropical Modern Pererenan",
+    location: "Pererenan",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 5,
+    lat: -8.643, lon: 115.123,
+    omniMin: 9, reloadMin: 4,
+    score: 72, workspace: 68, aesthetics: 78, locationScore: 75, value: 80, comfort: 74,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon — brak dowodow na zamkniete living room",
+    pricePerNight: 140, priceTotal: 23247, pricePerPerson: 7749,
+    availability: "14.03 — 24.04.2026",
+    comment: "Idealne 5.0 rating, nowoczesna tropikalna willa w Pererenan. Dobra cena.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Parking"],
+    highlights: ["5.0 rating","Tropikalny design","Pererenan lokalizacja","Zamknięty salon"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-548889403287286409/original/6efeaf35-9b6c-4175-b502-0abdf9178b0d.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-548889403287286409/original/8aa7dccf-e9c5-499a-b8b0-2dec44eccc37.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-548889403287286409/original/93fb66c6-983e-4f03-980d-24a3e0d36ee1.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-548889403287286409/original/3dc243fe-a137-4798-a463-e89e700e0b84.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-548889403287286409/original/eb10cbeb-fb65-4836-9819-1f94ab3f885c.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-548889403287286409/original/1f5d65c6-5de4-49a5-9639-be301b95a592.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-548889403287286409/original/dc546007-4cde-4a93-8d9a-ae6f3f3a47c6.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-548889403287286409/original/4dd3025f-1115-45ef-8ac8-523e9e4aaa8f.jpeg"
+    ]
+  },
+  {
+    id: "1293330220572961882",
+    name: "Japanese Zen Villa — Pererenan Retreat",
+    location: "Pererenan",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 8,
+    lat: -8.645, lon: 115.125,
+    omniMin: 9, reloadMin: 3,
+    score: 76, workspace: 72, aesthetics: 85, locationScore: 78, value: 70, comfort: 78,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon — teak/bamboo pawilon, brak AC w salonie",
+    pricePerNight: 200, priceTotal: 33210, pricePerPerson: 11070,
+    availability: "14.03 — 24.04.2026",
+    comment: "Zen-inspired, japoński styl, piękne wnętrza. 5.0 rating. Pererenan premium.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Workspace","Garden","Yoga deck"],
+    highlights: ["5.0 rating","Japoński zen design","Pererenan premium","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1293330220572961882/original/5e3dcdea-173d-4cf0-8f27-d12cff74c47f.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1293330220572961882/original/f7b26c34-09c5-41f8-981d-96a4271a141d.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1293330220572961882/original/1276a5e7-a21c-49af-829f-96e3c302f818.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1293330220572961882/original/480e9c6b-12cd-4743-9641-f0fa4969fdfe.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1293330220572961882/original/dc59eb52-7637-47aa-988c-7094adbc0906.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1293330220572961882/original/c8c7069d-8bd1-4007-8e9b-e0d7e40c6322.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1293330220572961882/original/77bc0783-338b-4950-bff6-30cf39168fe3.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1293330220572961882/original/ceedf359-df20-45d7-a3d2-b4cad2e7f37b.jpeg"
+    ]
+  },
+  {
+    id: "43736248",
+    name: "Young Villas Canggu — Batu Bolong",
+    location: "Batu Bolong / Berawa",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.89, reviews: 117,
+    lat: -8.650, lon: 115.140,
+    omniMin: 10, reloadMin: 5,
+    score: 78, workspace: 70, aesthetics: 76, locationScore: 88, value: 74, comfort: 76,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 175, priceTotal: 29059, pricePerPerson: 9686,
+    availability: "14.03 — 24.04.2026",
+    comment: "117 recenzji, Batu Bolong lokalizacja — blisko restauracji i surfingu.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Parking","Surf spot nearby"],
+    highlights: ["117 reviews","Batu Bolong lokalizacja","Blisko surfingu","Zamknięty salon"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-43736248/original/801688b3-1990-43a9-a5d2-8938d16c7e5f.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-43736248/original/b289bd01-c095-4137-a438-a68d444f134a.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-43736248/original/7ea417a3-5e6e-49b4-a60f-a928133b4320.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-43736248/original/5f21898d-c588-4ec8-8b11-00f4f8384c41.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-43736248/original/64d22c9e-84b2-49e4-96d0-68dde26a98f8.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-43736248/original/2345076b-d9e1-4cf6-9b8f-7a1a8a73227a.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-43736248/original/e0c2156b-b1d4-49fd-8b71-95fb86afb3d1.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-43736248/original/cf67ff3f-656e-4206-a67b-e2a6e69c0a5e.jpeg"
+    ]
+  },
+  {
+    id: "964116916174491533",
+    name: "Beach Villa Lemon — Echo Beach Premium",
+    location: "Echo Beach / Canggu",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.58, reviews: 24,
+    lat: -8.649, lon: 115.130,
+    omniMin: 7, reloadMin: 1,
+    score: 74, workspace: 65, aesthetics: 78, locationScore: 90, value: 65, comfort: 76,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon + niedostepna 14.03-24.04",
+    pricePerNight: 238, priceTotal: 39520, pricePerPerson: 13173,
+    availability: "14.03 — 24.04.2026",
+    comment: "Premium Echo Beach, 1 min od Reload Sanctuary. Droższa ale lokalizacja top.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Beach 200m"],
+    highlights: ["1 min Reload Sanctuary","Echo Beach premium","200m od plaży","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-964116916174491533/original/d0952dd5-c851-49e9-90e9-4cfc4109f42b.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-964116916174491533/original/68f47d35-058d-4e73-a392-ff47754dc032.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-964116916174491533/original/8d7fb25b-d2c1-4f89-a517-8fca76ffb955.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-964116916174491533/original/bbfccc36-151a-4ca1-9fba-ba6aa9e43845.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-964116916174491533/original/fc992cd6-4bbd-414f-aa93-d7c707313c90.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-964116916174491533/original/d3e09187-53f6-4beb-8ebb-41d31fbc466a.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-964116916174491533/original/63d115fe-9c1e-4e42-862c-b1fb61af4af4.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-964116916174491533/original/24d26931-ceb7-4031-87bd-fc54ce1b49aa.jpeg"
+    ]
+  },
+  {
+    id: "35727785",
+    name: "Tropical Villa Echo — Budget Gem",
+    location: "Echo Beach / Canggu",
+    bedrooms: 3, bathrooms: 2,
+    rating: 4.73, reviews: 49,
+    lat: -8.650, lon: 115.131,
+    omniMin: 7, reloadMin: 2,
+    score: 70, workspace: 60, aesthetics: 68, locationScore: 88, value: 88, comfort: 68,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon + niedostepna 14.03-24.04",
+    pricePerNight: 115, priceTotal: 19096, pricePerPerson: 6365,
+    availability: "14.03 — 24.04.2026",
+    comment: "Najtańsza opcja w Echo Beach — 49 recenzji, 2 min od Reload. Świetny value.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Parking"],
+    highlights: ["49 reviews","Najtańsza w Echo Beach","2 min Reload","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/e2617a2f-78ed-4249-8404-6e2aa26cf4c1.jpg",
+      "https://a0.muscache.com/im/pictures/829e28e8-6307-40d8-a4cd-c8f258b99813.jpg",
+      "https://a0.muscache.com/im/pictures/b2c7c2e2-70a8-4fbc-9d2e-b29fd437a713.jpg",
+      "https://a0.muscache.com/im/pictures/7afdad3f-155a-447e-a005-e173c779d112.jpg",
+      "https://a0.muscache.com/im/pictures/2ff97405-1254-44f2-9837-96056d4273b9.jpg",
+      "https://a0.muscache.com/im/pictures/aaf1c57e-8ad6-4eff-93a8-1c996cc9d54c.jpg",
+      "https://a0.muscache.com/im/pictures/afd420dd-2da3-435f-805d-685271b2d6e5.jpg",
+      "https://a0.muscache.com/im/pictures/3933e442-2177-4374-924e-6e863a388521.jpg"
+    ]
+  },
+  {
+    id: "1297615430018394037",
+    name: "Villa Alaïa — Seseh Luxury",
+    location: "Seseh",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.94, reviews: 16,
+    lat: -8.630, lon: 115.120,
+    omniMin: 5, reloadMin: 5,
+    score: 78, workspace: 72, aesthetics: 84, locationScore: 75, value: 68, comfort: 80,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026",
+    pricePerNight: 210, priceTotal: 34871, pricePerPerson: 11624,
+    availability: "14.03 — 24.04.2026",
+    comment: "Luksusowa willa w Seseh, 4.94 rating. Piękne wnętrza, blisko Omni Gym.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Workspace","Garden","Yoga"],
+    highlights: ["4.94 rating","Seseh luxury","5 min Omni Gym","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/omni_bali/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI5NzYxNTQzMDAxODM5NDAzNw==/original/d8c36114-521a-4897-8389-5f05a08d8e56.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI5NzYxNTQzMDAxODM5NDAzNw==/original/5b9a94cc-f32a-49a6-b1d2-8a2920cb8b35.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI5NzYxNTQzMDAxODM5NDAzNw==/original/be94db08-776c-43a8-b775-b1d800a6f808.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI5NzYxNTQzMDAxODM5NDAzNw==/original/37597f6b-34be-4daa-b2a2-f618d28e3658.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI5NzYxNTQzMDAxODM5NDAzNw==/original/f9e6cd60-344e-456b-92a3-699b57613cc3.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI5NzYxNTQzMDAxODM5NDAzNw==/original/c49bfdd7-bdde-44c7-8e0d-8bafa85717ec.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI5NzYxNTQzMDAxODM5NDAzNw==/original/7b399cee-5bcd-4ea2-a4ed-6b08b7e7800f.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI5NzYxNTQzMDAxODM5NDAzNw==/original/a129c5dd-2cf6-47bf-8ad1-61977a31341b.jpeg"
+    ]
+  },
+  {
+    id: "1030843158876222929",
+    name: "Seseh Villa III — Leo Villas",
+    location: "Seseh",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.83, reviews: 6,
+    lat: -8.627, lon: 115.118,
+    omniMin: 4, reloadMin: 6,
+    score: 72, workspace: 65, aesthetics: 76, locationScore: 72, value: 74, comfort: 74,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026",
+    pricePerNight: 178, priceTotal: 29557, pricePerPerson: 9852,
+    availability: "14.03 — 24.04.2026",
+    comment: "Leo Villas w Seseh — 4 min od Omni Gym. Cicha okolica, dobra cena.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Parking"],
+    highlights: ["4 min Omni Gym","Seseh spokojna okolica","Dobra cena","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/omni_bali/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1030843158876222929/original/862925c1-a3f3-498f-99f2-5b69b48ca75c.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1030843158876222929/original/4a187caf-0b14-478f-a181-583ac92c3e4a.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1030843158876222929/original/e1794526-0eb9-49b6-b0d0-af05cf0e1ea9.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1030843158876222929/original/49c79fb1-8c33-48a3-8444-bfc65527f09e.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1030843158876222929/original/cfbc7c1e-31c0-4be6-b061-71a0c14892f8.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1030843158876222929/original/39eccaac-7f75-4ec0-af77-c5945afc9f6c.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1030843158876222929/original/8947cb05-15be-417e-be46-74a7cf69e847.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1030843158876222929/original/44dd15b1-5fb4-413d-8d99-59ecc1848e6e.jpeg"
+    ]
+  },
+  {
+    id: "1488211156374937383",
+    name: "Cinco Villa — Cemagi Hidden Gem",
+    location: "Cemagi / Seseh",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.9, reviews: 20,
+    lat: -8.623, lon: 115.115,
+    omniMin: 3, reloadMin: 7,
+    score: 74, workspace: 68, aesthetics: 78, locationScore: 70, value: 78, comfort: 76,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon bez AC",
+    pricePerNight: 155, priceTotal: 25738, pricePerPerson: 8579,
+    availability: "14.03 — 24.04.2026",
+    comment: "Cemagi hidden gem, 3 min od Omni Gym. 4.9 rating, świetna cena.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Parking","Quiet area"],
+    highlights: ["4.9 rating","3 min Omni Gym","Cemagi hidden gem","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/omni_bali/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1488211156374937383/original/a1a5e20c-c116-4849-a5eb-dad43c8702b4.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1488211156374937383/original/5b286f70-4578-462f-bfb4-a60520a6d9c4.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1488211156374937383/original/d21c3dd4-1318-4c16-864d-6efd109d2fa8.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4ODIxMTE1NjM3NDkzNzM4Mw==/original/93b42413-9f0c-4db6-8807-edd305362117.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4ODIxMTE1NjM3NDkzNzM4Mw==/original/81e20263-2698-4339-b0cf-b33c181ab505.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1488211156374937383/original/15ae0e51-d2d1-4af1-99eb-3a57127739dc.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1488211156374937383/original/98e2cdab-ce87-4b81-8872-0b86af8ded5e.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1488211156374937383/original/4ed55b6e-7fe5-4059-9614-f1023ad99365.jpeg"
+    ]
+  },
+  {
+    id: "1228246353086161571",
+    name: "Peaceful Retreat — Batu Bolong",
+    location: "Batu Bolong / Canggu",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.82, reviews: 49,
+    lat: -8.651, lon: 115.138,
+    omniMin: 9, reloadMin: 4,
+    score: 74, workspace: 68, aesthetics: 72, locationScore: 86, value: 76, comfort: 74,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 165, priceTotal: 27398, pricePerPerson: 9133,
+    availability: "14.03 — 24.04.2026",
+    comment: "49 recenzji, Batu Bolong — spokojna ale blisko akcji. Solid value.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Parking"],
+    highlights: ["49 reviews","Batu Bolong","Spokojna okolica","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTIyODI0NjM1MzA4NjE2MTU3MQ==/original/b6d999ad-44f8-4ea3-80ea-4b3a668d8b77.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1228246353086161571/original/5365d6d3-d412-45c8-a6a9-18bd483f0c15.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1228246353086161571/original/c3de5968-7f5e-400f-b670-bd55f6da4370.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTIyODI0NjM1MzA4NjE2MTU3MQ%3D%3D/original/ac6d6aa4-926e-4a45-a6eb-96235a710af2.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1228246353086161571/original/b579c3c0-e31e-466d-9beb-1ed9dbb130da.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1228246353086161571/original/2d85d1e1-9db4-4632-9790-2ff4e5a0ddd6.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1228246353086161571/original/c24084a4-8607-4b73-b2db-6e849f00b967.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1228246353086161571/original/1b26ec1b-6730-4800-b59f-db1eb0c45c7a.jpeg"
+    ]
+  },
+  {
+    id: "903184519032697967",
+    name: "Villa Kama — Berawa Lifestyle",
+    location: "Berawa / Canggu",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.87, reviews: 92,
+    lat: -8.652, lon: 115.142,
+    omniMin: 10, reloadMin: 5,
+    score: 76, workspace: 70, aesthetics: 78, locationScore: 84, value: 72, comfort: 78,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon bez AC",
+    pricePerNight: 185, priceTotal: 30719, pricePerPerson: 10240,
+    availability: "14.03 — 24.04.2026",
+    comment: "92 recenzje w Berawa — lifestyle lokalizacja blisko restauracji i beach clubs.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Parking","Beach club nearby"],
+    highlights: ["92 reviews","Berawa lifestyle","Blisko beach clubs","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-903184519032697967/original/ed6c5bc9-8a84-4df2-8443-343a2a36f231.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-903184519032697967/original/7a185bec-1313-44b5-beb5-b69cd9091853.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-903184519032697967/original/7a8675aa-f7b5-4c4b-8439-a278c4420670.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-903184519032697967/original/b79b8fcf-0851-40b9-9dcc-1102d5738060.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-903184519032697967/original/3f8b7213-52a0-4cb7-978c-1eec7492037c.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-903184519032697967/original/cbf04654-e81f-4baf-86e2-4c9eafc05017.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-903184519032697967/original/dc0649d0-a2ae-42d0-94ae-de2e7785d129.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-903184519032697967/original/e158fe25-3202-4f0b-8eb7-7a3bfb3db7a0.jpeg"
+    ]
+  },
+  {
+    id: "1368468270339240915",
+    name: "Villa Samara — Pererenan Vibes",
+    location: "Pererenan",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.88, reviews: 25,
+    lat: -8.644, lon: 115.124,
+    omniMin: 8, reloadMin: 3,
+    score: 74, workspace: 68, aesthetics: 78, locationScore: 78, value: 76, comfort: 76,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon bez AC",
+    pricePerNight: 170, priceTotal: 28229, pricePerPerson: 9410,
+    availability: "14.03 — 24.04.2026",
+    comment: "Pererenan vibes, 4.88 rating, 3 min od Reload. Dobry balans cena/jakość.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Parking"],
+    highlights: ["4.88 rating","Pererenan vibes","3 min Reload","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM2ODQ2ODI3MDMzOTI0MDkxNQ==/original/cfeb67db-de3b-4c27-bf8f-2eada23a41e3.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM2ODQ2ODI3MDMzOTI0MDkxNQ==/original/8e63da78-45d1-47fa-ba9a-9c8b95c9a2bf.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM2ODQ2ODI3MDMzOTI0MDkxNQ==/original/4761cc9f-d3d5-48b4-9381-d22caa5da65a.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM2ODQ2ODI3MDMzOTI0MDkxNQ==/original/4628d21a-a5aa-49df-af02-197195a6d05b.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM2ODQ2ODI3MDMzOTI0MDkxNQ==/original/b863a947-17e0-489c-8c5b-44b464023634.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM2ODQ2ODI3MDMzOTI0MDkxNQ==/original/0f327e8d-5242-4f29-afc0-bdc82515d9b9.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM2ODQ2ODI3MDMzOTI0MDkxNQ==/original/2531f432-14ed-4eec-b593-571e75b59cf5.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM2ODQ2ODI3MDMzOTI0MDkxNQ==/original/82613bac-6147-4ae2-9590-0995f9408b40.jpeg"
+    ]
+  },
+  {
+    id: "865789400213491615",
+    name: "Unique 3BR — Pererenan Artsy",
+    location: "Pererenan",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 6,
+    lat: -8.642, lon: 115.122,
+    omniMin: 9, reloadMin: 4,
+    score: 72, workspace: 65, aesthetics: 80, locationScore: 76, value: 78, comfort: 74,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 155, priceTotal: 25738, pricePerPerson: 8579,
+    availability: "14.03 — 24.04.2026",
+    comment: "Artystyczna willa z 5.0 rating w Pererenan. Unikalny design, dobra cena.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Unique design"],
+    highlights: ["5.0 rating","Artsy design","Pererenan","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6ODY1Nzg5NDAwMjEzNDkxNjE1/original/3496042c-a580-4096-ac03-546459b9f0c0.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6ODY1Nzg5NDAwMjEzNDkxNjE1/original/e9f49b1f-6b65-4ca6-abf2-c42e7890b24c.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6ODY1Nzg5NDAwMjEzNDkxNjE1/original/34a093f1-d375-420a-8cb0-b0cc401f2532.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6ODY1Nzg5NDAwMjEzNDkxNjE1/original/bbe33ea5-92fd-43f2-b5b9-9dc05e4b887b.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6ODY1Nzg5NDAwMjEzNDkxNjE1/original/02be7f2d-c2d9-4f21-ad24-d0cd35b8b811.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6ODY1Nzg5NDAwMjEzNDkxNjE1/original/2bd1e1a3-c905-4ab8-9258-0fa49063a720.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-865789400213491615/original/f5d25a7a-1755-473f-97bf-1c11acd12aba.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-865789400213491615/original/05123ed0-41d1-4229-8658-b196713a40bb.jpeg"
+    ]
+  },
+  {
+    id: "1355468858471446229",
+    name: "Meli Monthly — Batu Bolong Budget",
+    location: "Batu Bolong / Canggu",
+    bedrooms: 3, bathrooms: 2,
+    rating: 5.0, reviews: 4,
+    lat: -8.652, lon: 115.139,
+    omniMin: 10, reloadMin: 5,
+    score: 68, workspace: 62, aesthetics: 66, locationScore: 86, value: 90, comfort: 66,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna na Airbnb 14.03-24.04.2026 (Playwright verified)",
+    pricePerNight: 130, priceTotal: 21587, pricePerPerson: 7196,
+    availability: "14.03 — 24.04.2026",
+    comment: "Najlepsza cena w Batu Bolong — 5.0 rating, dedykowana na monthly stays.",
+    amenities: ["Pool","AC","WiFi","Kitchen","Garden","Monthly discount"],
+    highlights: ["5.0 rating","Batu Bolong budget","Monthly stay","Zamknięty salon z AC"],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM1NTQ2ODg1ODQ3MTQ0NjIyOQ==/original/bdb42f08-de23-4a3e-9636-95f9dee98daf.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM1NTQ2ODg1ODQ3MTQ0NjIyOQ==/original/21a74fea-b02a-4b8b-88fd-7c0fd501c8f6.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM1NTQ2ODg1ODQ3MTQ0NjIyOQ==/original/73e0413f-04c3-43ff-bbec-2b816f620860.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM1NTQ2ODg1ODQ3MTQ0NjIyOQ==/original/6cbce13b-52ef-44f7-a39d-2b69be338643.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM1NTQ2ODg1ODQ3MTQ0NjIyOQ==/original/bf1cb019-64f6-456f-bb60-9795c166bd72.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM1NTQ2ODg1ODQ3MTQ0NjIyOQ==/original/9c50e619-dfc8-43c8-b960-7f0fb535af75.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1355468858471446229/original/a5373e53-5091-4dcd-9f9f-8b16f1c4e198.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1355468858471446229/original/693eb149-0fec-4dd5-be43-f6b8f444fc64.jpeg"
+    ]
+  },
+  {
+    id: "42983829",
+    name: "Designer Berawa Retreat + Breakfast",
+    location: "Canggu / Berawa",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.83, reviews: 86,
+    lat: -8.64594, lon: 115.15233,
+    omniMin: 2, reloadMin: 6,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 99, priceTotal: 16475, pricePerPerson: 5492,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Gym", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/omnigym.bali/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/7a1cc9fa-9f13-47d8-bba9-b456e0e1d4e5.jpg",
+      "https://a0.muscache.com/im/pictures/f3b94c22-30c2-4f5c-a98e-2c5e831ee979.jpg",
+      "https://a0.muscache.com/im/pictures/31ed17a8-2378-44c7-a422-6d914bd4cc74.jpg",
+      "https://a0.muscache.com/im/pictures/eef1b3b2-0a6b-463e-bac5-28b871366f6a.jpg",
+      "https://a0.muscache.com/im/pictures/ed6a160a-c885-4c60-99d6-13923a40ba70.jpg"
+    ]
+  },
+  {
+    id: "1100264692964923738",
+    name: "Cozy 3BR Villa Berawa Beach",
+    location: "Canggu / Echo Beach",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.91, reviews: 11,
+    lat: -8.6588, lon: 115.1477,
+    omniMin: 1, reloadMin: 5,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon bez AC (open living)",
+    pricePerNight: 89, priceTotal: 14778, pricePerPerson: 4926,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/omnigym.bali/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-54044954/original/4b036304-3cad-4be4-bfd7-b258d4664838.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-54044954/original/79a77521-c5e5-4a5d-a175-f34826f96108.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-54044954/original/822b697c-4390-4559-a310-75a61d0fbb82.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-54044954/original/9f56437a-bbd2-479c-b1cb-533af0f33bd2.jpeg",
+      "https://a0.muscache.com/im/pictures/user/User/original/b264ab8c-d627-4cac-87ab-7ffe59cb73c6.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-54044954/original/5662d00a-62b9-49ec-bc1c-b0cee675a09c.jpeg"
+    ]
+  },
+  {
+    id: "1560450568642951073",
+    name: "Designer 3BR Rice Fields Pererenan",
+    location: "Pererenan / Canggu",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 5,
+    lat: -8.6375, lon: 115.1388,
+    omniMin: 6, reloadMin: 3,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 115, priceTotal: 19055, pricePerPerson: 6352,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Gym", "Workspace", "Rice field", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1560450568642951073/original/86cd28bf-22f6-4713-8d8c-78b9ef11e42e.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1560450568642951073/original/e2c90a49-2d56-4f60-bbfc-f21401909059.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1560450568642951073/original/86bab4b7-add0-4396-8450-019348d0d062.jpeg",
+      "https://a0.muscache.com/im/pictures/user/User-573969040/original/bfc47ec9-caa6-4a4f-a0fe-017341b0a51a.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1560450568642951073/original/915d83e9-78ca-4f0c-9080-c196907dce4b.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1560450568642951073/original/c867f228-4461-486d-bb4a-c3968dfdc8dd.jpeg"
+    ]
+  },
+  {
+    id: "1438940645232845339",
+    name: "Tropical Modern 3BR Canggu",
+    location: "Canggu / Echo Beach",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 7,
+    lat: -8.6429, lon: 115.14,
+    omniMin: 5, reloadMin: 3,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon bez AC (open-plan + open living)",
+    pricePerNight: 118, priceTotal: 19593, pricePerPerson: 6531,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Garden", "Workspace", "Netflix", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1438940645232845339/original/702191b3-cb0a-4bac-a62f-869fbea315bd.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1438940645232845339/original/ceb705ea-6fb6-4b44-bff2-c3d50ac6a601.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1438940645232845339/original/9e8ce9f7-0bc3-43ef-8d4c-94a42ae8177a.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1438940645232845339/original/dd17eef7-1b9f-458a-952c-f3803b7ddd27.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1438940645232845339/original/58542412-7eed-441b-9880-1906b48a24bd.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1438940645232845339/original/d23338a2-4120-4514-97d3-07e10899d6a4.jpeg"
+    ]
+  },
+  {
+    id: "1206152819722225187",
+    name: "Modern Design 3BR Pererenan",
+    location: "Pererenan / Canggu",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.94, reviews: 17,
+    lat: -8.6387, lon: 115.1319,
+    omniMin: 7, reloadMin: 2,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 150, priceTotal: 24972, pricePerPerson: 8324,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Gym", "Workspace", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTIwNjE1MjgxOTcyMjIyNTE4Nw%3D%3D/original/c8bac8cf-04e3-47c2-9773-0deac6cd771f.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTIwNjE1MjgxOTcyMjIyNTE4Nw%3D%3D/original/aa8bd23d-b3e0-491c-8d32-38886a3012fc.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTIwNjE1MjgxOTcyMjIyNTE4Nw%3D%3D/original/8d0dc1a3-3666-4fce-8723-4d545fe7d331.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTIwNjE1MjgxOTcyMjIyNTE4Nw%3D%3D/original/19464f8a-16c7-44ff-85b5-31cc6d9c72dc.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTIwNjE1MjgxOTcyMjIyNTE4Nw%3D%3D/original/c8e0dc52-71ad-4e3b-a34f-987078620187.jpeg",
+      "https://a0.muscache.com/im/pictures/user/User-573969040/original/bfc47ec9-caa6-4a4f-a0fe-017341b0a51a.jpeg"
+    ]
+  },
+  {
+    id: "1481707253146764994",
+    name: "3BR Rooftop Bar Canggu",
+    location: "Pererenan / Canggu",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 6,
+    lat: -8.64765, lon: 115.13757,
+    omniMin: 4, reloadMin: 2,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 168, priceTotal: 27840, pricePerPerson: 9280,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Washer", "Parking", "Gym", "Rooftop", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MTcwNzI1MzE0Njc2NDk5NA==/original/683bfdc0-adb7-49a8-a20c-af6186b381a9.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MTcwNzI1MzE0Njc2NDk5NA==/original/4463832d-567a-4bcf-9e81-846d73570b76.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MTcwNzI1MzE0Njc2NDk5NA==/original/8676fb01-0aa3-4a22-a8df-0d5f8d3f9139.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MTcwNzI1MzE0Njc2NDk5NA==/original/1bfc22c8-2a97-42a8-9ff9-1b89dbbd31ef.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MTcwNzI1MzE0Njc2NDk5NA==/original/e0c24089-3ba6-4e95-ba74-b3492c1f1e8e.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MTcwNzI1MzE0Njc2NDk5NA==/original/5eacbae4-2934-4109-901c-b2c9e465611a.jpeg"
+    ]
+  },
+  {
+    id: "1326447071225947287",
+    name: "3BR Modern Design Umalas",
+    location: "Berawa / Umalas",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.81, reviews: 32,
+    lat: -8.65679, lon: 115.1558,
+    omniMin: 1, reloadMin: 7,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 120, priceTotal: 19926, pricePerPerson: 6642,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Garden", "Workspace", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/omnigym.bali/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1326447071225947287/original/8e400f79-b553-4531-a75c-c58beb287cc2.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1326447071225947287/original/b23eb504-45de-4238-9bea-ca018bd9a16a.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1326447071225947287/original/97144551-e5f3-440b-82ae-236d200c086e.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1326447071225947287/original/9ef48ae1-42a0-41f7-9e04-25cfd35a3c7a.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1326447071225947287/original/93b2b436-b8be-4686-9686-af532e2eb49f.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1326447071225947287/original/cf10daa4-cb47-43b6-b41f-180e791768b0.jpeg"
+    ]
+  },
+  {
+    id: "1481492046826371598",
+    name: "Villa Yara 3BR Tropical",
+    location: "Canggu / Berawa",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.8, reviews: 5,
+    lat: -8.6385, lon: 115.1545,
+    omniMin: 5, reloadMin: 7,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon bez AC (open concept)",
+    pricePerNight: 73, priceTotal: 12123, pricePerPerson: 4041,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/omnigym.bali/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1481492046826371598/original/c25f81bb-530f-4adb-9608-d3cad583b689.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1481492046826371598/original/01c5ac39-ca0d-4cf3-a404-032db82a11da.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1481492046826371598/original/c40b460d-42c6-497d-a781-10ec5a9420e2.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4MTQ5MjA0NjgyNjM3MTU5OA==/original/39a5fee2-e63a-4027-9a24-439e87c2e22d.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1481492046826371598/original/a6a7bd35-dab2-47b9-9f0f-c1aac86771d6.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1481492046826371598/original/0aa04327-3b06-4115-add2-8b88c3b81c1d.jpeg"
+    ]
+  },
+  {
+    id: "1364477794521623299",
+    name: "KammOra Villa 3BR",
+    location: "Pererenan / Canggu",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 4,
+    lat: -8.6396, lon: 115.1399,
+    omniMin: 5, reloadMin: 3,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon bez AC (open-air)",
+    pricePerNight: 112, priceTotal: 18597, pricePerPerson: 6199,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Washer", "Parking", "Gym", "Sauna", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMwMjU4MzMxMDYxMzY3Njk4Ng==/original/05039528-f180-4442-b12c-77f0b61f6f32.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMwMjU4MzMxMDYxMzY3Njk4Ng==/original/69d61ef9-a95c-4e89-8519-3e08ee5f5123.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMwMjU4MzMxMDYxMzY3Njk4Ng==/original/6598af5d-551a-48e6-9b7b-171ccc35dc4e.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMwMjU4MzMxMDYxMzY3Njk4Ng==/original/eeff4c1e-724b-476b-a039-b25dfd5c364f.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1302583310613676986/original/b8e13abe-d2b1-46b9-8629-ba3c15d0962d.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMwMjU4MzMxMDYxMzY3Njk4Ng==/original/ad3343b0-d52b-4de1-9084-b8427ef9b3b0.jpeg"
+    ]
+  },
+  {
+    id: "1153477140788374824",
+    name: "ARA Villa Canggu",
+    location: "Pererenan / Canggu",
+    bedrooms: 3, bathrooms: 4,
+    rating: 4.93, reviews: 14,
+    lat: -8.6435, lon: 115.1396,
+    omniMin: 5, reloadMin: 2,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Otwarty salon bez AC (outdoor living)",
+    pricePerNight: 166, priceTotal: 27564, pricePerPerson: 9188,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Washer", "Parking", "Garden", "Workspace", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1153477140788374824/original/d1d46b1b-3905-4fb3-afb6-ddb93ed56903.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE1MzQ3NzE0MDc4ODM3NDgyNA%3D%3D/original/997ad8e4-3b7d-45f9-8512-760f917e2936.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1153477140788374824/original/2e8953cc-2c9c-4868-b3a7-978a261d63a0.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE1MzQ3NzE0MDc4ODM3NDgyNA%3D%3D/original/6742eb4d-e3a1-4ece-8623-7cd3402245b9.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE1MzQ3NzE0MDc4ODM3NDgyNA%3D%3D/original/42fec484-ec9e-4765-a8d5-1b50fb7821d8.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE1MzQ3NzE0MDc4ODM3NDgyNA%3D%3D/original/15fa34c1-cce4-45de-81bf-b4597e197935.jpeg"
+    ]
+  },
+  {
+    id: "1294701219554523638",
+    name: "Architectural 3BR Pererenan",
+    location: "Pererenan / Canggu",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.87, reviews: 31,
+    lat: -8.6199, lon: 115.1396,
+    omniMin: 10, reloadMin: 8,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 148, priceTotal: 24563, pricePerPerson: 8188,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Garden", "Workspace", "Netflix", "Rice field", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1294701219554523638/original/3655d3a0-01c8-4422-98cb-f13dab6abaa0.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1294701219554523638/original/ea7c43c0-bd15-44bb-b799-f83c903eea06.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1294701219554523638/original/fecad75a-04d8-4708-9bed-d949f8330906.jpeg",
+      "https://a0.muscache.com/im/pictures/user/8edbf267-84e4-48a5-bd8e-a7fca7f4eb3b.jpg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1294701219554523638/original/38cee1e5-7cd2-45e9-81bd-1ed9448aba56.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1294701219554523638/original/1a7a3b3e-0f57-4c37-8ddf-6ccd2b2e90a4.jpeg"
+    ]
+  },
+  {
+    id: "1632849774782550298",
+    name: "Casa Mederra Designer 3BR",
+    location: "Canggu / Berawa",
+    bedrooms: 3, bathrooms: 5,
+    rating: 4.81, reviews: 36,
+    lat: -8.6574, lon: 115.153,
+    omniMin: 1, reloadMin: 6,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 95, priceTotal: 15767, pricePerPerson: 5256,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Washer", "Parking", "Garden", "Workspace", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/omnigym.bali/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1632849774782550298/original/33497e46-2dc3-4a00-aebd-dd6bfd0c9902.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1632849774782550298/original/6ba19052-59f4-4643-bbf9-ff0650a2dc86.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1632849774782550298/original/8fc1748f-4d37-4b58-9927-1d64095a5cc3.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1632849774782550298/original/07001ad3-198c-4652-bd06-5b2be35953b1.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1632849774782550298/original/46105020-8664-47fb-8421-c98cfba320f0.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1632849774782550298/original/e7b3df04-62fe-4ae4-bd60-137db931da32.jpeg"
+    ]
+  },
+  {
+    id: "1611481324616064403",
+    name: "Villa Tierra Batu Bolong",
+    location: "Canggu / Echo Beach",
+    bedrooms: 3, bathrooms: 5,
+    rating: 4.88, reviews: 1,
+    lat: -8.6465, lon: 115.1424,
+    omniMin: 3, reloadMin: 3,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 98, priceTotal: 16350, pricePerPerson: 5450,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Garden", "Gym", "Workspace", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1611481324616064403/original/4cdab7cb-89c6-4bfa-a447-dde412880d6d.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1611481324616064403/original/66582d65-2ceb-45de-9301-2abfd4bd36b7.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1611481324616064403/original/6f9b1bdc-bf20-4c8d-b1fb-ecd162af8d55.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1611481324616064403/original/6f5a9006-3378-4b01-938c-c9e3e2b21d0a.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1611481324616064403/original/acea2a5b-aa76-4628-a1a0-eb4523236548.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1611481324616064403/original/b46a8c43-9719-4e06-a4a7-dc2ac0cacc99.jpeg"
+    ]
+  },
+  {
+    id: "1558338866606709313",
+    name: "Cozy 3BR Best Location Canggu",
+    location: "Canggu / Echo Beach",
+    bedrooms: 3, bathrooms: 5,
+    rating: 3.75, reviews: 1,
+    lat: -8.64623, lon: 115.14092,
+    omniMin: 4, reloadMin: 3,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 74, priceTotal: 12352, pricePerPerson: 4118,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Gym", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1558338866606709313/original/07eb0200-8092-4f35-895c-ee237946bf19.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1558338866606709313/original/c090a0b7-e5ae-4808-8546-786509cfb64e.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1558338866606709313/original/6846939d-7edb-4a14-8e34-51e54745729f.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1558338866606709313/original/6c0f670d-a3ae-4392-98c2-c6dca9a9086c.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1558338866606709313/original/4be1a247-1d69-4a0e-8466-436141c462b2.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1558338866606709313/original/86599758-3fe3-41b0-8c81-b5b6fd1efb1a.jpeg"
+    ]
+  },
+  {
+    id: "929281168122166454",
+    name: "Villa Ola Canggu Modern",
+    location: "Canggu / Berawa",
+    bedrooms: 3, bathrooms: 4,
+    rating: 4.68, reviews: 44,
+    lat: -8.6234, lon: 115.1538,
+    omniMin: 9, reloadMin: 9,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: true, topPick: false, warning: "ELIMINACJA: Niedostepna 14.03-24.04.2026 (change dates)",
+    pricePerNight: 69, priceTotal: 11457, pricePerPerson: 3819,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Garden", "Workspace", "Netflix", "Rice field", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-929281168122166454/original/dee138b2-7881-4001-afc3-b5645122e534.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-929281168122166454/original/b8d35b6a-47bb-4391-b848-3486c2783c16.png",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-929281168122166454/original/cbe31144-11e8-477a-9a0a-99ad5032ffc1.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-929281168122166454/original/a5db5701-4c78-466d-b73e-8368f1ebcd86.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-929281168122166454/original/1a2663e9-cda6-44bb-947c-4e68415ef9e2.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-929281168122166454/original/0a47b66b-fd55-41a4-b681-696a8bbe5919.jpeg"
+    ]
+  },
+  {
+    id: "1569124215873478991",
+    name: "Red Sun Villa Pererenan",
+    location: "Pererenan / Seseh",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.79, reviews: 2,
+    lat: -8.64656, lon: 115.12662,
+    omniMin: 7, reloadMin: 1,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 92, priceTotal: 15208, pricePerPerson: 5069,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Garden", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1569124215873478991/original/268913d3-45ac-42d7-8599-744868550630.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1569124215873478991/original/1fe3d7e4-3b47-4e29-8bae-5cf2a0b7ad8e.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1569124215873478991/original/8043b146-0c14-40d8-af56-88fcb33f360f.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1569124215873478991/original/0f677654-2c18-4ec3-93d1-dbfa5874f19c.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1569124215873478991/original/4578f992-d2c5-4070-9290-f353305a3def.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1569124215873478991/original/02fe579a-085b-4e68-b900-1daa5dfb1a66.jpeg"
+    ]
+  },
+  {
+    id: "1436733870393242656",
+    name: "BrandNew 3BR Pererenan",
+    location: "Canggu / Echo Beach",
+    bedrooms: 3, bathrooms: 3,
+    rating: 4.92, reviews: 2,
+    lat: -8.62067, lon: 115.1404,
+    omniMin: 10, reloadMin: 8,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 98, priceTotal: 16273, pricePerPerson: 5424,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQzNjczMzg3MDM5MzI0MjY1Ng==/original/f45b2958-f044-49f5-982c-150a6c49cdc5.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQzNjczMzg3MDM5MzI0MjY1Ng==/original/4ee26257-30f8-4409-9c25-ba4d8ac0ece1.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQzNjczMzg3MDM5MzI0MjY1Ng==/original/d7a8e0f1-9819-455b-951d-972b13a9a6e6.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQzNjczMzg3MDM5MzI0MjY1Ng==/original/e97a6e12-c3ec-42d3-881c-d1e3eca1608f.jpeg",
+      "https://a0.muscache.com/im/pictures/user/User-548322467/original/937f211b-1551-41a6-92bf-92ea03ee90c6.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQzNjczMzg3MDM5MzI0MjY1Ng==/original/7a5d9f8e-fb58-4496-879e-a50f29f47fb6.jpeg"
+    ]
+  },
+  {
+    id: "1130264222372040503",
+    name: "Canggu Lux 3BR Pool View",
+    location: "Pererenan / Seseh",
+    bedrooms: 3, bathrooms: 5,
+    rating: 4.74, reviews: 19,
+    lat: -8.64124, lon: 115.12562,
+    omniMin: 8, reloadMin: 2,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 96, priceTotal: 15864, pricePerPerson: 5288,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Washer", "Parking", "Gym", "Workspace", "Netflix", "Rice field", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1130264222372040503/original/99244ca5-50c8-4c58-b443-fc8973dadd11.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTEzMDI2NDIyMjM3MjA0MDUwMw==/original/6e7c9ad6-9de9-4aec-b736-8d47d6b683dc.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1130264222372040503/original/e7cddf07-b1c8-4142-af29-ac8401039d65.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1130264222372040503/original/a1ed5e31-97cc-4faf-8c4f-33d7e88b67c8.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1130264222372040503/original/76392c0c-0e55-40c7-8d9d-80ae57c5d0c7.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1130264222372040503/original/8b2adbad-b760-488f-8c9f-5f8949d796ab.jpeg"
+    ]
+  },
+  {
+    id: "1599115016641526397",
+    name: "Refined Villa Tamora",
+    location: "Canggu / Echo Beach",
+    bedrooms: 3, bathrooms: 2,
+    rating: 4.75, reviews: 1,
+    lat: -8.6321, lon: 115.1478,
+    omniMin: 6, reloadMin: 6,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 104, priceTotal: 17342, pricePerPerson: 5781,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Parking", "Garden", "Gym", "Workspace", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1599115016641526397/original/d5aaceae-7c0e-41f6-b7a2-deef43ef5e34.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1599115016641526397/original/e39d7745-2f47-4ee6-9342-6efba2d9ffed.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1599115016641526397/original/ec857c8d-350d-4a85-90ae-78dfcbfe1e5e.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1599115016641526397/original/cf1245e4-bdf9-4885-9820-8c5cf963403b.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1599115016641526397/original/8a4f348d-e9f0-434c-8209-09e8502b5aed.jpeg",
+      "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1599115016641526397/original/d882aac2-6652-4898-ac21-9321a5920f8d.jpeg"
+    ]
+  },
+  {
+    id: "1485197078363587468",
+    name: "Modern 3BR Sea View Pererenan",
+    location: "Pererenan / Seseh",
+    bedrooms: 3, bathrooms: 3,
+    rating: 5.0, reviews: 4,
+    lat: -8.6476, lon: 115.1198,
+    omniMin: 9, reloadMin: 3,
+    score: 0, workspace: 0, aesthetics: 0, locationScore: 0, value: 0, comfort: 0,
+    eliminated: false, topPick: false, warning: "",
+    pricePerNight: 211, priceTotal: 35065, pricePerPerson: 11688,
+    availability: "14.03 — 24.04.2026",
+    comment: "Playwright verified 14.03-24.04.2026.",
+    amenities: ["Pool", "WiFi", "AC", "Kitchen", "Washer", "Parking", "Garden", "Workspace", "Sauna", "Rooftop", "Beach"],
+    highlights: [],
+    nearestGymIG: "https://www.instagram.com/reloadsanctuary/",
+    photos: [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1485197078363587468/original/d87320e4-70ca-4d7d-bf5c-a61f57acc464.jpeg",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1373695957047500936/original/25843d83-a209-4bcd-a30a-4f5f2cd76599.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTQ4NTE5NzA3ODM2MzU4NzQ2OA==/original/b55098b7-d798-41ac-9ad6-2e4c4da4e034.jpeg",
+      "https://a0.muscache.com/im/pictures/user/User/original/bd0aa2ad-4dc5-42eb-b505-9d4044f35856.jpeg",
+      "https://a0.muscache.com/im/pictures/user/User-483681231/original/c1b5276f-6ef5-4747-aa23-5f07cce2d898.png",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1373695957047500936/original/a6705986-45b4-4aa7-926b-4087dd2d747a.jpeg"
+    ]
   }
 ];
 
-// Sort active villas first, then by score
+// ============================================
+// GTA VICE CITY RADIO — YouTube IFrame API
+// ============================================
+const radioPlaylist = [
+  { artist: "Hall & Oates", title: "Out of Touch", station: "FLASH FM", ytId: "s_8KR-n2fBQ" },
+  { artist: "Blondie", title: "Atomic", station: "WAVE 103", ytId: "O_WLw_0DFQQ" },
+  { artist: "Toto", title: "Africa", station: "EMOTION 98.3", ytId: "FTQbiNvZqaY" },
+  { artist: "Gary Numan", title: "Cars", station: "WAVE 103", ytId: "Ldyx3KHOFXw" },
+  { artist: "Twisted Sister", title: "I Wanna Rock", station: "V-ROCK", ytId: "SRwrg0db_zY" },
+  { artist: "Foreigner", title: "Waiting for a Girl Like You", station: "EMOTION 98.3", ytId: "B3O4Gcm4e5w" },
+  { artist: "The Outfield", title: "Your Love", station: "FLASH FM", ytId: "4N1iwQxiHrs" },
+  { artist: "Bryan Adams", title: "Run to You", station: "FLASH FM", ytId: "nCBASt507WA" },
+  { artist: "Iron Maiden", title: "2 Minutes to Midnight", station: "V-ROCK", ytId: "GPbqQOf41Qc" },
+  { artist: "Frankie Goes to Hollywood", title: "Two Tribes", station: "WAVE 103", ytId: "SqMYFG0V3pI" }
+];
+
+let currentTrack = 0;
+let ytPlayer = null;
+let radioActive = false;
+
+// Load YouTube IFrame API
+const ytScript = document.createElement('script');
+ytScript.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(ytScript);
+
+window.onYouTubeIframeAPIReady = function() {
+  ytPlayer = new YT.Player('ytPlayer', {
+    height: '1', width: '1',
+    playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, modestbranding: 1 },
+    events: {
+      onReady: function() {},
+      onStateChange: function(e) {
+        if (e.data === YT.PlayerState.ENDED) nextTrack();
+      },
+      onError: function() { nextTrack(); }
+    }
+  });
+};
+
+function playTrack(idx) {
+  currentTrack = idx % radioPlaylist.length;
+  const track = radioPlaylist[currentTrack];
+  document.getElementById('radioStation').textContent = track.station;
+  document.getElementById('radioSong').textContent = track.artist + ' — ' + track.title;
+  if (ytPlayer && ytPlayer.loadVideoById) {
+    ytPlayer.loadVideoById(track.ytId);
+  }
+}
+
+function nextTrack() { playTrack(currentTrack + 1); }
+function prevTrack() { playTrack((currentTrack - 1 + radioPlaylist.length) % radioPlaylist.length); }
+
+function toggleRadio() {
+  if (!radioActive) {
+    radioActive = true;
+    playTrack(currentTrack);
+    document.getElementById('radioPlayPause').innerHTML = '&#9646;&#9646;';
+    document.getElementById('radioPlayPause').classList.add('active');
+  } else {
+    radioActive = false;
+    if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+    document.getElementById('radioPlayPause').innerHTML = '&#9654;';
+    document.getElementById('radioPlayPause').classList.remove('active');
+  }
+}
+
+document.getElementById('radioPlayPause').addEventListener('click', toggleRadio);
+document.getElementById('radioNext').addEventListener('click', function() { if (radioActive) nextTrack(); });
+document.getElementById('radioPrev').addEventListener('click', function() { if (radioActive) prevTrack(); });
+
+// ============================================
+// SOUND SYSTEM — GTA VC STYLE (Web Audio API)
+// ============================================
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+let masterSoundOn = false;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new AudioCtx();
+  return audioCtx;
+}
+
+// GTA VC Menu Select — sharp descending "ding" with reverb character
+function playMenuSelect() {
+  if (!masterSoundOn) return;
+  try {
+    const ctx = getAudioCtx();
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+    osc1.connect(filter); osc2.connect(filter);
+    filter.connect(gain); gain.connect(ctx.destination);
+    filter.type = 'lowpass'; filter.frequency.value = 3000; filter.Q.value = 2;
+    osc1.type = 'square'; osc2.type = 'triangle';
+    osc1.frequency.setValueAtTime(1200, ctx.currentTime);
+    osc1.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.15);
+    osc2.frequency.setValueAtTime(600, ctx.currentTime);
+    osc2.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.15);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+    osc1.start(ctx.currentTime); osc1.stop(ctx.currentTime + 0.2);
+    osc2.start(ctx.currentTime); osc2.stop(ctx.currentTime + 0.2);
+  } catch(e) {}
+}
+
+// GTA VC Menu Hover — subtle mechanical tick
+function playMenuHover() {
+  if (!masterSoundOn) return;
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+    osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+    filter.type = 'bandpass'; filter.frequency.value = 2000; filter.Q.value = 5;
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(800, ctx.currentTime);
+    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.04);
+  } catch(e) {}
+}
+
+// GTA VC Menu Back — low descending whomp
+function playMenuBack() {
+  if (!masterSoundOn) return;
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(400, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.25);
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
+  } catch(e) {}
+}
+
+// GTA VC Menu Start — dramatic rising synth chord
+function playMenuStart() {
+  if (!masterSoundOn) return;
+  try {
+    const ctx = getAudioCtx();
+    [220, 330, 440, 550].forEach(function(freq, i) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = i % 2 === 0 ? 'sawtooth' : 'triangle';
+      osc.frequency.setValueAtTime(freq * 0.5, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(freq, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.06, ctx.currentTime + 0.3);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.6);
+    });
+  } catch(e) {}
+}
+
+// Sound hover/click delegation — DISABLED (no original GTA VC sounds yet)
+// Will re-enable when OG .mp3 samples are added
+
+// Master sound toggle
+const soundToggle = document.getElementById('soundToggle');
+soundToggle.addEventListener('click', function() {
+  masterSoundOn = !masterSoundOn;
+  soundToggle.classList.toggle('on', masterSoundOn);
+  document.getElementById('soundLabel').textContent = masterSoundOn ? 'SOUND ON' : 'SOUND OFF';
+  if (masterSoundOn) {
+    getAudioCtx();
+    document.getElementById('radioBar').classList.remove('hidden');
+  } else {
+    document.getElementById('radioBar').classList.add('hidden');
+    if (radioActive) { radioActive = false; if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo(); }
+  }
+});
+
+// ============================================
+// SPLASH SCREEN — COMIC PANEL GRID
+// ============================================
+(function initSplash() {
+  const grid = document.getElementById('splashGrid');
+  const panelPhotos = [];
+  villas.forEach(function(v) { if (v.photos.length > 0 && !v.eliminated) panelPhotos.push(v.photos[0]); });
+  // Shuffle and pick 6 for panels
+  for (let i = panelPhotos.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [panelPhotos[i], panelPhotos[j]] = [panelPhotos[j], panelPhotos[i]]; }
+  const chosen = panelPhotos.slice(0, 6);
+  chosen.forEach(function(url) {
+    const div = document.createElement('div');
+    div.className = 'splash-panel';
+    div.style.backgroundImage = 'url(' + url + ')';
+    grid.appendChild(div);
+  });
+})();
+
+const splash = document.getElementById('splashScreen');
+function dismissSplash() {
+  splash.classList.add('hidden');
+  setTimeout(function() {
+    splash.style.display = 'none';
+    document.getElementById('charSelect').classList.add('active');
+  }, 800);
+}
+splash.addEventListener('click', dismissSplash);
+
+// ============================================
+// CHARACTER SELECT
+// ============================================
+let selectedPlayer = localStorage.getItem('baliVillaPlayer') || null;
+
+function selectCharacter(name) {
+  selectedPlayer = name;
+  localStorage.setItem('baliVillaPlayer', name);
+  document.querySelectorAll('.char-card').forEach(function(c) { c.classList.remove('selected'); });
+  document.querySelector('[data-player="' + name + '"]').classList.add('selected');
+  setTimeout(function() {
+    document.getElementById('charSelect').classList.remove('active');
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('hudPlayer').textContent = name.toUpperCase();
+    renderGrid();
+  }, 600);
+}
+
+// Skip char select if already chosen
+if (selectedPlayer) {
+  splash.style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+  document.getElementById('hudPlayer').textContent = selectedPlayer.toUpperCase();
+  // Render on load
+  renderGrid();
+}
+
+// ============================================
+// RENDERING
+// ============================================
 function getDisplayVillas(sortKey) {
-  const copy = [...villas];
-  copy.sort((a, b) => {
+  const copy = villas.slice();
+  copy.sort(function(a, b) {
     if (a.eliminated !== b.eliminated) return a.eliminated ? 1 : -1;
     switch(sortKey) {
       case 'workspace': return b.workspace - a.workspace;
-      case 'distance': return Math.min(a.omniMin,a.reloadMin) - Math.min(b.omniMin,b.reloadMin);
-      case 'rating': return (b.rating*b.reviews) - (a.rating*a.reviews);
+      case 'distance': return Math.min(a.omniMin, a.reloadMin) - Math.min(b.omniMin, b.reloadMin);
+      case 'rating': return (b.rating * b.reviews) - (a.rating * a.reviews);
+      case 'price': return a.pricePerPerson - b.pricePerPerson;
       default: return b.score - a.score;
     }
   });
@@ -833,166 +1999,153 @@ function getDisplayVillas(sortKey) {
 }
 
 function createCarousel(photos, villaId) {
-  return `
-    <div class="carousel" id="carousel-${villaId}">
-      <div class="carousel-track" style="transform:translateX(0%)">
-        ${photos.map(p => `<img src="${p}" alt="Villa photo" loading="lazy">`).join('')}
-      </div>
-      <button class="carousel-btn carousel-prev" onclick="slideCarousel('${villaId}',-1)">&lt;</button>
-      <button class="carousel-btn carousel-next" onclick="slideCarousel('${villaId}',1)">&gt;</button>
-      <div class="carousel-dots">
-        ${photos.map((_,i) => `<span class="${i===0?'active':''}" data-idx="${i}"></span>`).join('')}
-      </div>
-    </div>`;
+  return '<div class="carousel" id="carousel-' + villaId + '">' +
+    '<div class="carousel-track" style="transform:translateX(0%)">' +
+    photos.map(function(p) { return '<img src="' + p + '" alt="Villa" loading="lazy">'; }).join('') +
+    '</div>' +
+    '<div class="carousel-counter"><span class="cc-current">1</span> / ' + photos.length + '</div>' +
+    '<button class="carousel-btn carousel-prev" onclick="slideCarousel(\'' + villaId + '\',-1)">&#8249;</button>' +
+    '<button class="carousel-btn carousel-next" onclick="slideCarousel(\'' + villaId + '\',1)">&#8250;</button>' +
+    '<div class="carousel-dots">' +
+    photos.map(function(_, i) { return '<span class="' + (i === 0 ? 'active' : '') + '" data-idx="' + i + '"></span>'; }).join('') +
+    '</div></div>';
 }
 
 const carouselState = {};
 function slideCarousel(id, dir) {
   if (!carouselState[id]) carouselState[id] = 0;
-  const villa = villas.find(v => v.id === id);
+  const villa = villas.find(function(v) { return v.id === id; });
   const max = villa.photos.length - 1;
   carouselState[id] = Math.max(0, Math.min(max, carouselState[id] + dir));
-  const track = document.querySelector(`#carousel-${id} .carousel-track`);
-  track.style.transform = `translateX(-${carouselState[id] * 100}%)`;
-  const dots = document.querySelectorAll(`#carousel-${id} .carousel-dots span`);
-  dots.forEach((d,i) => d.classList.toggle('active', i === carouselState[id]));
+  const carousel = document.getElementById('carousel-' + id);
+  carousel.querySelector('.carousel-track').style.transform = 'translateX(-' + (carouselState[id] * 100) + '%)';
+  carousel.querySelectorAll('.carousel-dots span').forEach(function(d, i) { d.classList.toggle('active', i === carouselState[id]); });
+  var counter = carousel.querySelector('.cc-current');
+  if (counter) counter.textContent = carouselState[id] + 1;
 }
 
 function scoreClass(s) { return s >= 75 ? 'high' : s >= 50 ? 'mid' : 'low'; }
 function distClass(m) { return m <= 3 ? 'close' : m <= 7 ? 'medium' : 'far'; }
 
 function createCard(v, rank) {
-  const airbnbUrl = `https://www.airbnb.com/rooms/${v.id}`;
-  const mapsUrl = `https://www.google.com/maps?q=${v.lat},${v.lon}`;
-  const waMsg = encodeURIComponent(`Ta mi sie podoba! ${v.name}\n${airbnbUrl}`);
-  const waUrl = `https://api.whatsapp.com/send?text=${waMsg}`;
-  const nearestMin = Math.min(v.omniMin, v.reloadMin);
-  const nearestGym = v.omniMin <= v.reloadMin ? 'Omni Gym' : 'Reload Sanctuary';
+  var airbnbUrl = 'https://www.airbnb.com/rooms/' + v.id;
+  var mapsUrl = 'https://www.google.com/maps?q=' + v.lat + ',' + v.lon;
+  var waMsg = encodeURIComponent('Ta jest spoko! ' + v.name + '\n' + airbnbUrl);
+  var waUrl = 'https://api.whatsapp.com/send?text=' + waMsg;
+  var nearestMin = Math.min(v.omniMin, v.reloadMin);
+  var nearestGym = v.omniMin <= v.reloadMin ? 'Omni Gym' : 'Reload Sanctuary';
+  var nearestGymHandle = v.omniMin <= v.reloadMin ? '@omni_bali' : '@reloadsanctuary';
 
-  return `
-  <div class="card ${v.eliminated ? 'eliminated' : ''} ${v.topPick ? 'top-pick' : ''}" data-score="${v.score}" data-workspace="${v.workspace}" data-distance="${nearestMin}" data-rating="${v.rating*v.reviews}">
-    ${v.eliminated ? '<div class="eliminated-banner">ELIMINACJA</div>' : ''}
-    ${v.topPick ? '<div class="top-pick-tag">TOP PICK</div>' : ''}
-    <span class="rank-badge">#${rank}</span>
-    ${!v.eliminated ? `<div class="score-badge ${scoreClass(v.score)}">${v.score}</div>` : ''}
-    ${createCarousel(v.photos, v.id)}
-    ${v.warning ? `<div class="warning-banner">&#9888; ${v.warning}</div>` : ''}
-    <div class="card-body">
-      <h3>${v.name}</h3>
-      <div class="location">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        ${v.location}
-      </div>
-      <div class="villa-comment">${v.comment}</div>
-      <div class="details-row">
-        <div class="detail"><strong>${v.bedrooms}</strong> syp.</div>
-        <div class="detail"><strong>${v.bathrooms}</strong> laz.</div>
-        <div class="rating">
-          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          ${v.rating} <span style="color:var(--muted);font-weight:400">(${v.reviews})</span>
-        </div>
-      </div>
-      <div class="workspace-tag">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        Workspace: ${v.workspace}/100
-      </div>
-      <div class="score-section">
-        <div class="score-bar-row">
-          <span class="score-bar-label">Workspace</span>
-          <div class="score-bar-bg"><div class="score-bar-fill workspace" style="width:${v.workspace}%"></div></div>
-          <span class="score-bar-val">${v.workspace}</span>
-        </div>
-        <div class="score-bar-row">
-          <span class="score-bar-label">Estetyka</span>
-          <div class="score-bar-bg"><div class="score-bar-fill aesthetics" style="width:${v.aesthetics}%"></div></div>
-          <span class="score-bar-val">${v.aesthetics}</span>
-        </div>
-        <div class="score-bar-row">
-          <span class="score-bar-label">Lokalizacja</span>
-          <div class="score-bar-bg"><div class="score-bar-fill location-bar" style="width:${v.locationScore}%"></div></div>
-          <span class="score-bar-val">${v.locationScore}</span>
-        </div>
-        <div class="score-bar-row">
-          <span class="score-bar-label">Wartosc</span>
-          <div class="score-bar-bg"><div class="score-bar-fill value" style="width:${v.value}%"></div></div>
-          <span class="score-bar-val">${v.value}</span>
-        </div>
-        <div class="score-bar-row">
-          <span class="score-bar-label">Komfort</span>
-          <div class="score-bar-bg"><div class="score-bar-fill comfort" style="width:${v.comfort}%"></div></div>
-          <span class="score-bar-val">${v.comfort}</span>
-        </div>
-      </div>
-      <div class="gym-distance">
-        <span class="gym-icon">&#127947;</span>
-        <div>
-          <div class="gym-label">Odleglosc od silki</div>
-        </div>
-        <div style="text-align:right">
-          <div class="gym-time ${distClass(nearestMin)}">~${nearestMin} min</div>
-          <div class="gym-name-small">${nearestGym}</div>
-        </div>
-      </div>
-      <div class="price-box">
-        <div>
-          <div class="price-label">Cena / osoba / miesiac</div>
-        </div>
-        <div style="text-align:right">
-          <div class="price-value">${v.pricePLN} PLN</div>
-          <div class="price-unit">szacunkowo</div>
-        </div>
-      </div>
-      <div class="amenities">
-        ${v.amenities.map(a => `<span class="amenity${v.highlights.includes(a) ? ' highlight' : ''}">${a}</span>`).join('')}
-      </div>
-      <div class="card-actions">
-        <a href="${airbnbUrl}" target="_blank" class="btn-airbnb">Airbnb</a>
-        <a href="${mapsUrl}" target="_blank" class="btn-maps">Maps</a>
-        <a href="${waUrl}" target="_blank" class="btn-love">Ta mi sie podoba!</a>
-      </div>
-    </div>
-  </div>`;
+  return '<div class="card ' + (v.eliminated ? 'eliminated' : '') + ' ' + (v.topPick ? 'top-pick' : '') + '">' +
+    (v.eliminated ? '<div class="eliminated-banner">ELIMINACJA</div>' : '') +
+    (v.topPick ? '<div class="top-pick-tag">TOP PICK</div>' : '') +
+    '<span class="rank-badge">#' + rank + '</span>' +
+    (!v.eliminated ? '<div class="score-badge ' + scoreClass(v.score) + '">' + v.score + '</div>' : '') +
+    createCarousel(v.photos, v.id) +
+    (v.warning ? '<div class="warning-banner">&#9888; ' + v.warning + '</div>' : '') +
+    '<div class="card-body">' +
+      '<h3>' + v.name + '</h3>' +
+      '<div class="location">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
+        v.location +
+      '</div>' +
+      '<div class="villa-comment">' + v.comment + '</div>' +
+      (v.availability ? '<div class="avail-tag"><span class="avail-icon">&#128197;</span> DOSTEPNE: <span class="avail-dates">' + v.availability + '</span></div>' : '') +
+      '<div class="details-row">' +
+        '<div class="detail"><strong>' + v.bedrooms + '</strong> syp.</div>' +
+        '<div class="detail"><strong>' + v.bathrooms + '</strong> laz.</div>' +
+        '<div class="rating">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#ffb400"/></svg>' +
+          v.rating + ' <span style="color:var(--muted)">(' + v.reviews + ')</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="workspace-tag">' +
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>' +
+        ' WORKSPACE: ' + v.workspace + '/100' +
+      '</div>' +
+      '<div class="score-section">' +
+        scoreBar('Workspace', v.workspace, 'workspace') +
+        scoreBar('Estetyka', v.aesthetics, 'aesthetics') +
+        scoreBar('Lokalizacja', v.locationScore, 'location-bar') +
+        scoreBar('Wartosc', v.value, 'value') +
+        scoreBar('Komfort', v.comfort, 'comfort') +
+      '</div>' +
+      '<div class="gym-distance">' +
+        '<span class="gym-icon">&#127947;</span>' +
+        '<div>' +
+          '<div class="gym-label">Najblizej silka</div>' +
+          '<a href="' + (v.nearestGymIG || '#') + '" target="_blank" class="gym-ig-link">&#9741; ' + nearestGymHandle + '</a>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div class="gym-time ' + distClass(nearestMin) + '">~' + nearestMin + ' MIN</div>' +
+          '<div class="gym-name-small">' + nearestGym + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="price-box">' +
+        '<div>' +
+          '<div class="price-label">Cena / osoba / mies.</div>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div class="price-value">' + v.pricePerPerson.toLocaleString('pl') + ' PLN</div>' +
+          '<div class="price-unit">total: ' + v.priceTotal.toLocaleString('pl') + ' PLN / 41 nocy</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="amenities">' +
+        v.amenities.map(function(a) { return '<span class="amenity' + (v.highlights && v.highlights.includes(a) ? ' highlight' : '') + '">' + a + '</span>'; }).join('') +
+      '</div>' +
+      '<div class="card-actions">' +
+        '<a href="' + airbnbUrl + '" target="_blank" class="btn-airbnb">AIRBNB</a>' +
+        '<a href="' + mapsUrl + '" target="_blank" class="btn-maps">MAPS</a>' +
+        '<a href="' + waUrl + '" target="_blank" class="btn-love btn-love-glow"><span class="heart-icon">&#10084;</span> TA JEST SPOKO!</a>' +
+      '</div>' +
+    '</div></div>';
 }
 
-function renderGrid(sortKey = 'score') {
-  const grid = document.getElementById('villaGrid');
-  const sorted = getDisplayVillas(sortKey);
-  grid.innerHTML = sorted.map((v, i) => createCard(v, i + 1)).join('');
+function scoreBar(label, val, cls) {
+  return '<div class="score-bar-row">' +
+    '<span class="score-bar-label">' + label + '</span>' +
+    '<div class="score-bar-bg"><div class="score-bar-fill ' + cls + '" style="width:' + val + '%"></div></div>' +
+    '<span class="score-bar-val">' + val + '</span></div>';
+}
+
+function renderGrid(sortKey) {
+  sortKey = sortKey || 'score';
+  var grid = document.getElementById('villaGrid');
+  var sorted = getDisplayVillas(sortKey);
+  grid.innerHTML = sorted.map(function(v, i) { return createCard(v, i + 1); }).join('');
 }
 
 // Sort buttons
-document.getElementById('sortBtns').addEventListener('click', e => {
+document.getElementById('sortBtns').addEventListener('click', function(e) {
   if (e.target.tagName !== 'BUTTON') return;
-  document.querySelectorAll('#sortBtns button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#sortBtns button').forEach(function(b) { b.classList.remove('active'); });
   e.target.classList.add('active');
   renderGrid(e.target.dataset.sort);
 });
 
-// Date buttons (visual only — prices are estimates)
-document.getElementById('dateFilter').addEventListener('click', e => {
-  if (e.target.tagName !== 'BUTTON') return;
-  document.querySelectorAll('#dateFilter button').forEach(b => b.classList.remove('active'));
-  e.target.classList.add('active');
-});
-
-// Initial render
-renderGrid();
-
-// Touch swipe support for carousels
+// Touch swipe for carousels
 document.addEventListener('touchstart', function(e) {
-  const carousel = e.target.closest('.carousel');
+  var carousel = e.target.closest('.carousel');
   if (!carousel) return;
   carousel._touchStartX = e.touches[0].clientX;
 }, {passive: true});
 document.addEventListener('touchend', function(e) {
-  const carousel = e.target.closest('.carousel');
+  var carousel = e.target.closest('.carousel');
   if (!carousel || !carousel._touchStartX) return;
-  const diff = carousel._touchStartX - e.changedTouches[0].clientX;
-  const id = carousel.id.replace('carousel-', '');
+  var diff = carousel._touchStartX - e.changedTouches[0].clientX;
+  var id = carousel.id.replace('carousel-', '');
   if (Math.abs(diff) > 50) slideCarousel(id, diff > 0 ? 1 : -1);
   carousel._touchStartX = null;
 }, {passive: true});
-</script>
 
+// GTA HUD — live time
+(function updateHUD() {
+  var now = new Date();
+  var h = String(now.getHours()).padStart(2, '0');
+  var m = String(now.getMinutes()).padStart(2, '0');
+  // Not shown in current layout but available
+  setTimeout(updateHUD, 60000);
+})();
+</script>
 </body>
 </html>
