@@ -93,11 +93,15 @@ section h2 .sn { color: var(--blue); margin-right: 8px; font-weight: 800; }
 .criteria-bars { display: flex; gap: 8px; align-items: center; }
 .criteria-bar-wrap { flex: 1; display: flex; align-items: center; gap: 6px; }
 .criteria-bar {
-    height: 26px; border-radius: 5px; min-width: 2px; position: relative;
-    display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;
+    height: 28px; border-radius: 5px; min-width: 40px; position: relative;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 8px;
+}
+.criteria-bar .bar-model {
+    font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.7); white-space: nowrap;
+    text-transform: uppercase; letter-spacing: 0.5px;
 }
 .criteria-bar .bar-label {
-    font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.95); white-space: nowrap;
+    font-size: 0.75rem; font-weight: 800; color: rgba(255,255,255,0.95); white-space: nowrap;
 }
 .human-badge {
     display: inline-block; background: rgba(234,179,8,0.15); color: var(--yellow);
@@ -375,45 +379,45 @@ section h2 .sn { color: var(--blue); margin-right: 8px; font-weight: 800; }
   <span class="criteria-code">A2</span>
   <span class="criteria-name">Zwiezlosc</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:94.33333333333334%;background:#12ADFF"><span class="bar-label">2.8</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:81.66666666666667%;background:#FF6B35"><span class="bar-label">2.5</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:89.0%;background:#A855F7"><span class="bar-label">2.7</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:94.33333333333334%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">2.8</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:81.66666666666667%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">2.5</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:89.0%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">2.7</span></div></div>
   </div>
 </div>
 <div class="criteria-row">
   <span class="criteria-code">A3</span>
   <span class="criteria-name">Reakcje i Emoji</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:66.0%;background:#12ADFF"><span class="bar-label">2.0</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:54.99999999999999%;background:#FF6B35"><span class="bar-label">1.6</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:61.33333333333334%;background:#A855F7"><span class="bar-label">1.8</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:66.0%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">2.0</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:54.99999999999999%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">1.6</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:61.33333333333334%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">1.8</span></div></div>
   </div>
 </div>
 <div class="criteria-row">
   <span class="criteria-code">A4</span>
   <span class="criteria-name">Brak AI-Fraz</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#12ADFF"><span class="bar-label">3.0</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#FF6B35"><span class="bar-label">3.0</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#A855F7"><span class="bar-label">3.0</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">3.0</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">3.0</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">3.0</span></div></div>
   </div>
 </div>
 <div class="criteria-row">
   <span class="criteria-code">B5</span>
   <span class="criteria-name">Progresja Etapu</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:60.333333333333336%;background:#12ADFF"><span class="bar-label">1.8</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:61.0%;background:#FF6B35"><span class="bar-label">1.8</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:61.66666666666667%;background:#A855F7"><span class="bar-label">1.9</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:60.333333333333336%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">1.8</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:61.0%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">1.8</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:61.66666666666667%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">1.9</span></div></div>
   </div>
 </div>
 <div class="criteria-row">
   <span class="criteria-code">B6</span>
   <span class="criteria-name">Follow-Up Strategy</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:95.66666666666667%;background:#12ADFF"><span class="bar-label">2.9</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:94.0%;background:#FF6B35"><span class="bar-label">2.8</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:92.66666666666666%;background:#A855F7"><span class="bar-label">2.8</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:95.66666666666667%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">2.9</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:94.0%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">2.8</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:92.66666666666666%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">2.8</span></div></div>
   </div>
 </div>
 <div class="criteria-row">
@@ -427,9 +431,9 @@ section h2 .sn { color: var(--blue); margin-right: 8px; font-weight: 800; }
   <span class="criteria-code">B8</span>
   <span class="criteria-name">Powiadomienia</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:68.33333333333333%;background:#12ADFF"><span class="bar-label">2.0</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:69.66666666666667%;background:#FF6B35"><span class="bar-label">2.1</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:71.0%;background:#A855F7"><span class="bar-label">2.1</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:68.33333333333333%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">2.0</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:69.66666666666667%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">2.1</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:71.0%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">2.1</span></div></div>
   </div>
 </div>
 <div class="criteria-row">
@@ -443,9 +447,9 @@ section h2 .sn { color: var(--blue); margin-right: 8px; font-weight: 800; }
   <span class="criteria-code">C10</span>
   <span class="criteria-name">Notatki Wewnetrzne</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:50.0%;background:#12ADFF"><span class="bar-label">1.5</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:48.0%;background:#FF6B35"><span class="bar-label">1.4</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:61.33333333333334%;background:#A855F7"><span class="bar-label">1.8</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:50.0%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">1.5</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:48.0%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">1.4</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:61.33333333333334%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">1.8</span></div></div>
   </div>
 </div>
 <div class="criteria-row">
@@ -466,27 +470,27 @@ section h2 .sn { color: var(--blue); margin-right: 8px; font-weight: 800; }
   <span class="criteria-code">D13</span>
   <span class="criteria-name">Niezawodnosc Tech.</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#12ADFF"><span class="bar-label">3.0</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:97.33333333333333%;background:#FF6B35"><span class="bar-label">2.9</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#A855F7"><span class="bar-label">3.0</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">3.0</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:97.33333333333333%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">2.9</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:100.0%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">3.0</span></div></div>
   </div>
 </div>
 <div class="criteria-row">
   <span class="criteria-code">D14</span>
   <span class="criteria-name">Szybkosc</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:49.333333333333336%;background:#12ADFF"><span class="bar-label">1.5</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:72.33333333333333%;background:#FF6B35"><span class="bar-label">2.2</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:45.333333333333336%;background:#A855F7"><span class="bar-label">1.4</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:49.333333333333336%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">1.5</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:72.33333333333333%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">2.2</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:45.333333333333336%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">1.4</span></div></div>
   </div>
 </div>
 <div class="criteria-row">
   <span class="criteria-code">D15</span>
   <span class="criteria-name">Koszt/Wiadomosc</span>
   <div class="criteria-bars">
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:70.66666666666667%;background:#12ADFF"><span class="bar-label">2.1</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:89.0%;background:#FF6B35"><span class="bar-label">2.7</span></div></div>
-    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:56.666666666666664%;background:#A855F7"><span class="bar-label">1.7</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:70.66666666666667%;background:#12ADFF"><span class="bar-model">5.1</span><span class="bar-label">2.1</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:89.0%;background:#FF6B35"><span class="bar-model">5.4L</span><span class="bar-label">2.7</span></div></div>
+    <div class="criteria-bar-wrap"><div class="criteria-bar" style="width:56.666666666666664%;background:#A855F7"><span class="bar-model">5.4M</span><span class="bar-label">1.7</span></div></div>
   </div>
 </div>
 </div>
