@@ -5,352 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SETOR AI — Affiliate System 2.0 | Technical Brief for Alex</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-  :root {
-    --navy-100: #d1e1f7;
-    --navy-200: #a3c3ef;
-    --navy-300: #6b9de0;
-    --navy-400: #3a78d0;
-    --navy-500: #1a5ab8;
-    --navy-600: #0f3d7a;
-    --navy-700: #0b2a55;
-    --navy-800: #0b1a30;
-    --navy-900: #060e1a;
-    --accent: #00c896;
-    --accent-dim: #00a07a;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --success: #22c55e;
-    --bg: #fafbfd;
-    --card: #ffffff;
-    --text: #0b1a30;
-    --text-secondary: #4a6a8a;
-    --border: #d1e1f7;
-    --code-bg: #f0f4fa;
-  }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: 'Inter', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    background: #fff;
+    color: #111;
     line-height: 1.7;
-    font-size: 14px;
+    font-size: 15px;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
-  .watermark {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    opacity: 0.09;
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    color: var(--navy-800);
-    z-index: -1;
-    pointer-events: none;
-  }
+  .watermark { display: none; }
 
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 32px;
-  }
+  .container { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
 
-  /* COVER PAGE */
   .cover {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding: 80px 40px;
     text-align: center;
-    background: linear-gradient(135deg, var(--navy-800) 0%, var(--navy-700) 40%, var(--navy-600) 100%);
-    color: white;
-    padding: 60px 40px;
-    page-break-after: always;
-    position: relative;
-    overflow: hidden;
-  }
-  .cover::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -30%;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,200,150,0.08) 0%, transparent 70%);
-  }
-  .cover h1 {
-    font-size: 42px;
-    font-weight: 900;
-    letter-spacing: -1px;
-    margin-bottom: 12px;
-  }
-  .cover .subtitle {
-    font-size: 20px;
-    font-weight: 300;
-    opacity: 0.85;
+    border-bottom: 3px solid #111;
     margin-bottom: 40px;
   }
-  .cover .meta {
-    font-size: 13px;
-    opacity: 0.5;
-    margin-top: 60px;
-  }
-  .cover .badge {
-    display: inline-block;
-    background: var(--accent);
-    color: var(--navy-900);
-    font-weight: 700;
-    font-size: 12px;
-    padding: 6px 16px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
+  .cover::before { display: none; }
+  .cover h1 { font-size: 36px; font-weight: 800; color: #111; margin-bottom: 8px; }
+  .cover .subtitle { font-size: 17px; font-weight: 400; color: #444; margin-bottom: 32px; }
+  .cover .meta { font-size: 13px; color: #888; margin-top: 40px; }
+  .cover .badge { display: inline-block; font-weight: 600; font-size: 12px; padding: 4px 12px; border: 1px solid #111; margin-bottom: 20px; letter-spacing: 1px; text-transform: uppercase; }
 
-  /* HEADERS */
-  h1 { font-size: 28px; font-weight: 800; color: var(--navy-800); margin: 48px 0 16px; letter-spacing: -0.5px; }
-  h2 { font-size: 22px; font-weight: 700; color: var(--navy-700); margin: 36px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
-  h3 { font-size: 17px; font-weight: 600; color: var(--navy-600); margin: 24px 0 8px; }
-  h4 { font-size: 15px; font-weight: 600; color: var(--navy-500); margin: 16px 0 6px; }
+  h1 { font-size: 24px; font-weight: 800; color: #111; margin: 48px 0 12px; }
+  h2 { font-size: 20px; font-weight: 700; color: #111; margin: 36px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #ddd; }
+  h3 { font-size: 16px; font-weight: 700; color: #111; margin: 24px 0 8px; }
+  h4 { font-size: 15px; font-weight: 600; color: #333; margin: 16px 0 6px; }
 
   p { margin-bottom: 12px; }
+  ul, ol { margin: 8px 0 16px 24px; }
+  li { margin-bottom: 4px; }
 
-  /* SECTION NUMBERS */
   .section-num {
     display: inline-block;
-    background: var(--navy-800);
-    color: white;
+    background: #111;
+    color: #fff;
     font-weight: 800;
     font-size: 13px;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
     text-align: center;
-    border-radius: 8px;
-    margin-right: 10px;
+    border-radius: 4px;
+    margin-right: 8px;
     vertical-align: middle;
   }
 
-  /* TABLES */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0 24px;
-    font-size: 13px;
-  }
-  th {
-    background: var(--navy-800);
-    color: white;
-    font-weight: 600;
-    text-align: left;
-    padding: 10px 12px;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  td {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-  tr:nth-child(even) td { background: #f6f9fd; }
-  tr:hover td { background: var(--navy-100); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 24px; font-size: 14px; }
+  th { background: #111; color: #fff; font-weight: 600; text-align: left; padding: 8px 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 8px 10px; border-bottom: 1px solid #ddd; vertical-align: top; color: #111; }
+  tr:nth-child(even) td { background: #f9f9f9; }
 
-  /* CARDS */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 24px;
-    margin: 16px 0;
-    box-shadow: 0 1px 3px rgba(11,26,48,0.06);
-  }
-  .card-accent {
-    border-left: 4px solid var(--accent);
-  }
-  .card-warning {
-    border-left: 4px solid var(--warning);
-    background: #fffbf0;
-  }
-  .card-danger {
-    border-left: 4px solid var(--danger);
-    background: #fff5f5;
-  }
-  .card-navy {
-    background: var(--navy-800);
-    color: white;
-    border: none;
-  }
-  .card-navy h3, .card-navy h4 { color: var(--navy-100); }
+  .card { border: 1px solid #ddd; padding: 16px 20px; margin: 14px 0; }
+  .card-accent { border-left: 3px solid #111; }
+  .card-warning { border-left: 3px solid #999; background: #fafafa; }
+  .card-danger { border-left: 3px solid #111; background: #fafafa; }
+  .card-navy { background: #f5f5f5; color: #111; border: 1px solid #ddd; }
+  .card-navy h3, .card-navy h4 { color: #111; }
 
-  /* CODE */
-  code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    background: var(--code-bg);
-    padding: 2px 6px;
-    border-radius: 4px;
-    color: var(--navy-700);
-  }
-  pre {
-    background: var(--navy-900);
-    color: #e2e8f0;
-    padding: 16px 20px;
-    border-radius: 8px;
-    overflow-x: auto;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    line-height: 1.6;
-    margin: 12px 0 20px;
-  }
-  pre code {
-    background: none;
-    padding: 0;
-    color: inherit;
-  }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: #f3f3f3; padding: 1px 5px; color: #111; }
+  pre { background: #111; color: #eee; padding: 14px 18px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; margin: 10px 0 18px; }
+  pre code { background: none; padding: 0; color: inherit; }
 
-  /* BADGES */
-  .badge-sm {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .badge-starter { background: #e0f2fe; color: #0369a1; }
-  .badge-growth { background: #dcfce7; color: #15803d; }
-  .badge-elite { background: #fef3c7; color: #a16207; }
-  .badge-legend { background: #fce7f3; color: #be185d; }
-  .badge-t2 { background: #f3e8ff; color: #7c3aed; }
-  .badge-edge { background: #fee2e2; color: #dc2626; }
-  .badge-sprint { background: var(--navy-100); color: var(--navy-700); }
+  .badge-sm { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 6px; border: 1px solid #111; text-transform: uppercase; letter-spacing: 0.5px; background: #fff; color: #111; }
+  .badge-starter, .badge-growth, .badge-elite, .badge-legend, .badge-t2, .badge-edge, .badge-sprint { background: #fff; color: #111; border: 1px solid #111; }
 
-  /* FLOW DIAGRAMS (ASCII-style) */
-  .flow-box {
-    background: var(--navy-900);
-    color: #e2e8f0;
-    padding: 20px 24px;
-    border-radius: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    line-height: 1.8;
-    white-space: pre;
-    overflow-x: auto;
-    margin: 16px 0 24px;
-  }
+  .flow-box { background: #111; color: #eee; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.8; white-space: pre; overflow-x: auto; margin: 14px 0 22px; }
 
-  /* EDGE CASE LIST */
-  .edge-case {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin: 10px 0;
-  }
-  .edge-case .ec-num {
-    display: inline-block;
-    background: var(--danger);
-    color: white;
-    font-weight: 700;
-    font-size: 11px;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    text-align: center;
-    border-radius: 6px;
-    margin-right: 8px;
-  }
-  .edge-case .ec-title {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--navy-800);
-  }
-  .edge-case .ec-scenario {
-    color: var(--text-secondary);
-    font-size: 13px;
-    margin: 6px 0 4px;
-  }
-  .edge-case .ec-solution {
-    color: var(--navy-700);
-    font-size: 13px;
-    font-weight: 500;
-  }
+  .edge-case { border: 1px solid #ddd; padding: 12px 16px; margin: 8px 0; }
+  .edge-case .ec-num { display: inline-block; background: #111; color: #fff; font-weight: 700; font-size: 11px; width: 22px; height: 22px; line-height: 22px; text-align: center; margin-right: 8px; }
+  .edge-case .ec-title { font-weight: 700; font-size: 14px; color: #111; }
+  .edge-case .ec-scenario { color: #555; font-size: 13px; margin: 4px 0; }
+  .edge-case .ec-solution { color: #111; font-size: 13px; font-weight: 500; }
 
-  /* TOC */
-  .toc {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px 32px;
-    margin: 24px 0;
-  }
-  .toc-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    border-bottom: 1px dotted #ddd;
-    font-size: 14px;
-  }
+  .toc { border: 1px solid #ddd; padding: 24px 28px; margin: 20px 0; }
+  .toc-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dotted #ccc; font-size: 14px; }
   .toc-item:last-child { border: none; }
   .toc-section { font-weight: 600; }
-  .toc-page { color: var(--text-secondary); font-size: 13px; }
 
-  /* MATH BOX */
-  .math-box {
-    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
-    border: 1px solid #86efac;
-    border-radius: 10px;
-    padding: 18px 22px;
-    margin: 12px 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-  }
+  .math-box { background: #f9f9f9; border: 1px solid #ddd; padding: 16px 20px; margin: 10px 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; white-space: pre-wrap; }
 
-  /* SEPARATOR */
   .page-break { page-break-before: always; }
-  hr { border: none; border-top: 2px solid var(--border); margin: 36px 0; }
+  hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
 
-  /* FOOTER */
-  .footer {
-    text-align: center;
-    padding: 32px 0;
-    font-size: 11px;
-    color: var(--text-secondary);
-    border-top: 1px solid var(--border);
-    margin-top: 48px;
-  }
+  .footer { text-align: center; padding: 28px 0; font-size: 12px; color: #888; border-top: 1px solid #ddd; margin-top: 40px; }
 
-  /* PRINT */
   @media print {
-    body { font-size: 11px; }
-    .container { padding: 20px; }
+    body { font-size: 12px; }
+    .container { padding: 16px; }
     .card, .edge-case { break-inside: avoid; }
-    .cover { min-height: auto; padding: 80px 40px; }
-    .watermark { display: none; }
   }
 
-  /* TWO COLUMN */
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  /* HIGHLIGHT */
-  .hl { background: #fef08a; padding: 1px 4px; border-radius: 2px; font-weight: 600; }
-  .hl-green { background: #bbf7d0; padding: 1px 4px; border-radius: 2px; font-weight: 600; }
-  .hl-red { background: #fecaca; padding: 1px 4px; border-radius: 2px; font-weight: 600; }
+  .hl { background: #eee; padding: 1px 4px; font-weight: 700; }
+  .hl-green { background: #eee; padding: 1px 4px; font-weight: 700; }
+  .hl-red { background: #eee; padding: 1px 4px; font-weight: 700; text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -359,27 +115,10 @@
 
 <!-- ==================== COVER PAGE ==================== -->
 <div class="cover">
-  <div class="badge">Confidential — Internal Use Only</div>
+  <div class="badge">Confidential</div>
   <h1>Affiliate System 2.0</h1>
   <p class="subtitle">Kompletny brief techniczny + architektura + edge cases<br>Wszystko co musisz wiedzieć żeby to zbudować</p>
-  <div style="display:flex; gap:24px; margin-top:20px; justify-content:center; flex-wrap:wrap;">
-    <div style="background:rgba(255,255,255,0.08); padding:16px 24px; border-radius:12px; text-align:center;">
-      <div style="font-size:28px; font-weight:800;">4</div>
-      <div style="font-size:11px; opacity:0.6;">TIERY</div>
-    </div>
-    <div style="background:rgba(255,255,255,0.08); padding:16px 24px; border-radius:12px; text-align:center;">
-      <div style="font-size:28px; font-weight:800;">2</div>
-      <div style="font-size:11px; opacity:0.6;">LINIE PROWIZJI</div>
-    </div>
-    <div style="background:rgba(255,255,255,0.08); padding:16px 24px; border-radius:12px; text-align:center;">
-      <div style="font-size:28px; font-weight:800;">40%</div>
-      <div style="font-size:11px; opacity:0.6;">MAX CAP</div>
-    </div>
-    <div style="background:rgba(255,255,255,0.08); padding:16px 24px; border-radius:12px; text-align:center;">
-      <div style="font-size:28px; font-weight:800;">35+</div>
-      <div style="font-size:11px; opacity:0.6;">EDGE CASES</div>
-    </div>
-  </div>
+  <p style="font-size:14px; color:#555; margin-top:16px;">4 tiery &bull; 2 linie prowizji &bull; 40% max cap &bull; 40 edge cases</p>
   <div class="meta">
     SETOR AI SP. Z O.O. &bull; Wersja 2.0 &bull; Marzec 2026<br>
     Autor: Maciej Rak (CEO) &bull; Odbiorca: Alex (CTO)
