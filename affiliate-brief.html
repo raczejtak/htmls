@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SETOR AI — Affiliate System 2.0 | Technical Brief for Alex</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --navy-100: #d1e1f7;
+    --navy-200: #a3c3ef;
+    --navy-300: #6b9de0;
+    --navy-400: #3a78d0;
+    --navy-500: #1a5ab8;
+    --navy-600: #0f3d7a;
+    --navy-700: #0b2a55;
+    --navy-800: #0b1a30;
+    --navy-900: #060e1a;
+    --accent: #00c896;
+    --accent-dim: #00a07a;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --bg: #fafbfd;
+    --card: #ffffff;
+    --text: #0b1a30;
+    --text-secondary: #4a6a8a;
+    --border: #d1e1f7;
+    --code-bg: #f0f4fa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 14px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .watermark {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    opacity: 0.09;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--navy-800);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 32px;
+  }
+
+  /* COVER PAGE */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, var(--navy-800) 0%, var(--navy-700) 40%, var(--navy-600) 100%);
+    color: white;
+    padding: 60px 40px;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,200,150,0.08) 0%, transparent 70%);
+  }
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  .cover .subtitle {
+    font-size: 20px;
+    font-weight: 300;
+    opacity: 0.85;
+    margin-bottom: 40px;
+  }
+  .cover .meta {
+    font-size: 13px;
+    opacity: 0.5;
+    margin-top: 60px;
+  }
+  .cover .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--navy-900);
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  /* HEADERS */
+  h1 { font-size: 28px; font-weight: 800; color: var(--navy-800); margin: 48px 0 16px; letter-spacing: -0.5px; }
+  h2 { font-size: 22px; font-weight: 700; color: var(--navy-700); margin: 36px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 17px; font-weight: 600; color: var(--navy-600); margin: 24px 0 8px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--navy-500); margin: 16px 0 6px; }
+
+  p { margin-bottom: 12px; }
+
+  /* SECTION NUMBERS */
+  .section-num {
+    display: inline-block;
+    background: var(--navy-800);
+    color: white;
+    font-weight: 800;
+    font-size: 13px;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 8px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 13px;
+  }
+  th {
+    background: var(--navy-800);
+    color: white;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f6f9fd; }
+  tr:hover td { background: var(--navy-100); }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    box-shadow: 0 1px 3px rgba(11,26,48,0.06);
+  }
+  .card-accent {
+    border-left: 4px solid var(--accent);
+  }
+  .card-warning {
+    border-left: 4px solid var(--warning);
+    background: #fffbf0;
+  }
+  .card-danger {
+    border-left: 4px solid var(--danger);
+    background: #fff5f5;
+  }
+  .card-navy {
+    background: var(--navy-800);
+    color: white;
+    border: none;
+  }
+  .card-navy h3, .card-navy h4 { color: var(--navy-100); }
+
+  /* CODE */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--navy-700);
+  }
+  pre {
+    background: var(--navy-900);
+    color: #e2e8f0;
+    padding: 16px 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 12px 0 20px;
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* BADGES */
+  .badge-sm {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-starter { background: #e0f2fe; color: #0369a1; }
+  .badge-growth { background: #dcfce7; color: #15803d; }
+  .badge-elite { background: #fef3c7; color: #a16207; }
+  .badge-legend { background: #fce7f3; color: #be185d; }
+  .badge-t2 { background: #f3e8ff; color: #7c3aed; }
+  .badge-edge { background: #fee2e2; color: #dc2626; }
+  .badge-sprint { background: var(--navy-100); color: var(--navy-700); }
+
+  /* FLOW DIAGRAMS (ASCII-style) */
+  .flow-box {
+    background: var(--navy-900);
+    color: #e2e8f0;
+    padding: 20px 24px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    white-space: pre;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+  }
+
+  /* EDGE CASE LIST */
+  .edge-case {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 10px 0;
+  }
+  .edge-case .ec-num {
+    display: inline-block;
+    background: var(--danger);
+    color: white;
+    font-weight: 700;
+    font-size: 11px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 6px;
+    margin-right: 8px;
+  }
+  .edge-case .ec-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--navy-800);
+  }
+  .edge-case .ec-scenario {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin: 6px 0 4px;
+  }
+  .edge-case .ec-solution {
+    color: var(--navy-700);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 24px 0;
+  }
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dotted #ddd;
+    font-size: 14px;
+  }
+  .toc-item:last-child { border: none; }
+  .toc-section { font-weight: 600; }
+  .toc-page { color: var(--text-secondary); font-size: 13px; }
+
+  /* MATH BOX */
+  .math-box {
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+    border: 1px solid #86efac;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 12px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+
+  /* SEPARATOR */
+  .page-break { page-break-before: always; }
+  hr { border: none; border-top: 2px solid var(--border); margin: 36px 0; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    font-size: 11px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  /* PRINT */
+  @media print {
+    body { font-size: 11px; }
+    .container { padding: 20px; }
+    .card, .edge-case { break-inside: avoid; }
+    .cover { min-height: auto; padding: 80px 40px; }
+    .watermark { display: none; }
+  }
+
+  /* TWO COLUMN */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* HIGHLIGHT */
+  .hl { background: #fef08a; padding: 1px 4px; border-radius: 2px; font-weight: 600; }
+  .hl-green { background: #bbf7d0; padding: 1px 4px; border-radius: 2px; font-weight: 600; }
+  .hl-red { background: #fecaca; padding: 1px 4px; border-radius: 2px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="watermark">SETOR AI</div>
+
+<!-- ==================== COVER PAGE ==================== -->
+<div class="cover">
+  <div class="badge">Confidential — Internal Use Only</div>
+  <h1>Affiliate System 2.0</h1>
+  <p class="subtitle">Kompletny brief techniczny + architektura + edge cases<br>Wszystko co musisz wiedzieć żeby to zbudować</p>
+  <div style="display:flex; gap:24px; margin-top:20px; justify-content:center; flex-wrap:wrap;">
+    <div style="background:rgba(255,255,255,0.08); padding:16px 24px; border-radius:12px; text-align:center;">
+      <div style="font-size:28px; font-weight:800;">4</div>
+      <div style="font-size:11px; opacity:0.6;">TIERY</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.08); padding:16px 24px; border-radius:12px; text-align:center;">
+      <div style="font-size:28px; font-weight:800;">2</div>
+      <div style="font-size:11px; opacity:0.6;">LINIE PROWIZJI</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.08); padding:16px 24px; border-radius:12px; text-align:center;">
+      <div style="font-size:28px; font-weight:800;">40%</div>
+      <div style="font-size:11px; opacity:0.6;">MAX CAP</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.08); padding:16px 24px; border-radius:12px; text-align:center;">
+      <div style="font-size:28px; font-weight:800;">35+</div>
+      <div style="font-size:11px; opacity:0.6;">EDGE CASES</div>
+    </div>
+  </div>
+  <div class="meta">
+    SETOR AI SP. Z O.O. &bull; Wersja 2.0 &bull; Marzec 2026<br>
+    Autor: Maciej Rak (CEO) &bull; Odbiorca: Alex (CTO)
+  </div>
+</div>
+
+<!-- ==================== TABLE OF CONTENTS ==================== -->
+<div class="container">
+
+<h1>Spis Treści</h1>
+<div class="toc">
+  <div class="toc-item"><span class="toc-section">1. Executive Summary — Dlaczego to robimy</span></div>
+  <div class="toc-item"><span class="toc-section">2. Architektura — Big Picture</span></div>
+  <div class="toc-item"><span class="toc-section">3. System Tierów — Pełna specyfikacja</span></div>
+  <div class="toc-item"><span class="toc-section">4. Druga Linia (T2) — Jak działa 5%</span></div>
+  <div class="toc-item"><span class="toc-section">5. Kompletny Flow — Od kodu do kasy</span></div>
+  <div class="toc-item"><span class="toc-section">6. Przykłady Liczbowe — 8 scenariuszy</span></div>
+  <div class="toc-item"><span class="toc-section">7. Bonus $500 — Mechanizm + ochrona</span></div>
+  <div class="toc-item"><span class="toc-section">8. Churn, Grace Period, Dezaktywacja</span></div>
+  <div class="toc-item"><span class="toc-section">9. Cookie &amp; Attribution</span></div>
+  <div class="toc-item"><span class="toc-section">10. Migracja — Stary vs Nowy system</span></div>
+  <div class="toc-item"><span class="toc-section">11. Database Schema — Co jest, co trzeba dodać</span></div>
+  <div class="toc-item"><span class="toc-section">12. Implementacja — 3 Sprinty</span></div>
+  <div class="toc-item"><span class="toc-section">13. 40 Edge Cases — Kompletna lista</span></div>
+  <div class="toc-item"><span class="toc-section">14. Testing Guide — Jak to przetestować</span></div>
+  <div class="toc-item"><span class="toc-section">15. File Reference Map</span></div>
+  <div class="toc-item"><span class="toc-section">16. Projekcje Finansowe</span></div>
+</div>
+
+<!-- ==================== 1. EXECUTIVE SUMMARY ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">1</span> Executive Summary</h1>
+
+<div class="card card-navy">
+  <h3>Problem</h3>
+  <p>Setor AI ma <strong>4-16 tygodni</strong> przewagi konkurencyjnej zanim ktoś wejdzie z podobnym produktem za $200/mo. Obecny affiliate system (10→20→30%) nie jest wystarczająco agresywny żeby stworzyć efekt lawiny.</p>
+  <h3 style="margin-top:16px;">Rozwiązanie</h3>
+  <p>Przerobić system na <strong>40%-cap tiered model</strong> z <strong>obowiązkową drugą linią (T2 = 5%)</strong>, wzorowany na ClickFunnels/GoHighLevel. Affiliate program staje się #1 growth engine.</p>
+</div>
+
+<h3>Co się zmienia vs obecny system</h3>
+<table>
+  <tr><th>Element</th><th>STARY system</th><th>NOWY system 2.0</th></tr>
+  <tr><td>Tiery</td><td>3 (Starter/Growth/Senior)</td><td><strong>4 (Starter/Growth/Elite/Legend)</strong></td></tr>
+  <tr><td>Stawki T1</td><td>10% / 20% / 30%</td><td><strong>10% / 15% / 25% / 35%</strong></td></tr>
+  <tr><td>Druga linia (T2)</td><td>NIE ISTNIEJE</td><td><strong>5% — stałe dla wszystkich tierów</strong></td></tr>
+  <tr><td>Max cap</td><td>30%</td><td><strong>40% (T1 + T2)</strong></td></tr>
+  <tr><td>Starter czas trwania</td><td>12 miesięcy</td><td><strong>LIFETIME (bez wygaśnięcia)</strong></td></tr>
+  <tr><td>Cookie</td><td>brak</td><td><strong>90 dni</strong></td></tr>
+  <tr><td>Progi</td><td>0-2 / 3-5 / 6+</td><td><strong>1-2 / 3-5 / 6-10 / 11+</strong></td></tr>
+  <tr><td>Top nagroda</td><td>Rolex (6+ klientów)</td><td><strong>Rolex TYLKO dla 1. osoby na Legend</strong></td></tr>
+  <tr><td>Zewnętrzni affiliate</td><td>Nie</td><td><strong>Tak — otwarty program</strong></td></tr>
+</table>
+
+<div class="card card-warning">
+  <h4>Dlaczego TERAZ</h4>
+  <p>Okno konkurencyjne 4-16 tygodni. Każdy dzień opóźnienia = mniej czasu na zbudowanie sieci affiliate zanim competitor zaoferuje tańszy produkt. Affiliate network raz zbudowany jest <strong>moat</strong> — trudny do skopiowania.</p>
+</div>
+
+<h3>Na bazie jakich firm to projektowaliśmy</h3>
+<table>
+  <tr><th>Firma</th><th>Produkt</th><th>Affiliate model</th><th>Co osiągnęli</th></tr>
+  <tr>
+    <td><strong>ClickFunnels</strong></td>
+    <td>Funnel builder, $97-297/mo</td>
+    <td>40% recurring + "Dream Car" bonus przy 100 aktywnych</td>
+    <td>$100M+ ARR. <strong>Affiliate = 40%+ nowych klientów.</strong> Dream Car program zbudował armię ewangelistów. Affiliate network stał się głównym moatem — nawet lepszy produkt nie przebije lojalności tysięcy affiliate.</td>
+  </tr>
+  <tr>
+    <td><strong>GoHighLevel (GHL)</strong></td>
+    <td>All-in-one marketing SaaS, $97-497/mo</td>
+    <td>40% recurring lifetime + SaaS mode (white-label resell)</td>
+    <td>$100M+ ARR w ~3 lata. <strong>Od 0 do 60,000+ klientów głównie przez affiliate.</strong> 2-tier model: affiliate poleca agencję → agencja poleca sub-klientów. Ich agencyjny model z affiliate to dokładnie to co robimy z Setor.</td>
+  </tr>
+  <tr>
+    <td><strong>Kajabi</strong></td>
+    <td>Course platform, $149-399/mo</td>
+    <td>30% recurring lifetime</td>
+    <td>$100M+ ARR. Affiliate stanowili ~25% nowych klientów. Niższy % niż CF/GHL ale lifetime = loyalność. Dowód że nawet 30% wystarczy przy high-ticket.</td>
+  </tr>
+  <tr>
+    <td><strong>Jasper AI</strong></td>
+    <td>AI copywriting, $49-125/mo</td>
+    <td>30% recurring (12 mies.)</td>
+    <td>$80M ARR w 2 lata. Affiliate + influencer marketing = główny kanał. 12-mies. limit prowizji okazał się błędem — top affiliate odchodzili po roku. <strong>Lekcja: lifetime &gt; limited.</strong></td>
+  </tr>
+</table>
+
+<div class="card card-accent">
+  <h4>Wnioski dla Setor AI</h4>
+  <ul>
+    <li><strong>40% cap</strong> = standard w SaaS high-ticket affiliate. CF i GHL udowodniły że to działa.</li>
+    <li><strong>Lifetime prowizje</strong> = kluczowe. Jasper stracił top affiliate przez 12-mies. limit. My zaczynaliśmy z 12 mies. na Starter — teraz naprawiamy.</li>
+    <li><strong>2-tier (T2)</strong> = GHL to robi i ma 60k+ klientów. Efekt sieciowy — affiliate rekrutują affiliate.</li>
+    <li><strong>Physical rewards</strong> = CF Dream Car, my Rolex + Oura. Aspirational nagrody &gt; czysty cash.</li>
+    <li>Setor jest w pozycji GHL 2020 — niszowy SaaS z high-ticket pricing. Affiliate program TERAZ = 2-3 lata przewagi.</li>
+  </ul>
+</div>
+
+<!-- ==================== 2. ARCHITEKTURA ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">2</span> Architektura — Big Picture</h1>
+
+<h3>Diagram systemu — 2 linie prowizji</h3>
+<div class="flow-box">
+╔══════════════════════════════════════════════════════════════════╗
+║                    AFFILIATE NETWORK SETOR AI                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║                                                                  ║
+║  LINIA 1 (T1) — Bezpośrednie polecenia                          ║
+║  ═══════════════════════════════════════                          ║
+║                                                                  ║
+║  ┌──────────┐  poleca   ┌──────────┐  płaci $1000/mo            ║
+║  │ AFFILIATE│──────────▶│ KLIENT A │──────────────────▶ Setor   ║
+║  │  Jasion  │           └──────────┘                             ║
+║  │          │  poleca   ┌──────────┐  płaci $1000/mo            ║
+║  │          │──────────▶│ KLIENT B │──────────────────▶ Setor   ║
+║  └──────────┘           └──────────┘                             ║
+║       │                                                          ║
+║       │  T1 prowizja: 10-35% od KAŻDEGO klienta                 ║
+║       ▼                                                          ║
+║  ┌──────────────────────────────────────┐                        ║
+║  │  Jasion dostaje T1 od A i B          │                        ║
+║  │  np. 10% × $1000 = $100/mies × 2    │                        ║
+║  └──────────────────────────────────────┘                        ║
+║                                                                  ║
+║                                                                  ║
+║  LINIA 2 (T2) — Polecenia przez poleconych                      ║
+║  ═══════════════════════════════════════                          ║
+║                                                                  ║
+║  ┌──────────┐  rekrutuje  ┌──────────┐  poleca   ┌──────────┐  ║
+║  │  JASION  │────────────▶│ KLIENT A │──────────▶│ KLIENT C │  ║
+║  │ (parent) │             │(sub-aff) │           │ (nowy!)   │  ║
+║  └──────────┘             └──────────┘           └──────────┘  ║
+║       │                        │                      │          ║
+║       │                        │ T1: 10-35%           │ płaci   ║
+║       │ T2: 5%                 ▼                      ▼          ║
+║       ▼                   Klient A                  Setor        ║
+║    Jasion                 zarabia T1                             ║
+║    zarabia T2             z Klienta C                            ║
+║    z Klienta C                                                   ║
+║                                                                  ║
+║  ZASADA: Max 1 poziom T2. Nigdy T3, T4 itd.                    ║
+║  CAP: T1 + T2 ≤ 40% łącznie                                    ║
+╚══════════════════════════════════════════════════════════════════╝</div>
+
+<div class="card card-accent">
+  <h4>Kluczowe zasady architektury</h4>
+  <ul>
+    <li><strong>Flat + 1 level</strong> — to NIE jest MLM. Max głębokość = 2 (affiliate → sub-affiliate → klient). Nigdy T3+.</li>
+    <li><strong>T2 = stałe 5%</strong> — niezależnie od tiera. Starter, Growth, Elite, Legend — zawsze 5% z drugiej linii.</li>
+    <li><strong>T2 odblokowane od dnia 1</strong> — nawet Starter z 1 poleceniem ma T2, jeśli jego polecony też poleci kogoś.</li>
+    <li><strong>Non-retroactive</strong> — stawka T1 locked w momencie rejestracji klienta. Tier up = nowe referrale mają wyższą stawkę, stare nie.</li>
+    <li><strong>Cap 40%</strong> — T1 (max 35%) + T2 (5%) = max 40% od jednego klienta trafia do affiliate network.</li>
+  </ul>
+</div>
+
+<!-- ==================== 3. SYSTEM TIERÓW ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">3</span> System Tierów — Pełna specyfikacja</h1>
+
+<table>
+  <tr>
+    <th>Tier</th>
+    <th>Progi (aktywni klienci)</th>
+    <th>T1 Rate</th>
+    <th>T2 Rate</th>
+    <th>Cap (T1+T2)</th>
+    <th>Czas trwania</th>
+    <th>Nagroda</th>
+  </tr>
+  <tr>
+    <td><span class="badge-sm badge-starter">STARTER</span></td>
+    <td>1-2 aktywnych</td>
+    <td><strong>10%</strong></td>
+    <td>5%</td>
+    <td>15%</td>
+    <td>LIFETIME</td>
+    <td>$500 bonus (1st ref)</td>
+  </tr>
+  <tr>
+    <td><span class="badge-sm badge-growth">GROWTH</span></td>
+    <td>3-5 aktywnych</td>
+    <td><strong>15%</strong></td>
+    <td>5%</td>
+    <td>20%</td>
+    <td>LIFETIME</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><span class="badge-sm badge-elite">ELITE</span></td>
+    <td>6-10 aktywnych</td>
+    <td><strong>25%</strong></td>
+    <td>5%</td>
+    <td>30%</td>
+    <td>LIFETIME</td>
+    <td>Oura Ring 4</td>
+  </tr>
+  <tr>
+    <td><span class="badge-sm badge-legend">LEGEND</span></td>
+    <td>11+ aktywnych</td>
+    <td><strong>35%</strong></td>
+    <td>5%</td>
+    <td>40%</td>
+    <td>LIFETIME</td>
+    <td>Rolex (TYLKO 1. osoba!)</td>
+  </tr>
+</table>
+
+<h3>Matematyka przy $1,000/mies netto na klienta</h3>
+<table>
+  <tr>
+    <th>Tier</th>
+    <th>T1 $/mies per klient</th>
+    <th>T2 $/mies per sub-klient</th>
+    <th>$500 bonus</th>
+  </tr>
+  <tr>
+    <td><span class="badge-sm badge-starter">STARTER</span></td>
+    <td>$100</td>
+    <td>$50</td>
+    <td>Tak (1st ref)</td>
+  </tr>
+  <tr>
+    <td><span class="badge-sm badge-growth">GROWTH</span></td>
+    <td>$150</td>
+    <td>$50</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><span class="badge-sm badge-elite">ELITE</span></td>
+    <td>$250</td>
+    <td>$50</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><span class="badge-sm badge-legend">LEGEND</span></td>
+    <td>$350</td>
+    <td>$50</td>
+    <td>—</td>
+  </tr>
+</table>
+
+<div class="card card-accent">
+  <h4>Zmiana vs stary system: Starter = LIFETIME</h4>
+  <p>W starym systemie Starter miał 12-miesięczny limit prowizji. <strong>W nowym systemie WSZYSTKIE tiery mają LIFETIME prowizje.</strong> Usunięcie 12-mies. expiry. Zmień <code>isLifetimeCommission</code> na <code>true</code> ZAWSZE.</p>
+</div>
+
+<h3>Jak działa tier upgrade — NON-RETROACTIVE</h3>
+<div class="card">
+  <p><strong>Scenariusz:</strong> Affiliate ma 2 klientów (Starter, 10%). Poleca 3. klienta → wskakuje na Growth.</p>
+  <ul>
+    <li>Klient #1 — locked 10% (Starter rate z momentu jego signup) → <span class="hl">zostaje 10% na zawsze</span></li>
+    <li>Klient #2 — locked 10% → zostaje 10%</li>
+    <li>Klient #3 — <span class="hl-green">locked 15% (Growth rate)</span> → nowa stawka od tego momentu</li>
+    <li>Klient #4, #5 — locked 15%</li>
+    <li>Klient #6 — <span class="hl-green">locked 25% (Elite rate)</span></li>
+  </ul>
+  <p><strong>Konsekwencja:</strong> Ten sam affiliate może mieć klientów na 10%, 15%, 25%, i 35% jednocześnie. Każdy na innej stawce z momentu rejestracji.</p>
+</div>
+
+<!-- ==================== 4. DRUGA LINIA (T2) ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">4</span> Druga Linia (T2) — Jak działa 5%</h1>
+
+<h3>Definicja</h3>
+<div class="card card-accent">
+  <p><strong>T2 (Tier 2 / Druga Linia)</strong> = 5% prowizji od klientów poleconych przez TWOICH poleceń.</p>
+  <p>Jeśli Jasion polecił Klienta A, a Klient A polecił Klienta C → Jasion dostaje 5% od płatności Klienta C.</p>
+  <p><strong>Warunki:</strong></p>
+  <ul>
+    <li>T2 <strong>odblokowane od dnia 1</strong> — nawet Starter.</li>
+    <li>T2 = <strong>stałe 5%</strong> niezależnie od tiera.</li>
+    <li>Max głębokość = <strong>1 poziom</strong>. Nigdy T3.</li>
+    <li>Cap: T1 + T2 ≤ 40% na jednego klienta.</li>
+  </ul>
+</div>
+
+<h3>Diagram T2 — krok po kroku</h3>
+<div class="flow-box">
+KROK 1: Jasion poleca Klienta A (sam się zapisuje do Setor)
+         Jasion → parentAffiliate
+         Klient A → staje się też affiliate (sub-affiliate Jasiona)
+         Relacja: Klient A.parentAffiliateId = Jasion.affiliateId
+
+KROK 2: Klient A poleca Klienta C
+         Klient A → affiliate (T1)
+         Klient C → nowy klient Setor
+
+KROK 3: Klient C płaci $1,000/mies
+         → System nalicza T1 dla Klienta A (np. 10% = $100)
+         → System SPRAWDZA: czy Klient A ma parentAffiliateId?
+         → TAK → parentAffiliateId = Jasion
+         → System nalicza T2 dla Jasiona (5% = $50)
+
+KROK 4: Klient C poleca Klienta D
+         → Klient C NIE MOŻE generować T2 dla Jasiona!
+         → T2 = max 1 poziom głębokości
+         → Jasion dostaje T2 TYLKO z bezpośrednich poleceń Klienta A
+         → Jeśli Klient C jest affiliate → jego parent = Klient A (nie Jasion)</div>
+
+<h3>T2 — Kto co dostaje (tabela)</h3>
+<table>
+  <tr>
+    <th>Klient</th>
+    <th>Polecony przez</th>
+    <th>T1 → komu</th>
+    <th>T2 → komu</th>
+  </tr>
+  <tr>
+    <td>Klient A</td>
+    <td>Jasion</td>
+    <td>Jasion (T1)</td>
+    <td>— (Jasion nie ma parenta)</td>
+  </tr>
+  <tr>
+    <td>Klient C</td>
+    <td>Klient A</td>
+    <td>Klient A (T1)</td>
+    <td><strong>Jasion (T2 = 5%)</strong></td>
+  </tr>
+  <tr>
+    <td>Klient D</td>
+    <td>Klient C</td>
+    <td>Klient C (T1)</td>
+    <td><strong>Klient A (T2 = 5%)</strong> — NIE Jasion!</td>
+  </tr>
+  <tr>
+    <td>Klient E</td>
+    <td>Klient D</td>
+    <td>Klient D (T1)</td>
+    <td><strong>Klient C (T2 = 5%)</strong> — chain max 1 deep</td>
+  </tr>
+</table>
+
+<div class="card card-danger">
+  <h4>HARD RULE: Max głębokość T2 = 1</h4>
+  <p>Jasion → Klient A → Klient C → Klient D</p>
+  <p>Jasion dostaje T2 TYLKO z poleceń Klienta A. NIE z poleceń Klienta C. To NIE jest MLM piramida.</p>
+  <p><strong>Implementacja:</strong> <code>parentAffiliateId</code> dotyczy BEZPOŚREDNIEGO parenta. Przy naliczaniu T2 sprawdź TYLKO <code>affiliate.parentAffiliateId</code>, nigdy nie rób lookup wyżej.</p>
+</div>
+
+<!-- ==================== 5. KOMPLETNY FLOW ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">5</span> Kompletny Flow — Od kodu do kasy</h1>
+
+<h3>Flow A: Rejestracja referrala</h3>
+<div class="flow-box">
+1. Affiliate dostaje status "approved" + kod (np. JASION7X)
+2. Udostępnia link: https://app.setor.ai/ref/JASION7X
+3. Nowy user klika link
+   → /ref/[code]/page.tsx → redirect do /auth/sign-up?ref=JASION7X
+   → NOWE: Set cookie "setor_ref=JASION7X" (90 dni, domain=.setor.ai)
+4. User rejestruje się (signup)
+   → validateReferralCode("JASION7X", orgId)
+   → createReferralFromCode("JASION7X", orgId)
+   → Tworzy AffiliateReferral:
+     {
+       affiliateId: jasion_aff_id,
+       referredId: new_org_id,
+       referralCode: "JASION7X",
+       isActive: false,          // jeszcze nie płaci
+       commissionRate: 10,       // locked na stawkę z momentu signup
+       isLifetimeCommission: true // NOWE: zawsze true
+     }
+5. Referral CZEKA na pierwszą płatność (isActive: false)</div>
+
+<h3>Flow B: Pierwsza płatność → Aktywacja</h3>
+<div class="flow-box">
+1. Klient kończy trial → Stripe charge succeeded
+2. Webhook invoice.paid → packages/billing/src/webhook.ts
+3. activateReferral(orgId, chargeId)
+   → isActive = true
+   → firstPaidAt = now
+   → firstPaymentChargeId = chargeId
+   → Jeśli to 1. płacący referral tego affiliate → isFirstReferralForReferrer = true
+4. Referral jest teraz AKTYWNY
+5. 30-dniowy delay startuje (prowizja dopiero po 30 dniach)</div>
+
+<h3>Flow C: Naliczanie prowizji (miesięcznie)</h3>
+<div class="flow-box">
+1. Cron: /api/cron/affiliate-commissions (miesięcznie)
+2. Dla każdego affiliate z aktywnymi referralami:
+   a. getCommissionEligibleReferrals(affiliateId)
+      → Filtruje: isActive=true, firstPaidAt > 30 dni temu
+   b. Dla każdego eligible referrala:
+      → hasMonthlyCommissionForMonth(affId, refId, "2026-03")? → skip jeśli tak
+      → Pobierz aktualną cenę subskrypcji klienta
+      → commissionCents = subscriptionPrice * commissionRate / 100
+      → recordAffiliateEarning({
+          type: "monthly_commission",
+          amountCents: commissionCents,
+          month: "2026-03"
+        })
+3. NOWE — T2 Commission:
+   → Po naliczeniu T1 dla affiliate X
+   → Sprawdź: affiliate X ma parentAffiliateId?
+   → TAK → nalicz T2 (5%) dla parenta:
+      recordAffiliateEarning({
+        type: "tier2_commission",      // NOWY typ
+        amountCents: subscriptionPrice * 5 / 100,
+        month: "2026-03",
+        affiliateId: parentAffiliateId  // parent dostaje T2
+      })
+   → NIE → skip T2</div>
+
+<h3>Flow D: Wypłata / Aplikacja na fakturę</h3>
+<div class="flow-box">
+1. Affiliate z organizationId (klient Setor):
+   → Balance automatycznie odliczany od następnej faktury
+   → calculateCreditsToApply() → Stripe coupon → debitCreditsFromBalance()
+
+2. Affiliate BEZ organizationId (zewnętrzny):
+   → Balance rośnie
+   → Gdy ≥ $100 → może złożyć AffiliatePayoutRequest
+   → Admin (CSV + przelew) na start → Stripe Connect później
+   → payoutMethod: "bank_transfer" | "invoice_credit"</div>
+
+<!-- ==================== 6. PRZYKŁADY LICZBOWE ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">6</span> Przykłady Liczbowe — 8 scenariuszy</h1>
+
+<h3>Przykład 1: Jasion poleca 1 klienta (Starter)</h3>
+<div class="math-box">
+Jasion (Starter, 1 aktywny klient)
+├── Klient A płaci $1,000/mies
+│   T1 prowizja: 10% × $1,000 = <strong>$100/mies</strong>
+│   $500 bonus po 30 dniach
+│
+│   Klient A nie poleca nikogo → T2 = $0
+│
+└── SUMA: $100/mies + $500 bonus = <strong>$1,700 w pierwszym roku</strong>
+</div>
+
+<h3>Przykład 2: Jasion poleca 1 klienta, ten poleca 5 klientów</h3>
+<div class="math-box">
+Jasion (Starter, 1 aktywny bezpośredni)
+├── Klient A płaci $1,000/mies
+│   T1: 10% × $1,000 = $100/mies
+│   $500 bonus
+│
+│   Klient A jest sub-affiliate Jasiona:
+│   ├── Klient C płaci $1,000/mies → Jasion T2: 5% × $1,000 = $50/mies
+│   ├── Klient D płaci $1,000/mies → Jasion T2: 5% × $1,000 = $50/mies
+│   ├── Klient E płaci $1,000/mies → Jasion T2: 5% × $1,000 = $50/mies
+│   ├── Klient F płaci $1,000/mies → Jasion T2: 5% × $1,000 = $50/mies
+│   └── Klient G płaci $1,000/mies → Jasion T2: 5% × $1,000 = $50/mies
+│
+└── SUMA Jasiona: $100 (T1) + 5×$50 (T2) = <strong>$350/mies</strong> + $500 bonus
+</div>
+
+<h3>Przykład 3: Jasion poleca klienta, który poleca 30 klientów</h3>
+<div class="math-box">
+JASION (Starter, 1 bezpośredni):
+  T1 od Klienta A: 10% × $1,000 = $100/mies
+  T2 od 30 sub-klientów: 30 × 5% × $1,000 = <strong>$1,500/mies</strong>
+  $500 bonus
+  TOTAL JASION: <strong>$1,600/mies</strong> + $500 = <strong>$19,700/rok</strong>
+
+KLIENT A (jako affiliate, sam poleca 30 osób):
+  Pozycja 1-2:  2 × 10% × $1,000 = $200/mies  (Starter rate locked)
+  Pozycja 3-5:  3 × 15% × $1,000 = $450/mies  (Growth rate locked)
+  Pozycja 6-10: 5 × 25% × $1,000 = $1,250/mies (Elite rate locked)
+  Pozycja 11-30: 20 × 35% × $1,000 = $7,000/mies (Legend rate locked)
+  $500 bonus
+  TOTAL KLIENT A (T1): <strong>$8,900/mies</strong> + $500 + Oura + Rolex
+
+JASION ZYSKUJE Z "WNUKÓW": <strong>$1,500/mies</strong> (T2)
+JASION NIE ZYSKUJE z klientów poleconych przez wnuków (T3 nie istnieje!)
+</div>
+
+<h3>Przykład 4: Legend affiliate — max zarobek</h3>
+<div class="math-box">
+Legend Affiliate (15 bezpośrednich klientów, każdy poleca 3 osoby):
+
+T1 EARNINGS:
+  Pozycja 1-2:   2 × 10% × $1,000 =   $200/mies
+  Pozycja 3-5:   3 × 15% × $1,000 =   $450/mies
+  Pozycja 6-10:  5 × 25% × $1,000 = $1,250/mies
+  Pozycja 11-15: 5 × 35% × $1,000 = $1,750/mies
+  T1 subtotal:                       <strong>$3,650/mies</strong>
+
+T2 EARNINGS (15 sub-affiliates × 3 klienty = 45 sub-klientów):
+  45 × 5% × $1,000 = <strong>$2,250/mies</strong>
+
+TOTAL: $3,650 + $2,250 = <strong>$5,900/mies</strong>
++ $500 bonus + Oura Ring + Rolex + FREE Setor + 1-on-1 z founderami
+</div>
+
+<h3>Przykład 5: Klient na planie $2,000/mies</h3>
+<div class="math-box">
+Affiliate (Growth, 4 aktywnych):
+  Klient #4 jest na planie $2,000/mies (wyższy tier Setor)
+  T1: 15% × $2,000 = <strong>$300/mies</strong> (zamiast $150 przy $1,000)
+
+  Jeśli Klient #4 poleci kogoś na planie $2,000:
+  Parent T2: 5% × $2,000 = <strong>$100/mies</strong> (zamiast $50)
+
+  → Prowizja = % od FAKTYCZNEJ ceny subskrypcji, nie od stałej $1,000.
+</div>
+
+<h3>Przykład 6: Annual payment</h3>
+<div class="math-box">
+Klient kupuje plan roczny: $1,000/mies × 10 mies (2 gratis) = $10,000 jednorazowo
+Affiliate (Elite): 25% × $10,000 = <strong>$2,500 jednorazowo</strong>
+Parent T2: 5% × $10,000 = <strong>$500 jednorazowo</strong>
+
+→ Duży cash flow impact. Prowizja naliczana od FAKTYCZNEJ płatności.
+→ Następne 12 mies = $0 prowizji (klient nie płaci miesięcznie)
+</div>
+
+<h3>Przykład 7: Zewnętrzny affiliate (nie jest klientem Setor)</h3>
+<div class="math-box">
+Influencer X (nie używa Setor, ale ma grupę docelową)
+  → Rejestruje się na publicznej stronie affiliate
+  → Status: approved (po weryfikacji admina)
+  → organizationId: NULL
+  → Poleca 8 klientów → Elite tier (25% T1)
+
+  Zarobki rosną na balance (creditBalanceCents)
+  NIE może automatycznie odliczyć z faktury (nie ma faktury!)
+  → payoutMethod: "bank_transfer"
+  → Gdy balance ≥ $100 → składa AffiliatePayoutRequest
+  → Admin przelewa ręcznie
+</div>
+
+<h3>Przykład 8: Kaskada — 3 poziomy affiliate</h3>
+<div class="math-box">
+Anna (affiliate) → poleca Bartka (sub-aff) → poleca Celię (sub-aff) → poleca Dana
+
+Kto co dostaje od Dana ($1,000/mies)?
+  Celia: T1 (locked rate, np. 10% = $100/mies) ← bezpośredni polecenie
+  Bartek: T2 (5% = $50/mies) ← Celia jest sub-affiliate Bartka
+  Anna: <span class="hl-red">$0</span> ← Anna NIE dostaje T2 z Dana. Bartek jest sub-aff Anny,
+         ale T2 liczy się tylko 1 poziom głęboko.
+         Anna dostaje T2 TYLKO z klientów poleconych BEZPOŚREDNIO przez Bartka.
+
+NIGDY T3. Depth = 1. Koniec.
+</div>
+
+<!-- ==================== 7. BONUS $500 ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">7</span> Bonus $500 — Mechanizm + ochrona</h1>
+
+<h3>Lifecycle bonusu</h3>
+<div class="flow-box">
+1. Affiliate poleca PIERWSZEGO klienta → AffiliateReferral.isFirstReferralForReferrer = true
+2. Klient płaci pierwszy raz → firstPaidAt = now
+3. CZEKAMY 30 DNI (ochrona przed refundem)
+4. Po 30 dniach:
+   → bonusEligible = true
+   → bonusAppliedAt = now
+   → recordAffiliateEarning({ type: "first_referral_bonus", amountCents: 50000 })
+   → $500 ląduje na balance
+5. SKIP: W miesiącu naliczenia bonusu NIE naliczaj prowizji miesięcznej (unikaj double-credit)</div>
+
+<h3>Scenariusze ochronne</h3>
+<table>
+  <tr><th>Scenariusz</th><th>Co się dzieje</th><th>Status</th></tr>
+  <tr><td>Klient płaci, 30 dni mija, aktywny</td><td>$500 naliczone</td><td><code>applied</code></td></tr>
+  <tr><td>Klient refunduje PRZED 30 dniami</td><td>Bonus NIGDY nie naliczony</td><td><code>refunded_before_bonus</code></td></tr>
+  <tr><td>Klient refunduje PO naliczeniu</td><td>$500 clawback z balance</td><td><code>clawed_back</code></td></tr>
+  <tr><td>2 webhook'i próbują naliczyć jednocześnie</td><td>Atomic guard: <code>updateMany WHERE bonusAppliedAt IS NULL</code></td><td>Tylko 1 wygrywa</td></tr>
+  <tr><td>Klient #2 płaci (nie pierwszy)</td><td>Bonus nie dotyczy — tylko 1. referral</td><td><code>not_eligible</code></td></tr>
+</table>
+
+<!-- ==================== 8. CHURN ==================== -->
+<h1><span class="section-num">8</span> Churn, Grace Period, Dezaktywacja</h1>
+
+<div class="flow-box">
+KLIENT AKTYWNY → płaci → prowizja naliczana
+        │
+        ▼ (anuluje/payment fails)
+DEACTIVATED → isActive=false, deactivatedAt=now
+        │
+        ├── Wraca w ciągu 45 dni? → REAKTYWACJA (isActive=true, deactivatedAt=null)
+        │
+        └── NIE wraca 45+ dni? → REFERRAL PERMANENTNIE MARTWY
+                                  Nie liczy się do tiera
+                                  Nie generuje prowizji
+                                  Nie może być reaktywowany NIGDY</div>
+
+<div class="card">
+  <h4>Impact na tier</h4>
+  <p>Affiliate ma 6 aktywnych (Elite) → 2 churnują → spada do 4 aktywnych (Growth).</p>
+  <p>Istniejące stawki locked: klienci na 25% zostają na 25%. Ale NOWI klienci dostają Growth rate (15%).</p>
+  <p>Jeśli 2 wrócą w grace period → tier wraca do Elite. Nowi klienci od tego momentu = 25%.</p>
+</div>
+
+<!-- ==================== 9. COOKIE ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">9</span> Cookie &amp; Attribution</h1>
+
+<div class="card">
+  <h4>Specyfikacja cookie</h4>
+  <table>
+    <tr><td><strong>Nazwa</strong></td><td><code>setor_ref</code></td></tr>
+    <tr><td><strong>Wartość</strong></td><td>Kod referralny (np. <code>JASION7X</code>)</td></tr>
+    <tr><td><strong>Domena</strong></td><td><code>.setor.ai</code> (obie: setor.ai + app.setor.ai)</td></tr>
+    <tr><td><strong>Ważność</strong></td><td>90 dni</td></tr>
+    <tr><td><strong>SameSite</strong></td><td>Lax</td></tr>
+    <tr><td><strong>Kiedy set</strong></td><td>W <code>/ref/[code]/page.tsx</code> PRZED redirect</td></tr>
+    <tr><td><strong>Kiedy read</strong></td><td>W <code>/auth/sign-up</code> jako fallback gdy brak <code>?ref=</code> param</td></tr>
+    <tr><td><strong>Priorytet</strong></td><td>Query param <code>?ref=</code> &gt; cookie (explicit wins)</td></tr>
+    <tr><td><strong>Multi-click</strong></td><td>Last-click wins (cookie nadpisywany)</td></tr>
+  </table>
+</div>
+
+<div class="card card-warning">
+  <h4>Edge case: Cookie vs existing setor_marketing</h4>
+  <p><code>setor_ref</code> (affiliate) i <code>setor_marketing</code> (UTM) to dwa RÓŻNE cookie. Oba mogą współistnieć. <code>setor_ref</code> służy atrybucji affiliate, <code>setor_marketing</code> służy marketing analytics.</p>
+</div>
+
+<!-- ==================== 10. MIGRACJA ==================== -->
+<h1><span class="section-num">10</span> Migracja — Stary vs Nowy system</h1>
+
+<div class="card card-accent">
+  <h4>Zasada: Nowe stawki TYLKO na NOWE referrale</h4>
+  <ul>
+    <li>Istniejące <code>AffiliateReferral</code> rekordy <strong>NIE są modyfikowane</strong></li>
+    <li>Stare referrale zachowują swoje locked <code>commissionRate</code> i <code>commissionAmountCents</code></li>
+    <li>Nowe referrale (od momentu deploy) dostają nowe stawki z <code>getCommissionForPosition()</code></li>
+    <li>Jedyna zmiana na starych: <code>isLifetimeCommission = true</code> dla WSZYSTKICH (koniec 12-mies. limitu)</li>
+  </ul>
+</div>
+
+<h3>Migracja step-by-step</h3>
+<div class="flow-box">
+1. Deploy nowego getCommissionForPosition() → nowe stawki 10/15/25/35
+2. Jednorazowy UPDATE na starych Starter referralach:
+   UPDATE AffiliateReferral SET isLifetimeCommission = true
+   WHERE isLifetimeCommission = false;
+3. NIE modyfikuj commissionRate na starych referralach
+4. Sync parentAffiliateId w schema.prisma (kolumna już w DB!)
+5. Deploy T2 logic → działa od pierwszego crona po deploy</div>
+
+<!-- ==================== 11. DATABASE SCHEMA ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">11</span> Database Schema — Co jest, co trzeba dodać</h1>
+
+<h3>Model Affiliate — ZMIANY</h3>
+<pre><code>model Affiliate {
+  // ... istniejące pola bez zmian ...
+
+  // DODAĆ — T2 Sub-Affiliate:
+  parentAffiliateId  String?   @db.Uuid   // ← KOLUMNA JUŻ W DB OD 2026-02-27!
+  parent             Affiliate? @relation("AffiliateParent", fields: [parentAffiliateId], references: [id])
+  children           Affiliate[] @relation("AffiliateParent")
+
+  // UWAGA: Kolumna parentAffiliateId istnieje w PostgreSQL,
+  // ale NIE jest zsyncowana z Prisma schema!
+  // MUSISZ dodać ją do schema.prisma → pnpm --filter database generate
+  // NIE trzeba migracji — kolumna już tam jest.
+}</code></pre>
+
+<h3>Model AffiliateEarning — ZMIANY</h3>
+<pre><code>// Nowy typ w type field:
+type = "tier2_commission"   // ← DODAĆ obok existing: monthly_commission, first_referral_bonus, applied_to_invoice, clawback
+
+// Unique constraint update:
+// Obecny: @@unique([affiliateId, referralId, month])
+// Potencjalny problem: T1 i T2 dla tego samego referrala w tym samym miesiącu
+// ale różne affiliateId → OK, nie koliduje (inny affiliateId)
+</code></pre>
+
+<h3>Model AffiliateReferral — ZMIANY</h3>
+<pre><code>// USUNĄĆ logikę 12-miesięcznego expiry:
+// isLifetimeCommission ZAWSZE = true (migration: UPDATE all to true)
+
+// commissionRate — nowe wartości:
+// Stary: 10, 20, 30
+// Nowy:  10, 15, 25, 35
+// Existing records NIE SĄ modyfikowane (non-retroactive)</code></pre>
+
+<h3>Istniejące modele — bez zmian</h3>
+<p><code>AffiliatePayoutRequest</code> — bez zmian. Będzie potrzebny dla external affiliates.</p>
+
+<!-- ==================== 12. IMPLEMENTACJA ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">12</span> Implementacja — 3 Sprinty</h1>
+
+<h2><span class="badge-sm badge-sprint">SPRINT 1</span> Core — Nowe tiery + Cookie (3-5 dni)</h2>
+
+<h4>1.1 Update getCommissionForPosition()</h4>
+<p>Plik: <code>packages/database/src/referrals.ts</code> linie 18-22</p>
+<pre><code>// STARY:
+if (position &lt;= 2) return { rate: 10, amountCents: 10000 };
+if (position &lt;= 5) return { rate: 20, amountCents: 20000 };
+return { rate: 30, amountCents: 30000 };
+
+// NOWY:
+if (position &lt;= 2) return { rate: 10, amountCents: 0 };  // $0 — obliczaj dynamicznie
+if (position &lt;= 5) return { rate: 15, amountCents: 0 };
+if (position &lt;= 10) return { rate: 25, amountCents: 0 };
+return { rate: 35, amountCents: 0 };
+// amountCents = 0 bo teraz liczymy % od faktycznej ceny, nie stałą kwotę</code></pre>
+
+<h4>1.2 Starter = Lifetime</h4>
+<p>Plik: <code>packages/database/src/referrals.ts</code> linia 77</p>
+<pre><code>// STARY:
+const isLifetime = activeReferralsCount &gt;= 3;
+
+// NOWY:
+const isLifetime = true;  // WSZYSTKIE tiery = lifetime</code></pre>
+
+<h4>1.3 Usunięcie 12-mies. expiry</h4>
+<pre><code>// isCommissionExpired() — zawsze zwracaj false:
+export function isCommissionExpired(): boolean {
+  return false;  // Lifetime for all tiers in v2.0
+}
+// LUB: zachowaj funkcję na przyszłość ale ustaw STARTER_COMMISSION_MONTHS = Infinity</code></pre>
+
+<h4>1.4 Cookie 90-day w /ref/[code]/page.tsx</h4>
+<pre><code>import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
+
+export default async function ReferralRedirectPage({ params }) {
+  const { code } = await params;
+
+  // Set 90-day cookie BEFORE redirect
+  const cookieStore = await cookies();
+  cookieStore.set('setor_ref', code.toUpperCase(), {
+    domain: '.setor.ai',
+    maxAge: 90 * 24 * 60 * 60,  // 90 days
+    path: '/',
+    sameSite: 'lax',
+    secure: true,
+  });
+
+  redirect(`/auth/sign-up?ref=${encodeURIComponent(code)}`);
+}</code></pre>
+
+<h4>1.5 Signup fallback — czytaj cookie</h4>
+<p>W <code>/auth/sign-up</code> — jeśli brak <code>?ref=</code> parametru, sprawdź cookie:</p>
+<pre><code>const refParam = searchParams.ref;
+const refCookie = cookieStore.get('setor_ref')?.value;
+const referralCode = refParam || refCookie || null;  // query param wins</code></pre>
+
+<h4>1.6 Tier display update</h4>
+<p>Pliki w <code>apps/affiliates/components/referrals/</code> + <code>apps/dashboard/components/referrals/</code></p>
+<p>Zmień nazwy tierów: Starter / Growth / Elite / Legend. Zmień progi i stawki w UI.</p>
+
+<h4>1.7 Migration script (jednorazowy)</h4>
+<pre><code>-- Wszystkie istniejące referrale → lifetime
+UPDATE "AffiliateReferral" SET "isLifetimeCommission" = true WHERE "isLifetimeCommission" = false;</code></pre>
+
+<hr>
+
+<h2><span class="badge-sm badge-sprint">SPRINT 2</span> T2 Sub-Affiliate (1 tydzień)</h2>
+
+<h4>2.1 Sync parentAffiliateId w schema.prisma</h4>
+<pre><code>// Dodaj do modelu Affiliate w schema.prisma:
+parentAffiliateId  String?    @db.Uuid
+parent             Affiliate? @relation("AffiliateParent", fields: [parentAffiliateId], references: [id])
+children           Affiliate[] @relation("AffiliateParent")
+
+// Następnie:
+pnpm --filter database generate
+// NIE migrate — kolumna już istnieje w DB od 2026-02-27</code></pre>
+
+<h4>2.2 registerSubAffiliate()</h4>
+<pre><code>export async function registerSubAffiliate(
+  parentAffiliateId: string,
+  childAffiliateId: string
+): Promise&lt;{ success: boolean; error?: string }&gt; {
+  // Guard 1: Parent exists and is approved
+  const parent = await prisma.affiliate.findUnique({
+    where: { id: parentAffiliateId },
+    select: { status: true },
+  });
+  if (!parent || parent.status !== 'approved') {
+    return { success: false, error: 'Parent affiliate not found or not approved' };
+  }
+
+  // Guard 2: No self-referral
+  if (parentAffiliateId === childAffiliateId) {
+    return { success: false, error: 'Cannot be your own sub-affiliate' };
+  }
+
+  // Guard 3: Child has no parent yet (atomic)
+  const updated = await prisma.affiliate.updateMany({
+    where: { id: childAffiliateId, parentAffiliateId: null },
+    data: { parentAffiliateId },
+  });
+
+  if (updated.count === 0) {
+    return { success: false, error: 'Already has a parent affiliate' };
+  }
+
+  return { success: true };
+}</code></pre>
+
+<h4>2.3 T2 Commission w cron</h4>
+<p>W <code>/api/cron/affiliate-commissions/route.ts</code> — po naliczeniu T1:</p>
+<pre><code>// After recording T1 commission for affiliate X...
+// Check if affiliate X has a parent → credit T2
+const childAffiliate = await prisma.affiliate.findUnique({
+  where: { id: affiliate.id },
+  select: { parentAffiliateId: true, status: true },
+});
+
+if (childAffiliate?.parentAffiliateId) {
+  // Verify parent is approved + not suspended
+  const parent = await prisma.affiliate.findUnique({
+    where: { id: childAffiliate.parentAffiliateId },
+    select: { status: true },
+  });
+
+  if (parent?.status === 'approved') {
+    const t2Amount = Math.round(invoiceAmountCents * 5 / 100);  // Always 5%
+
+    // Idempotency: check if T2 already credited
+    const t2Key = `${childAffiliate.parentAffiliateId}_${referral.id}_${month}_t2`;
+    const alreadyCredited = await prisma.affiliateEarning.findFirst({
+      where: {
+        affiliateId: childAffiliate.parentAffiliateId,
+        referralId: referral.id,
+        month,
+        type: 'tier2_commission',
+      },
+    });
+
+    if (!alreadyCredited) {
+      await recordAffiliateEarning({
+        affiliateId: childAffiliate.parentAffiliateId,
+        referralId: referral.id,
+        type: 'tier2_commission',
+        amountCents: t2Amount,
+        description: `T2: ${month} — 5% of $${(invoiceAmountCents/100).toFixed(2)} via ${affiliate.displayName}`,
+        month,
+      });
+    }
+  }
+}</code></pre>
+
+<h4>2.4 Affiliate-recruits-affiliate flow</h4>
+<p>Gdy affiliate B rejestruje się przez link affiliate A:</p>
+<pre><code>// W signup flow — sprawdź cookie setor_ref
+// Jeśli nowy user też staje się affiliate:
+// → registerSubAffiliate(parentId=A, childId=B)
+// To samo cookie/param flow jak dla klientów</code></pre>
+
+<h4>2.5 "My Network" tab</h4>
+<p>W affiliate portal — nowa zakładka pokazująca sub-affiliates i T2 earnings.</p>
+
+<hr>
+
+<h2><span class="badge-sm badge-sprint">SPRINT 3</span> Polish (1 tydzień)</h2>
+<ul>
+  <li>Email notyfikacje (commission credited, payout status)</li>
+  <li>Publiczna strona signup affiliate (external affiliates bez organizationId)</li>
+  <li>Admin CSV export dla payoutów</li>
+  <li>$100 minimum payout threshold</li>
+  <li>Basic marketing kit (banery, copy, email templates)</li>
+</ul>
+
+<!-- ==================== 13. EDGE CASES ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">13</span> 40 Edge Cases — Kompletna lista</h1>
+
+<h2>A. Rejestracja i kody</h2>
+
+<div class="edge-case">
+  <span class="ec-num">1</span> <span class="ec-title">Nieistniejący kod referralny</span>
+  <div class="ec-scenario">User wpisuje "ABCDEF99" który nie istnieje w bazie.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>validateReferralCode()</code> → <code>isValid: false, error: 'Invalid referral code'</code>. Brak rekordu. User rejestruje się bez affiliate.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">2</span> <span class="ec-title">Self-referral (własny kod)</span>
+  <div class="ec-scenario">Affiliate próbuje użyć swojego kodu na swojej organizacji.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Guard: <code>affiliate.organizationId === currentOrgId</code> → block. Komunikat: "Cannot use your own referral code".</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">3</span> <span class="ec-title">Kod suspended/rejected affiliate</span>
+  <div class="ec-scenario">Affiliate został zawieszony ale ktoś ma jego link.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>affiliate.status !== 'approved'</code> → block. Taki sam error jak nieistniejący kod (security through obscurity).</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">4</span> <span class="ec-title">Org już ma przypisany kod + próbuje dodać drugi</span>
+  <div class="ec-scenario">Klient zarejestrował się z kodem ANNA1234, teraz chce zmienić na BARTEK56.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>canAddReferralCode()</code> sprawdza <code>org.referredByCode</code> — jeśli istnieje → <code>false</code>. Jeden kod na org, na zawsze.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">5</span> <span class="ec-title">Kod po pierwszej płatności</span>
+  <div class="ec-scenario">Klient płaci, a dopiero potem wpisuje kod referralny.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>canAddReferralCode()</code> sprawdza <code>org.subscriptions.length === 0</code>. Po płatności nie można dodać kodu.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">6</span> <span class="ec-title">Dwa signupy z tym samym kodem w tej samej sekundzie</span>
+  <div class="ec-scenario">Race condition — dwa nowe org'y używają kodu JASION7X jednocześnie.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Każdy w osobnej <code>prisma.$transaction</code>. Pozycja (#1 vs #2) ustalana przez <code>count + 1</code> w transakcji — izolacja gwarantowana.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">7</span> <span class="ec-title">Cookie 89. dzień vs 91. dzień</span>
+  <div class="ec-scenario">User klika link affiliate, wraca po 89 lub 91 dniach.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Cookie <code>maxAge: 90 days</code>. Dzień 89 = cookie istnieje → atrybucja. Dzień 91 = cookie expired → brak atrybucji. Przeglądarka automatycznie kasuje.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">8</span> <span class="ec-title">Query param ?ref= vs cookie — konflikt</span>
+  <div class="ec-scenario">User ma cookie od affiliate A, ale klika link affiliate B z ?ref=B.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Query param NADPISUJE cookie: <code>const code = refParam || refCookie</code>. Explicit &gt; implicit. Cookie też nadpisany.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">9</span> <span class="ec-title">Cookie domain .setor.ai vs app.setor.ai</span>
+  <div class="ec-scenario">Cookie set na setor.ai, ale signup jest na app.setor.ai.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Ustaw domain = <code>.setor.ai</code> (z kropką na początku) → widoczny na obu subdomenach.</div>
+</div>
+
+<h2>B. Płatności i aktywacja</h2>
+
+<div class="edge-case">
+  <span class="ec-num">10</span> <span class="ec-title">Polecony nigdy nie płaci (trial dropout)</span>
+  <div class="ec-scenario">Klient rejestruje się z kodem, robi trial, nie płaci.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Referral zostaje <code>isActive: false</code> na zawsze. Zero prowizji. Nie liczy się do tiera. Nie generuje T2.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">11</span> <span class="ec-title">Refund przed 30 dniami (bonus $500)</span>
+  <div class="ec-scenario">Klient płaci, refunduje po 15 dniach.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>handleReferralRefund()</code> → <code>firstPaymentRefundedAt = now</code>. Bonus NIGDY nie naliczony. Status: <code>refunded_before_bonus</code>.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">12</span> <span class="ec-title">Refund PO 30 dniach (clawback)</span>
+  <div class="ec-scenario">Bonus $500 już naliczony, klient robi refund.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>bonusClawbackRequired = true</code>. Przy następnej fakturze affiliate: $500 odejmowane z balance. Status: <code>clawed_back</code>.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">13</span> <span class="ec-title">Race: 2 webhooks naliczają bonus jednocześnie</span>
+  <div class="ec-scenario">Dwa procesy jednocześnie widzą bonus jako eligible.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Atomic guard: <code>updateMany({ where: { bonusAppliedAt: null } })</code>. Tylko <code>updated.count > 0</code> = wygrana. Drugi dostaje <code>count === 0</code> → skip.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">14</span> <span class="ec-title">Podwójna prowizja w tym samym miesiącu</span>
+  <div class="ec-scenario">Cron odpala się 2x w marcu (np. bug w scheduler).</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Unique constraint: <code>@@unique([affiliateId, referralId, month])</code>. Drugi INSERT → DB error → skip. Plus <code>hasMonthlyCommissionForMonth()</code> check.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">15</span> <span class="ec-title">Prowizja w miesiącu naliczenia bonusu</span>
+  <div class="ec-scenario">Bonus $500 naliczony w marcu, cron też chce naliczyć prowizję za marzec.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Check: <code>bonusAppliedAt</code> month === current month → skip monthly commission. W miesiącu bonusu prowizja nie jest naliczana.</div>
+</div>
+
+<h2>C. Churn i grace period</h2>
+
+<div class="edge-case">
+  <span class="ec-num">16</span> <span class="ec-title">Klient anuluje → wraca po 20 dniach</span>
+  <div class="ec-scenario">Klient cancels, w grace period (45 dni), wraca i płaci.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>activateReferral()</code> widzi <code>deactivatedAt</code> < 45 dni → reaktywuje: <code>isActive=true, deactivatedAt=null</code>. Prowizje wracają.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">17</span> <span class="ec-title">Klient anuluje → wraca po 50 dniach</span>
+  <div class="ec-scenario">Klient wraca po upływie 45-dniowego grace period.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>daysSinceDeactivation > 45</code> → <strong>referral permanentnie martwy</strong>. Nawet jeśli klient zapłaci. Żadna prowizja, żaden tier point.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">18</span> <span class="ec-title">Tier drop po churn</span>
+  <div class="ec-scenario">Affiliate miał 6 aktywnych (Elite), 2 churnują → 4 aktywnych (Growth).</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Tier spada na dashboardzie. Istniejące stawki NIE zmieniają się (non-retroactive). Nowi klienci dostają Growth rate (15%).</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">19</span> <span class="ec-title">Klient w grace period — liczy się do tiera?</span>
+  <div class="ec-scenario">Klient deactivated ale w grace period 45 dni.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> NIE liczy się — <code>isActive: false</code>. Tier obliczany TYLKO z <code>isActive: true</code>. Grace period to szansa na powrót, nie gwarancja.</div>
+</div>
+
+<h2>D. T2 (Druga Linia) — Edge Cases</h2>
+
+<div class="edge-case">
+  <span class="ec-num">20</span> <span class="ec-title">Chain depth > 1 (T3 attempted)</span>
+  <div class="ec-scenario">Anna → Bartek → Celia → Dana. Anna chce T2 z Dana.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> T2 = TYLKO 1 poziom. Przy naliczaniu T2 sprawdź <code>affiliate.parentAffiliateId</code> — to BEZPOŚREDNI parent. Anna dostaje T2 z klientów Bartka, NIE z klientów Celii.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">21</span> <span class="ec-title">Circular: A → B → A (affiliate rekrutuje się nawzajem)</span>
+  <div class="ec-scenario">Affiliate A chce być sub-affiliate B, i B sub-affiliate A.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>registerSubAffiliate()</code> → guard: <code>updateMany WHERE parentAffiliateId IS NULL</code>. Pierwszy call wygrywa. Drugi → <code>count === 0</code> → "Already has a parent".</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">22</span> <span class="ec-title">Self-sub-affiliate</span>
+  <div class="ec-scenario">Affiliate próbuje zarejestrować sam siebie jako sub-affiliate.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Guard: <code>parentAffiliateId === childAffiliateId</code> → block. "Cannot be your own sub-affiliate".</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">23</span> <span class="ec-title">T2 idempotency — cron przetwarza parent i child osobno</span>
+  <div class="ec-scenario">Cron przetwarza affiliate A (T1 credit) i zaraz potem przetwarza parent B (T2 credit). Ale T2 już został naliczony w kroku A.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> T2 naliczane RAZEM z T1 (po T1 credit → check parentAffiliateId → credit T2). Plus dedup: <code>findFirst({ type: 'tier2_commission', affiliateId, referralId, month })</code>.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">24</span> <span class="ec-title">Parent affiliate suspended → T2</span>
+  <div class="ec-scenario">Parent affiliate został zawieszony (np. fraud). Jego sub-affiliates dalej generują sprzedaż.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Przed naliczeniem T2: <code>parent.status === 'approved'</code>. Jeśli suspended → skip T2. T1 dla sub-affiliate dalej naliczane normalnie.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">25</span> <span class="ec-title">Sub-affiliate churnuje jako klient ale dalej ma referrale</span>
+  <div class="ec-scenario">Klient A (sub-affiliate Jasiona) anuluje swoją subskrypcję Setor, ale jego poleceni dalej płacą.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Affiliate status i klient status to OSOBNE rzeczy. Klient A dalej jest affiliate ze statusem <code>approved</code>. Jego referrale dalej generują T1 (dla A) i T2 (dla Jasiona). Churn subskrypcji ≠ deaktywacja affiliate.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">26</span> <span class="ec-title">Affiliate bez organizationId chce T2</span>
+  <div class="ec-scenario">Zewnętrzny affiliate (influencer) rekrutuje sub-affiliates.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> T2 działa niezależnie od <code>organizationId</code>. Zewnętrzny affiliate zbiera T2 na balance → payout via bank transfer.</div>
+</div>
+
+<h2>E. Finansowe</h2>
+
+<div class="edge-case">
+  <span class="ec-num">27</span> <span class="ec-title">40% cap exceeded</span>
+  <div class="ec-scenario">Bug/edge: T1 (35%) + T2 (5%) = 40% ok. Ale co jeśli ktoś manipuluje DB?</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Hard guard w <code>recordAffiliateEarning()</code>: oblicz <code>totalCommissionRate = T1 + T2</code> per klient. Jeśli &gt; 40% → reject/log/alert. Validation layer, nie tylko DB constraint.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">28</span> <span class="ec-title">Annual payment — duża jednorazowa prowizja</span>
+  <div class="ec-scenario">Klient płaci $10,000 (annual). Legend affiliate: 35% = $3,500 jednorazowo.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Prowizja naliczana od FAKTYCZNEJ kwoty faktury. To jest by design — annual payment = annual commission. Cash flow impact do monitorowania. 30-day delay dalej obowiązuje.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">29</span> <span class="ec-title">Chargeback po wypłacie prowizji</span>
+  <div class="ec-scenario">Klient robi chargeback 3 miesiące po pierwszej płatności. Prowizje już wypłacone.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>chargeId</code> w <code>AffiliateEarning</code> → pozwala na clawback konkretnej prowizji. Negative earning record. Jeśli balance za niski → "dług" (negative balance) odejmowany od przyszłych earnings.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">30</span> <span class="ec-title">Clawback $500 + balance = $0</span>
+  <div class="ec-scenario">Affiliate ma $300 balance, przychodzi clawback $500.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>creditBalanceCents</code> spada do -$200. Negative balance → następne prowizje najpierw pokrywają dług. Affiliate nie dostaje nic dopóki balance &gt; 0.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">31</span> <span class="ec-title">Klient zmienia plan (upgrade/downgrade)</span>
+  <div class="ec-scenario">Klient upgrade z $1,000 na $2,000, potem downgrade na $1,000.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Prowizja = % od FAKTYCZNEJ kwoty faktury (z Stripe <code>subscription.items[0].priceAmount</code>). Auto-adjust. Upgrade = wyższa prowizja. Downgrade = niższa.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">32</span> <span class="ec-title">$100 minimum payout — balance poniżej</span>
+  <div class="ec-scenario">Zewnętrzny affiliate ma $80 balance, chce wypłatę.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>AffiliatePayoutRequest</code> → walidacja: <code>if (balance < 10000) reject</code>. Komunikat: "Minimum payout: $100. Current balance: $80."</div>
+</div>
+
+<h2>F. Multi-Klient / Scale</h2>
+
+<div class="edge-case">
+  <span class="ec-num">33</span> <span class="ec-title">100+ affiliates — cron performance</span>
+  <div class="ec-scenario">Cron procesuje 100 affiliates × 10 referrals = 1000 queries/run.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Batch processing z paginacją. <code>findMany({ take: 50, skip: offset })</code>. T2 dodaje N queries per affiliate → batch T2 queries: <code>findMany({ where: { parentAffiliateId: { in: [...ids] } } })</code>.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">34</span> <span class="ec-title">Affiliate z 50+ referralami — commission list display</span>
+  <div class="ec-scenario">Legend affiliate z 50 referrali — UI performance.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Paginacja w UI: <code>getReferralsByAffiliate(affiliateId, { take: 20, skip: offset })</code>. Earnings history: <code>take: 50</code> (already capped).</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">35</span> <span class="ec-title">Rolex — dwóch affiliates osiąga Legend w tym samym dniu</span>
+  <div class="ec-scenario">Affiliate A i B oba mają 11 aktywnych tego samego dnia.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Decyzja biznesowa: "TYLKO 1. osoba która dotrze do Legend". Implementacja: flag <code>legendRewardClaimed: boolean</code> na systemie. Atomic: <code>updateMany WHERE legendRewardClaimed = false</code> → pierwszy wygrywa.</div>
+</div>
+
+<h2>G. Security</h2>
+
+<div class="edge-case">
+  <span class="ec-num">36</span> <span class="ec-title">Affiliate link spam / abuse</span>
+  <div class="ec-scenario">Bot generuje 10,000 requestów na /ref/[code].</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Rate-limit endpoint <code>/ref/[code]</code>: max 60 req/min per IP. Cookie set nie powoduje kosztów — redirect jest lekki. Signup wymaga email verification → fraud blocked na poziomie auth.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">37</span> <span class="ec-title">Fake referrals (affiliate tworzy fake accounts)</span>
+  <div class="ec-scenario">Affiliate tworzy 10 fake org'ów żeby podnieść tier.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> 30-day delay + wymagana PRAWDZIWA płatność + 45-day grace. Fake account musiałby płacić $1,000/mies przez 30 dni żeby wygenerować prowizję. Ekonomicznie nieopłacalne. Plus: admin review na podejrzane wzorce.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">38</span> <span class="ec-title">Commission rate manipulation (DB edit)</span>
+  <div class="ec-scenario">Ktoś edytuje commissionRate w bazie danych.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> <code>commissionRate</code> jest locked at <code>AffiliateReferral</code> creation — business logic nie pozwala na zmianę. Admin audit log na zmiany w DB. Plus: walidacja w <code>recordAffiliateEarning</code> — rate musi być jednym z {10, 15, 25, 35}.</div>
+</div>
+
+<h2>H. Migracja</h2>
+
+<div class="edge-case">
+  <span class="ec-num">39</span> <span class="ec-title">Stary affiliate z 10% rate → nowy system</span>
+  <div class="ec-scenario">Existing affiliate ma referrale na starych stawkach (10/20/30). Co z nimi?</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> Stare referrale zachowują swoje <code>commissionRate</code> (10/20/30). NOWE referrale od tego affiliate dostają nowe stawki (10/15/25/35). Jedyna zmiana: <code>isLifetimeCommission = true</code> dla ALL.</div>
+</div>
+
+<div class="edge-case">
+  <span class="ec-num">40</span> <span class="ec-title">parentAffiliateId w DB ale nie w Prisma</span>
+  <div class="ec-scenario">Kolumna istnieje od 2026-02-27, ale Prisma client o niej nie wie.</div>
+  <div class="ec-solution"><strong>Rozwiązanie:</strong> MUSISZ zsyncować schema.prisma PRZED jakimkolwiek kodem T2. <code>pnpm --filter database generate</code> (NOT migrate — kolumna jest). Bez tego: runtime error "Unknown field parentAffiliateId".</div>
+</div>
+
+<!-- ==================== 14. TESTING GUIDE ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">14</span> Testing Guide</h1>
+
+<h3>Test 1: Nowe stawki (Sprint 1)</h3>
+<div class="card">
+  <ol>
+    <li>Utwórz test affiliate (status: approved)</li>
+    <li>Dodaj referral #1 → verify <code>commissionRate: 10</code>, <code>isLifetimeCommission: true</code></li>
+    <li>Dodaj referral #3 → verify <code>commissionRate: 15</code> (Growth)</li>
+    <li>Dodaj referral #6 → verify <code>commissionRate: 25</code> (Elite)</li>
+    <li>Dodaj referral #11 → verify <code>commissionRate: 35</code> (Legend)</li>
+    <li>Verify: referral #1 DALEJ ma <code>commissionRate: 10</code> (non-retroactive)</li>
+  </ol>
+</div>
+
+<h3>Test 2: Cookie (Sprint 1)</h3>
+<div class="card">
+  <ol>
+    <li>Otwórz <code>/ref/TESTCODE</code> w incognito</li>
+    <li>DevTools → Application → Cookies → sprawdź <code>setor_ref = TESTCODE</code></li>
+    <li>Zamknij tab, otwórz <code>app.setor.ai/auth/sign-up</code> (bez ?ref=)</li>
+    <li>Verify: cookie jest czytany, affiliate code prepopulated</li>
+    <li>Test: dodaj <code>?ref=OTHER</code> → verify query param wins over cookie</li>
+  </ol>
+</div>
+
+<h3>Test 3: T2 Commission (Sprint 2)</h3>
+<div class="card">
+  <ol>
+    <li>Affiliate A (parent) → rekrutuje affiliate B (child) → <code>B.parentAffiliateId = A.id</code></li>
+    <li>B poleca Klienta C → C płaci $1,000</li>
+    <li>Uruchom cron</li>
+    <li>Verify: B dostaje T1 commission (np. $100)</li>
+    <li>Verify: A dostaje T2 commission (5% × $1,000 = $50)</li>
+    <li>Verify: <code>AffiliateEarning</code> records — 2 zapisy, różne <code>affiliateId</code>, typ <code>monthly_commission</code> vs <code>tier2_commission</code></li>
+  </ol>
+</div>
+
+<h3>Test 4: Clawback</h3>
+<div class="card">
+  <ol>
+    <li>Affiliate → 1st referral → klient płaci → mija 30 dni → bonus $500 naliczony</li>
+    <li>Klient refunduje pierwszą płatność</li>
+    <li>Verify: <code>bonusClawbackRequired = true</code></li>
+    <li>Następna faktura affiliate → $500 odejmowane z balance</li>
+    <li>Verify: balance zmniejszony o $500</li>
+  </ol>
+</div>
+
+<h3>Test 5: Grace Period</h3>
+<div class="card">
+  <ol>
+    <li>Klient churnuje → <code>deactivatedAt = now</code></li>
+    <li>Po 20 dniach: klient wraca → verify reaktywacja</li>
+    <li>Po 50 dniach (inny case): klient wraca → verify BRAK reaktywacji (permanentnie martwy)</li>
+  </ol>
+</div>
+
+<h3>Common Debug Scenarios</h3>
+<table>
+  <tr><th>Problem</th><th>Gdzie szukać</th></tr>
+  <tr><td>"Commission not appearing"</td><td>Check: <code>isActive: true</code> + <code>firstPaidAt</code> > 30 dni + cron ran this month</td></tr>
+  <tr><td>"Wrong commission rate"</td><td>Check: <code>AffiliateReferral.commissionRate</code> (locked, NOT live tier)</td></tr>
+  <tr><td>"T2 not working"</td><td>Check: <code>parentAffiliateId</code> w schema zsyncowane + parent approved</td></tr>
+  <tr><td>"Cookie not reading"</td><td>Check: domain (<code>.setor.ai</code>), SameSite, Next.js <code>cookies()</code> import</td></tr>
+  <tr><td>"$500 bonus not paid"</td><td>Check: <code>isFirstReferralForReferrer</code> + 30-day elapsed + <code>bonusAppliedAt</code> null</td></tr>
+  <tr><td>"T2 double-credited"</td><td>Check: unique constraint <code>[affiliateId, referralId, month]</code> + type filter</td></tr>
+</table>
+
+<!-- ==================== 15. FILE REFERENCE ==================== -->
+<div class="page-break"></div>
+<h1><span class="section-num">15</span> File Reference Map</h1>
+
+<table>
+  <tr><th>Co</th><th>Plik</th><th>Kluczowe linie</th></tr>
+  <tr><td>Commission rates</td><td><code>packages/database/src/referrals.ts</code></td><td>18-22, 77</td></tr>
+  <tr><td>T2 commission (do implementacji)</td><td><code>packages/database/src/referrals.ts</code></td><td>592-635</td></tr>
+  <tr><td>Sub-affiliate register (do implementacji)</td><td><code>packages/database/src/referrals.ts</code></td><td>1234-1243</td></tr>
+  <tr><td>Schema (Prisma)</td><td><code>packages/database/prisma/schema.prisma</code></td><td>Affiliate ~line 1557</td></tr>
+  <tr><td>Cookie + referral link</td><td><code>apps/dashboard/app/ref/[code]/page.tsx</code></td><td>full</td></tr>
+  <tr><td>Signup fallback</td><td><code>apps/dashboard/app/auth/sign-up/page.tsx</code></td><td>SignUpCard</td></tr>
+  <tr><td>Monthly cron</td><td><code>apps/dashboard/app/api/cron/affiliate-commissions/route.ts</code></td><td>90-180</td></tr>
+  <tr><td>Bonus cron</td><td><code>apps/dashboard/app/api/cron/referral-bonus/route.ts</code></td><td>full</td></tr>
+  <tr><td>Billing webhook</td><td><code>packages/billing/src/webhook.ts</code></td><td>240-380</td></tr>
+  <tr><td>Admin panel</td><td><code>apps/dashboard/app/api/admin/affiliates/</code></td><td>full</td></tr>
+  <tr><td>Tier UI (affiliates portal)</td><td><code>apps/affiliates/components/referrals/</code></td><td>tier-card, page-content</td></tr>
+  <tr><td>Dashboard earnings</td><td><code>apps/dashboard/components/referrals/</code></td><td>premium-referrals-content</td></tr>
+  <tr><td>Referral code generation</td><td><code>packages/database/src/generate-referral-code.ts</code></td><td>full</td></tr>
+  <tr><td>Affiliate portal</td><td><code>apps/affiliates/</code></td><td>port 3004</td></tr>
+  <tr><td>Onboarding form</td><td><code>apps/affiliates/components/onboarding-form.tsx</code></td><td>sub-affiliate</td></tr>
+</table>
+
+<!-- ==================== 16. PROJEKCJE ==================== -->
+<h1><span class="section-num">16</span> Projekcje Finansowe</h1>
+
+<h3>Wzrost MRR z Affiliate + VSL + Meta Ads</h3>
+<table>
+  <tr><th>Miesiąc</th><th>Nowi (Ads)</th><th>Nowi (Affiliate)</th><th>Churn</th><th>Net Clients</th><th>MRR</th></tr>
+  <tr><td>Mar 26</td><td>4</td><td>2</td><td>1</td><td>20</td><td>$22K</td></tr>
+  <tr><td>Apr 26</td><td>5</td><td>3</td><td>1</td><td>27</td><td>$30K</td></tr>
+  <tr><td>May 26</td><td>6</td><td>5</td><td>1</td><td>37</td><td>$41K</td></tr>
+  <tr><td>Jun 26</td><td>7</td><td>8</td><td>2</td><td>50</td><td>$55K</td></tr>
+  <tr><td>Jul 26</td><td>8</td><td>12</td><td>2</td><td>68</td><td>$75K</td></tr>
+  <tr><td>Aug 26</td><td>8</td><td>15</td><td>3</td><td>88</td><td>$97K</td></tr>
+  <tr><td>Sep 26</td><td>8</td><td>18</td><td>4</td><td>110</td><td><strong>$121K+</strong></td></tr>
+</table>
+
+<h3>Revenue Share Impact przy 100 klientach</h3>
+<table>
+  <tr><th>Źródło</th><th>Revenue/mies</th><th>Koszt affiliate</th><th>Netto</th></tr>
+  <tr><td>Direct (bez affiliate) ~30%</td><td>$30K</td><td>$0</td><td>$30K</td></tr>
+  <tr><td>T1 affiliate ~50%</td><td>$50K</td><td>~$12.5K (avg 25%)</td><td>$37.5K</td></tr>
+  <tr><td>T2 referred ~20%</td><td>$20K</td><td>~$7K (T1+T2)</td><td>$13K</td></tr>
+  <tr><td><strong>TOTAL</strong></td><td><strong>$100K</strong></td><td><strong>~$19.5K</strong></td><td><strong>$80.5K</strong></td></tr>
+</table>
+
+<div class="card card-accent">
+  <h4>Efektywny koszt affiliate: ~20% revenue</h4>
+  <p>Nie 40% — bo nie wszyscy klienci przychodzą przez affiliate, i nie wszyscy affiliate są na top tierze. Bezpieczny margines.</p>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<div class="footer">
+  <strong>SETOR AI SP. Z O.O.</strong> &bull; NIP: PL7123502599 &bull; matt@setor.ai<br>
+  Dokument poufny — wyłącznie do użytku wewnętrznego<br>
+  Wersja 2.0 &bull; Marzec 2026
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
