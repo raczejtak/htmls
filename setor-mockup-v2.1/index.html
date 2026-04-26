@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Setor mockup v2 - polish review</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #070b0c; color: #e7eef0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; line-height: 1.5; padding: 32px 24px; }
+  header { max-width: 960px; margin: 0 auto 32px; }
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .meta { color: rgba(255,255,255,0.55); font-size: 13px; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: rgba(103,232,249,0.12); color: #a5f3fc; font-size: 11px; font-weight: 600; margin-left: 8px; }
+  main { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+  .shot { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; }
+  .shot-head { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .shot-title { font-size: 15px; font-weight: 600; }
+  .shot-route { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; color: rgba(255,255,255,0.55); }
+  .shot-img { display: block; width: 100%; height: auto; }
+  .shot-notes { padding: 12px 20px; font-size: 13px; color: rgba(255,255,255,0.7); border-top: 1px solid rgba(255,255,255,0.05); }
+  .shot-notes b { color: #a5f3fc; font-weight: 600; }
+  a { color: #67e8f9; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Setor mockup v2.1 <span class="pill">apple HIG 6-grade sweep</span></h1>
+  <p class="meta">Branch <code>mockup/9-click-onboarding-2026-04-26</code> &middot; localhost:3000 &middot; 22+ polish fixes since brutal critique &middot; Apple HIG 6-grade reading level pass &middot; 0 em-dashes &middot; all routes 200</p>
+</header>
+<main>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">01 &middot; Sign-in (entry)</div><div class="shot-route">/auth/sign-in</div></div>
+    <img class="shot-img" src="./01_signin.png" alt="Sign-in entry screen">
+    <div class="shot-notes"><b>Polish:</b> hero rewrite (was &quot;DM Sales on Autopilot&quot; AI-slop), DEMO MODE pill demoted from alarm yellow center to subtle gray /30 footer, &quot;Create new&quot; soft.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">02 &middot; Step 1 - Google account</div><div class="shot-route">/mockup/onboarding/1</div></div>
+    <img class="shot-img" src="./02_step1_google.png" alt="Step 1 Google account confirm">
+    <div class="shot-notes"><b>Polish:</b> &quot;Start with Google&quot; (duplicate of sign-in CTA) → &quot;Confirm your Google account&quot;. Defensive 3x &quot;no&quot; → proactive scope disclosure. Locale row demoted to muted hint.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">03 &middot; Step 2 - Instagram</div><div class="shot-route">/mockup/onboarding/2</div></div>
+    <img class="shot-img" src="./03_step2_instagram.png" alt="Step 2 Instagram confirm">
+    <div class="shot-notes"><b>Polish:</b> OAuth modal scopes accuracy - removed misleading &quot;Calendar availability&quot; from Google scope (sign-in doesn&rsquo;t need calendar). IG &quot;send and reply on your behalf&quot; (impersonation vibe) → &quot;Read DMs as they arrive&quot; + &quot;Reply to DMs you receive&quot;.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">04 &middot; Step 3 - Phone QR</div><div class="shot-route">/mockup/onboarding/3</div></div>
+    <img class="shot-img" src="./04_step3_phone.png" alt="Step 3 phone QR">
+    <div class="shot-notes"><b>Polish:</b> biggest fix - decision paralysis (6 visible options) → QR primary + 3-step ordered list + 4 fallback channels collapsed in disclosure. Yellow alarm warning &quot;Do not retype your password&quot; (defensive copy) removed entirely. Title &quot;Connect Instagram on your phone&quot; → &quot;Scan once with your phone&quot;.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">05 &middot; Step 4 - Setor learning (auto-advance, full-page)</div><div class="shot-route">/mockup/onboarding/4</div></div>
+    <img class="shot-img" src="./05_step4_learning.png" alt="Step 4 learning full page">
+    <div class="shot-notes"><b>Polish:</b> static green checks → live progress bars per stage, staggered 600ms delay. Auto-advance bottom bar gets a real progress bar with countdown (&quot;Auto-advancing in 4s - sit tight&quot;), kills &quot;is it frozen?&quot; anxiety. Footer shortened.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">06 &middot; Step 5 - Setup approval (full-page)</div><div class="shot-route">/mockup/onboarding/5</div></div>
+    <img class="shot-img" src="./06_step5_setup.png" alt="Step 5 setup approval">
+    <div class="shot-notes"><b>Polish:</b> title &quot;Your setup is ready&quot; → &quot;Your bot is set up&quot;. Lead concrete: &quot;Setor pulled this from your bio, captions, and recent DMs.&quot; CTA &quot;Looks Good&quot; → &quot;Looks good - save it&quot;.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">07 &middot; Step 6 - Connect tools</div><div class="shot-route">/mockup/onboarding/6</div></div>
+    <img class="shot-img" src="./07_step6_apps.png" alt="Step 6 apps">
+    <div class="shot-notes"><b>Polish:</b> Calendly tagline benefit-led: &quot;Setor drops your link the moment a lead is ready&quot;. Slack/Notion taglines made concrete. Both Calendly+Slack still toggle ON for 9-click happy path.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">08 &middot; Step 7 - Chrome pairing (full-page)</div><div class="shot-route">/mockup/onboarding/7</div></div>
+    <img class="shot-img" src="./08_step7_chrome.png" alt="Step 7 Chrome pairing">
+    <div class="shot-notes"><b>Polish:</b> title &quot;Move to Chrome to finish&quot; (misleading - 2 more steps after) → &quot;Pair Setor for Chrome&quot;. Lead benefit-led. Footer meta-commentary softened to white/45.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">09 &middot; Step 8 - 14-day trial (full-page)</div><div class="shot-route">/mockup/onboarding/8</div></div>
+    <img class="shot-img" src="./09_step8_trial.png" alt="Step 8 trial">
+    <div class="shot-notes"><b>Polish:</b> Day 14 timeline rewrite - &quot;Auto-renew + only if you stay&quot; double-negative → &quot;Renews 3700 zł/mo if you do nothing. Cancel keeps it free.&quot; &quot;No card on file&quot; redundancy → &quot;Card added on Day 14, not now&quot;. Stripe footer demoted to /45 opacity.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">10 &middot; Step 9 - Launch (auto-advance, full-page)</div><div class="shot-route">/mockup/onboarding/9</div></div>
+    <img class="shot-img" src="./10_step9_launch.png" alt="Step 9 launch">
+    <div class="shot-notes"><b>Polish:</b> title &quot;Setor is ready to start&quot; → &quot;Setor is going live&quot;. Lead concrete: &quot;This is the kind of conversation Setor will handle in @elagrabowska&rsquo;s inbox.&quot; Sub-header in chat panel: &quot;Live preview &middot; sample inbound DM&quot;.</div>
+  </section>
+  <section class="shot">
+    <div class="shot-head"><div class="shot-title">11 &middot; Done page</div><div class="shot-route">/mockup/onboarding/done</div></div>
+    <img class="shot-img" src="./11_done.png" alt="Done page">
+    <div class="shot-notes"><b>Polish:</b> biggest emotional win. &quot;Mockup flow complete&quot; meta-noise → &quot;Setor is live in your inbox&quot;. Sub: &quot;The next person who DMs @elagrabowska gets a reply in your voice.&quot; Brand mark moved to header. Single hero green checkmark with shadow glow. Dual CTA: Open dashboard (mock) + Restart mockup. Mock banner softened from amber alarm to neutral white/55.</div>
+  </section>
+</main>
+</body>
+</html>
