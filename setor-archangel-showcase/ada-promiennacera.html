@@ -170,12 +170,12 @@ body[data-view="sidebyside"] .section-trace{display:block}
   <div class="hero-row hero-row-5">
     <div class="hero-tile">
     <div class="tile-label">Fact pack load</div>
-    <div class="tile-value">1.54s</div>
+    <div class="tile-value">25ms</div>
     
   </div>
     <div class="hero-tile">
     <div class="tile-label">Render Phase C</div>
-    <div class="tile-value">12ms</div>
+    <div class="tile-value">744ms</div>
     
   </div>
     <div class="hero-tile na">
@@ -190,7 +190,7 @@ body[data-view="sidebyside"] .section-trace{display:block}
   </div>
     <div class="hero-tile">
     <div class="tile-label">TOTAL</div>
-    <div class="tile-value">1.56s</div>
+    <div class="tile-value">769ms</div>
     <div class="tile-sub">wall time</div>
   </div>
   </div>
@@ -231,7 +231,7 @@ body[data-view="sidebyside"] .section-trace{display:block}
   </div>
     <div class="hero-tile">
     <div class="tile-label">Sections rendered</div>
-    <div class="tile-value">4/15</div>
+    <div class="tile-value">7/15</div>
     <div class="tile-sub">sekcji w output</div>
   </div>
   </div>
@@ -657,7 +657,7 @@ body[data-view="sidebyside"] .section-trace{display:block}
 
   <div class="sections-header" style="display:flex;align-items:center;margin:24px 0 12px">
     <h2 class="section-label" style="margin:0">Additional Info - Phase C</h2>
-    <span class="sections-badge">4/15 sekcji</span>
+    <span class="sections-badge">7/15 sekcji</span>
   </div>
 
   <div class="sections-trace-view">
@@ -741,6 +741,114 @@ body[data-view="sidebyside"] .section-trace{display:block}
 <details class="section-block" data-status="ok">
   <summary>
     <span class="sb-badge sb-badge-ok">&#10003;</span>
+    <span class="sb-id">S5</span>
+    <span class="sb-title">jak zamykać rozmowę</span>
+    <span class="sb-stats">0 calls &middot; &lt;1ms &middot; $0</span>
+  </summary>
+  <div class="section-body">
+    <div class="markdown">
+<h2 class="md-h1">jak zamykać rozmowę</h2>
+<h3 class="md-h2">kiedy zamykać</h3>
+<ul class="notes-list">
+<li>gdy prospect QUALIFIED (zna ofertę, ma intencję, brak blokady) — proponuj konkretny next step</li>
+<li>gdy prospect zadaje pytanie o cenę / dostępność / start — to sygnał gotowości, zamykaj od razu</li>
+<li>gdy prospect mówi "chcę zacząć" / "jak się zapisać" / "co dalej" — CTA bez dalszego discovery</li>
+</ul>
+<h3 class="md-h2">konkretne CTA</h3>
+<ul class="notes-list">
+<li>gdy QUALIFIED: "podeślę Ci link do zapisu / kalendarza" + konkretny URL</li>
+<li>gdy prospect waha się: "chcesz żebym pokazała Ci jak to wygląda?" — soft próbne zamknięcie</li>
+<li>gdy CONVERTED: potwierdź next step (kiedy spotkanie / kiedy start) i ZAKOŃCZ wątek</li>
+</ul>
+<h3 class="md-h2">jeśli prospect nie odpowiada</h3>
+<ul class="notes-list">
+<li>po 3h ciszy: wróć z wartością (nie z check-inem). Verbatim: "W takim razie tutaj masz link ⤵️ https://tiny.pl/qjd0gypq"</li>
+<li>po 72h ciszy: ostatnie konkretne CTA z jednym powodem dlaczego TERAZ</li>
+<li>po 7 dniach: zostaw otwarte drzwi ("daj znać jak będziesz gotowa"), NIE pushuj</li>
+<li>po 14 dniach: zakończ wątek, dodaj do passive list</li>
+</ul>
+    </div>
+  </div>
+  <details class="section-trace">
+    <summary>Pipeline trace (brak wpisow w tym buildzie)</summary>
+    <p class="trace-empty-note">Showcase mode: executionLog pusty (fact-pack pre-built, brak live LLM calls).</p>
+  </details>
+  
+</details>
+
+<details class="section-block" data-status="ok">
+  <summary>
+    <span class="sb-badge sb-badge-ok">&#10003;</span>
+    <span class="sb-id">S8</span>
+    <span class="sb-title">ceny i warunki</span>
+    <span class="sb-stats">0 calls &middot; &lt;1ms &middot; $0</span>
+  </summary>
+  <div class="section-body">
+    <div class="markdown">
+<h2 class="md-h1">ceny i warunki</h2>
+<h3 class="md-h2">zakres cenowy</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: min - max cena w PLN, np. "199 - 1499 zł"]</li>
+<li>gdy prospect pyta o cenę PRZED qualified — najpierw poznaj kontekst (problem, budżet, gotowość)</li>
+</ul>
+<h3 class="md-h2">co wchodzi w ofertę</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: 3-5 bulletów co konkretnie klient dostaje]</li>
+</ul>
+<h3 class="md-h2">reguła: liczenia ZAWSZE w tej sekcji</h3>
+<ul class="notes-list">
+<li>gdy klient pyta o cenę z VAT / rabat / raty — NIE licz on-the-fly w mid-conversation</li>
+<li>pokaż gotowy zakres z tej sekcji, ewentualnie dopytaj o kontekst aby zaproponować pakiet</li>
+</ul>
+    </div>
+  </div>
+  <details class="section-trace">
+    <summary>Pipeline trace (brak wpisow w tym buildzie)</summary>
+    <p class="trace-empty-note">Showcase mode: executionLog pusty (fact-pack pre-built, brak live LLM calls).</p>
+  </details>
+  
+</details>
+
+<details class="section-block" data-status="ok">
+  <summary>
+    <span class="sb-badge sb-badge-ok">&#10003;</span>
+    <span class="sb-id">S9</span>
+    <span class="sb-title">zaufanie i dowody</span>
+    <span class="sb-stats">0 calls &middot; &lt;1ms &middot; $0</span>
+  </summary>
+  <div class="section-body">
+    <div class="markdown">
+<h2 class="md-h1">zaufanie i dowody</h2>
+<h3 class="md-h2">liczby i zasięgi</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: liczba obserwatorów IG, liczba klientów obsłużonych, lata doświadczenia]</li>
+</ul>
+<h3 class="md-h2">kwalifikacje i autorytet</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: certyfikaty, edukacja, doświadczenie zawodowe]</li>
+</ul>
+<h3 class="md-h2">wyniki klientów (verbatim — gotowe do cytowania)</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: 3-5 konkretnych transformacji / wyników klientów]</li>
+</ul>
+<h3 class="md-h2">kiedy używać dowodów</h3>
+<ul class="notes-list">
+<li>gdy prospect w DISSONANCE pyta "czy to działa" / "czy ktoś już to robił" — cytuj wynik klienta verbatim</li>
+<li>gdy prospect waha się przed PROPOSAL — pokaż autorytet (lata doświadczenia + 1 konkretny rezultat)</li>
+<li>NIE wciągaj liczb obserwatorów do mid-conversation jako ozdoby — używaj TYLKO gdy prospect pyta o skalę</li>
+</ul>
+    </div>
+  </div>
+  <details class="section-trace">
+    <summary>Pipeline trace (brak wpisow w tym buildzie)</summary>
+    <p class="trace-empty-note">Showcase mode: executionLog pusty (fact-pack pre-built, brak live LLM calls).</p>
+  </details>
+  
+</details>
+
+<details class="section-block" data-status="ok">
+  <summary>
+    <span class="sb-badge sb-badge-ok">&#10003;</span>
     <span class="sb-id">S10</span>
     <span class="sb-title">materiały i linki</span>
     <span class="sb-stats">0 calls &middot; &lt;1ms &middot; $0</span>
@@ -809,6 +917,13 @@ body[data-view="sidebyside"] .section-trace{display:block}
 <li>konkretne pytania zamiast ogólnego check-inu</li>
 <li>dawaj kontekst lub powód powrotu zanim zapytasz</li>
 </ul>
+<h3 class="md-h2">okna czasowe follow-up</h3>
+<ul class="notes-list">
+<li>po 3h ciszy: "W takim razie tutaj masz link ⤵️ https://tiny.pl/qjd0gypq"</li>
+<li>po ~24h ciszy: "Wiesz, najwięcej kobiet zaczyna mnie obserwować, bo mają problemy z cerą i próbowały już wszystkiego, a dalej mają przebarwienia, suchość czy różnego rodzaju wypryski...są już zmęczone i nie szukają p..."</li>
+<li>po 3h ciszy: "Jestem ciekawa, co spodobało Ci się na moim profilu, że dałaś obserwację? ☺️"</li>
+<li>po 14 dniach: zakończ wątek aktywnie, dodaj prospect do passive list (NIE pushuj)</li>
+</ul>
 <p>czego unikać:</p>
 <ul class="notes-list">
 <li>Przykład (gdy NIE używać - daj wartość zamiast check-inu): "jesteś tam? :)"</li>
@@ -853,7 +968,6 @@ body[data-view="sidebyside"] .section-trace{display:block}
 <h4 class="md-h3">średnie wiadomości (~12 słów) - gdy zapraszasz na konsultacje</h4>
 <p>Przykład: &quot;Jeśli dalej aktualne, mam jeszcze miejsce na krótką rozmowę o Twojej cerze 😊&quot;</p>
 <p>Przykład: &quot;Widzę u Ciebie konkretny kierunek, tylko to trzeba dobrze poukładać, a nie dalej testować po opiniach 🤔&quot;</p>
-<p>Przykład: &quot;daj znać, może nie miałaś możliwości odpisać jak byłaś zajęta albo umknęła Ci wiadomość :)&quot;</p>
 <h4 class="md-h3">dłuższe wiadomości (~30 słów) - gdy proponujesz konkretny termin po discovery</h4>
 <p>Przykład: &quot;[Imię], no i właśnie wtedy wpadasz w takie błędne koło, bo chcesz to zakryć, a skóra dalej zwraca na siebie uwagę ;/ jaki efekt chciałabyś osiągnąć z cerą, żeby w końcu czuć się pewnie? 🤔&quot;</p>
 <p>Przykład: &quot;[Imię], no i właśnie to kręcenie się z kolejnymi kremami pokazuje, że dalej brakuje Ci pewności co tej cerze realnie służy ;/ a co najbardziej Ci w tym przeszkadza na co dzień? 😟&quot;</p>
@@ -906,12 +1020,72 @@ body[data-view="sidebyside"] .section-trace{display:block}
 <ul class="notes-list">
 <li>gdy prospect mówi "zarezerwuj proszę ten termin przez kalendarz" → kontekst: rozmowa o dostępnych terminach na konsultację o cerze, potwierdzenie wyboru terminu i prośba o rezerwację poprzez kalendarz</li>
 </ul>
+<h2 class="md-h1">ceny i warunki</h2>
+<h3 class="md-h2">zakres cenowy</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: min - max cena w PLN, np. "199 - 1499 zł"]</li>
+<li>gdy prospect pyta o cenę PRZED qualified — najpierw poznaj kontekst (problem, budżet, gotowość)</li>
+</ul>
+<h3 class="md-h2">co wchodzi w ofertę</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: 3-5 bulletów co konkretnie klient dostaje]</li>
+</ul>
+<h3 class="md-h2">reguła: liczenia ZAWSZE w tej sekcji</h3>
+<ul class="notes-list">
+<li>gdy klient pyta o cenę z VAT / rabat / raty — NIE licz on-the-fly w mid-conversation</li>
+<li>pokaż gotowy zakres z tej sekcji, ewentualnie dopytaj o kontekst aby zaproponować pakiet</li>
+</ul>
+<h2 class="md-h1">jak zamykać rozmowę</h2>
+<h3 class="md-h2">kiedy zamykać</h3>
+<ul class="notes-list">
+<li>gdy prospect QUALIFIED (zna ofertę, ma intencję, brak blokady) — proponuj konkretny next step</li>
+<li>gdy prospect zadaje pytanie o cenę / dostępność / start — to sygnał gotowości, zamykaj od razu</li>
+<li>gdy prospect mówi "chcę zacząć" / "jak się zapisać" / "co dalej" — CTA bez dalszego discovery</li>
+</ul>
+<h3 class="md-h2">konkretne CTA</h3>
+<ul class="notes-list">
+<li>gdy QUALIFIED: "podeślę Ci link do zapisu / kalendarza" + konkretny URL</li>
+<li>gdy prospect waha się: "chcesz żebym pokazała Ci jak to wygląda?" — soft próbne zamknięcie</li>
+<li>gdy CONVERTED: potwierdź next step (kiedy spotkanie / kiedy start) i ZAKOŃCZ wątek</li>
+</ul>
+<h3 class="md-h2">jeśli prospect nie odpowiada</h3>
+<ul class="notes-list">
+<li>po 72h ciszy: ostatnie konkretne CTA z jednym powodem dlaczego TERAZ</li>
+<li>po 7 dniach: zostaw otwarte drzwi ("daj znać jak będziesz gotowa"), NIE pushuj</li>
+<li>po 14 dniach: zakończ wątek, dodaj do passive list</li>
+</ul>
+<h2 class="md-h1">zaufanie i dowody</h2>
+<h3 class="md-h2">liczby i zasięgi</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: liczba obserwatorów IG, liczba klientów obsłużonych, lata doświadczenia]</li>
+</ul>
+<h3 class="md-h2">kwalifikacje i autorytet</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: certyfikaty, edukacja, doświadczenie zawodowe]</li>
+</ul>
+<h3 class="md-h2">wyniki klientów (verbatim — gotowe do cytowania)</h3>
+<ul class="notes-list">
+<li>[do uzupełnienia w panelu: 3-5 konkretnych transformacji / wyników klientów]</li>
+</ul>
+<h3 class="md-h2">kiedy używać dowodów</h3>
+<ul class="notes-list">
+<li>gdy prospect w DISSONANCE pyta "czy to działa" / "czy ktoś już to robił" — cytuj wynik klienta verbatim</li>
+<li>gdy prospect waha się przed PROPOSAL — pokaż autorytet (lata doświadczenia + 1 konkretny rezultat)</li>
+<li>NIE wciągaj liczb obserwatorów do mid-conversation jako ozdoby — używaj TYLKO gdy prospect pyta o skalę</li>
+</ul>
 <h2 class="md-h1">czego unikać</h2>
 <h3 class="md-h2">follow-up co działa lepiej</h3>
 <ul class="notes-list">
 <li>WRACAJ Z WARTOŚCIĄ: nowy temat, ciekawe pytanie, użyteczna informacja</li>
 <li>konkretne pytania zamiast ogólnego check-inu</li>
 <li>dawaj kontekst lub powód powrotu zanim zapytasz</li>
+</ul>
+<h3 class="md-h2">okna czasowe follow-up</h3>
+<ul class="notes-list">
+<li>po 3h ciszy: "W takim razie tutaj masz link ⤵️ https://tiny.pl/qjd0gypq"</li>
+<li>po ~24h ciszy: "Wiesz, najwięcej kobiet zaczyna mnie obserwować, bo mają problemy z cerą i próbowały już wszystkiego, a dalej mają przebarwienia, suchość czy różnego rodzaju wypryski...są już zmęczone i nie szukają p..."</li>
+<li>po 3h ciszy: "Jestem ciekawa, co spodobało Ci się na moim profilu, że dałaś obserwację? ☺️"</li>
+<li>po 14 dniach: zakończ wątek aktywnie, dodaj prospect do passive list (NIE pushuj)</li>
 </ul>
 <p>czego unikać:</p>
 <ul class="notes-list">
