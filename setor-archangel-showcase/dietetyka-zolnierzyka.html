@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="pl"><head><meta charset="UTF-8">
+<title>SETOR - Dietetyka Żołnierzyka</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;background:#fff;color:#000;-webkit-font-smoothing:antialiased;line-height:1.5}
+.topbar{position:sticky;top:0;z-index:100;background:#fff;backdrop-filter:blur(8px);border-bottom:2px solid #000;padding:12px 32px;display:flex;align-items:center;justify-content:space-between}
+.topbar .brand{display:flex;align-items:center;gap:14px}
+.topbar .tagline{font-size:18px;font-weight:900;letter-spacing:1px;color:#000;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar .done{font-size:15px;font-weight:700;color:#000;background:#fbbf24;border:none;border-radius:18px;padding:8px 20px;cursor:pointer}
+.container{max-width:980px;margin:0 auto;padding:32px}
+h2.section-label{font-size:13px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1.5px;margin:28px 0 16px}
+.biz{margin-bottom:80px;padding-top:40px;border-top:1px solid #e5e7eb}
+.biz-header{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;margin-bottom:24px}
+h1.biz-name{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.1}
+.biz-meta-line{font-size:14px;color:#9ca3af;margin-top:8px}
+.md-h1{display:none}
+.md-h2{font-size:19px;font-weight:700;margin:24px 0 10px;color:#000}
+.md-h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#374151}
+ul.notes-list{list-style:none;margin:8px 0 16px}
+ul.notes-list li{position:relative;padding-left:20px;font-size:17px;color:#1f2937;margin:6px 0;line-height:1.55}
+ul.notes-list li::before{content:"\2022";position:absolute;left:0;font-size:18px;font-weight:900;color:#000}
+ul.notes-list li strong{font-weight:700;color:#000}
+.markdown p{font-size:17px;margin:8px 0;color:#374151}
+details.setor-blacklist,details.setor-already-client{margin:16px 0;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+details.setor-blacklist>summary,details.setor-already-client>summary{cursor:pointer;padding:12px 20px;font-size:14px;font-weight:700;color:#374151;background:#f9fafb;user-select:none;list-style:none}
+details.setor-blacklist>summary::-webkit-details-marker,details.setor-already-client>summary::-webkit-details-marker{display:none}
+details.setor-blacklist>summary::before,details.setor-already-client>summary::before{content:"\25B6\00A0";font-size:11px;transition:transform .15s}
+details[open].setor-blacklist>summary::before,details[open].setor-already-client>summary::before{content:"\25BC\00A0"}
+.cand-inner{padding:16px 20px}
+.cand-table{width:100%;border-collapse:collapse;font-size:14px}
+.cand-table th{text-align:left;font-size:12px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;padding:6px 8px;border-bottom:2px solid #e5e7eb}
+.cand-table td{padding:8px 8px;border-bottom:1px solid #f3f4f6;vertical-align:top}
+.cand-name{font-weight:700;min-width:100px}
+.cand-reason{color:#374151;max-width:400px}
+.cand-conf{font-weight:700;color:#059669;text-align:right;white-space:nowrap}
+.cand-overflow{font-size:13px;color:#9ca3af;margin-top:12px;font-style:italic}
+.notify-badge{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#f59e0b;border-radius:4px;padding:1px 6px;margin-left:6px}
+details.cand-phrases{margin-top:6px;font-size:12px}
+details.cand-phrases>summary{cursor:pointer;color:#6b7280;font-weight:600;list-style:none;user-select:none}
+details.cand-phrases>summary::-webkit-details-marker{display:none}
+details.cand-phrases>summary::before{content:"\25B6\00A0";font-size:9px}
+details.cand-phrases[open]>summary::before{content:"\25BC\00A0"}
+details.cand-phrases ul{margin:6px 0 0 14px;list-style:disc;color:#374151}
+details.cand-phrases li{margin:2px 0;line-height:1.45}
+.cand-msgid{color:#9ca3af;font-family:"SF Mono",monospace;font-size:11px}
+.hero-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#6b7280;margin:4px 0 6px}
+
+/* ---- pipeline trace ---- */
+.section-block{margin:12px 0;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+.section-block[data-status="warn"]{border-color:#f59e0b}
+.section-block[data-status="fail"]{border-color:#ef4444}
+.section-block>summary{cursor:pointer;padding:12px 20px;display:flex;align-items:center;gap:10px;background:#f9fafb;user-select:none;list-style:none;font-size:14px}
+.section-block>summary::-webkit-details-marker{display:none}
+.section-block[data-status="warn"]>summary{background:#fffbeb}
+.section-block[data-status="fail"]>summary{background:#fef2f2}
+.sb-badge{font-size:13px;font-weight:900;width:20px;text-align:center}
+.sb-badge-ok{color:#059669}
+.sb-badge-warn{color:#d97706}
+.sb-badge-fail{color:#dc2626}
+.sb-id{font-family:"SF Mono",monospace;font-size:12px;font-weight:700;color:#6b7280;min-width:28px}
+.sb-title{font-weight:700;color:#000;flex:1}
+.sb-stats{font-size:12px;color:#9ca3af;font-family:"SF Mono",monospace;white-space:nowrap}
+.section-body{padding:16px 20px;border-top:1px solid #e5e7eb}
+.section-trace,.section-validator{margin:0;border-top:1px solid #e5e7eb}
+.section-trace>summary,.section-validator>summary{cursor:pointer;padding:10px 20px;font-size:13px;font-weight:600;color:#6b7280;background:#f3f4f6;user-select:none;list-style:none}
+.section-trace>summary::-webkit-details-marker,.section-validator>summary::-webkit-details-marker{display:none}
+.section-trace>summary::before,.section-validator>summary::before{content:"\25B6\00A0";font-size:10px}
+details[open].section-trace>summary::before,details[open].section-validator>summary::before{content:"\25BC\00A0"}
+.trace-scroll{overflow-x:auto;padding:0 20px 16px}
+.trace-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.trace-table th{text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;padding:6px 8px;border-bottom:2px solid #e5e7eb;white-space:nowrap}
+.trace-table td{padding:6px 8px;border-bottom:1px solid #f3f4f6;vertical-align:top}
+.trace-td-id code{font-size:11px;background:#f3f4f6;padding:1px 4px;border-radius:3px}
+.trace-name{font-size:11px;color:#9ca3af;display:block;margin-top:2px}
+.trace-td-wall,.trace-td-cost,.trace-td-tok{font-family:"SF Mono",monospace;white-space:nowrap}
+.trace-td-status{font-weight:700;white-space:nowrap}
+.status-ok{color:#059669}
+.status-fail{color:#dc2626}
+.status-retry{color:#d97706}
+.status-skipped{color:#9ca3af}
+.status-cached{color:#7c3aed}
+.trace-td-ev{font-family:"SF Mono",monospace;font-size:11px;color:#9ca3af;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+.trace-empty{color:#d1d5db;font-size:11px}
+.trace-empty-note{padding:12px 20px;font-size:13px;color:#9ca3af;font-style:italic}
+.trace-output-json>summary{cursor:pointer;font-size:11px;color:#7c3aed;font-weight:600;list-style:none}
+.trace-output-json>summary::-webkit-details-marker{display:none}
+.trace-json{font-size:11px;line-height:1.4;background:#f8f7ff;border:1px solid #e9d5ff;border-radius:6px;padding:8px;margin-top:4px;max-height:200px;overflow-y:auto;white-space:pre;font-family:"SF Mono",monospace}
+.section-validator{padding:0}
+.section-validator>summary{padding:10px 20px;font-size:13px;font-weight:600;color:#6b7280;background:#f9fafb}
+.val-issues{list-style:none;padding:8px 20px 12px}
+.val-issues li{font-size:13px;padding:4px 0;border-bottom:1px solid #f3f4f6}
+.val-sev{font-weight:700;font-family:"SF Mono",monospace;font-size:11px;margin-right:4px}
+.val-issue-error .val-sev{color:#dc2626}
+.val-issue-warning .val-sev{color:#d97706}
+.val-issue-info .val-sev{color:#7c3aed}
+/* ---- errors block ---- */
+.errors-block{margin:16px 0;border:2px solid #ef4444;border-radius:10px;overflow:hidden}
+.errors-block>summary{cursor:pointer;padding:10px 20px;font-size:14px;font-weight:700;color:#dc2626;background:#fef2f2;list-style:none}
+.errors-block>summary::-webkit-details-marker{display:none}
+.err-list{list-style:none;padding:8px 20px 12px}
+.err-list li{font-size:13px;padding:4px 0;border-bottom:1px solid #fee2e2}
+.err-ts{font-family:"SF Mono",monospace;font-size:11px;color:#9ca3af;margin-right:6px}
+/* ---- view switcher ---- */
+.view-switcher{display:flex;gap:8px;align-items:center}
+.view-btn{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:6px 16px;border:2px solid #000;border-radius:20px;background:#fff;color:#000;cursor:pointer;transition:background .15s,color .15s}
+.view-btn.active{background:#000;color:#fff}
+/* ---- hero grid ---- */
+.hero-grid{display:grid;gap:16px;margin-bottom:40px}
+.hero-row{display:grid;gap:12px}
+.hero-row-5{grid-template-columns:repeat(5,1fr)}
+.hero-row-4{grid-template-columns:repeat(4,1fr)}
+.hero-row-3{grid-template-columns:repeat(3,1fr)}
+.hero-tile{background:#111;border:1px solid #333;border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.hero-tile.na{opacity:.45}
+.hero-tile .tile-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#6b7280}
+.hero-tile .tile-value{font-size:22px;font-weight:900;letter-spacing:-1px;color:#fff;line-height:1;font-family:"SF Mono",monospace}
+.hero-tile .tile-unit{font-size:12px;color:#fbbf24;font-weight:700;margin-left:2px}
+.hero-tile .tile-sub{font-size:11px;color:#4b5563;margin-top:2px}
+.hero-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#6b7280;margin:4px 0 6px}
+/* project running tab */
+.running-tab{background:#111;border:1px solid #333;border-radius:14px;padding:18px 20px;margin-top:4px}
+.running-tab .rt-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#6b7280;margin-bottom:8px}
+.running-tab .rt-row{display:flex;align-items:center;gap:12px}
+.running-tab .rt-value{font-size:20px;font-weight:900;color:#fff;font-family:"SF Mono",monospace;white-space:nowrap}
+.running-tab .rt-bar-bg{flex:1;height:8px;background:#333;border-radius:4px;overflow:hidden}
+.running-tab .rt-bar-fill{height:100%;background:#fbbf24;border-radius:4px;transition:width .3s}
+.running-tab .rt-cap{font-size:12px;color:#6b7280;white-space:nowrap}
+/* sections count badge */
+.sections-badge{display:inline-flex;align-items:center;gap:6px;background:#f3f4f6;border-radius:8px;padding:2px 10px;font-size:13px;font-weight:700;color:#374151;margin-left:4px}
+/* hide/show by view mode */
+body[data-view="production"] .section-trace,
+body[data-view="production"] .section-validator,
+body[data-view="production"] .errors-block{display:none}
+body[data-view="production"] .section-block>summary .sb-stats{display:none}
+body[data-view="sidebyside"] .section-body,
+body[data-view="sidebyside"] .section-trace{display:block}
+
+</style></head><body data-view="trace">
+
+<div class="topbar">
+  <div class="brand">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="36" height="36" rx="8" fill="#000"/>
+<text x="18" y="25" text-anchor="middle" font-family="-apple-system,Arial,sans-serif" font-size="18" font-weight="900" fill="#fbbf24">S</text>
+</svg>
+    <span class="tagline">Instant Money Printer</span>
+  </div>
+  <div class="topbar-right">
+    <div class="view-switcher">
+      <button class="view-btn active" data-view="trace">Trace</button>
+      <button class="view-btn" data-view="production">Production</button>
+      <button class="view-btn" data-view="sidebyside">Side-by-side</button>
+    </div>
+    <button class="done">Done</button>
+  </div>
+</div>
+
+<div class="container">
+<div class="biz">
+  <div class="biz-header">
+    <div>
+      <h1 class="biz-name">Dietetyka Żołnierzyka</h1>
+      <div class="biz-meta-line">render z 2026-05-16</div>
+    </div>
+  </div>
+  <div class="hero-grid">
+  <div class="hero-section-label">Wall time breakdown</div>
+  <div class="hero-row hero-row-5">
+    <div class="hero-tile">
+    <div class="tile-label">Fact pack load</div>
+    <div class="tile-value">1.16s</div>
+    
+  </div>
+    <div class="hero-tile">
+    <div class="tile-label">Render Phase C</div>
+    <div class="tile-value">8ms</div>
+    
+  </div>
+    <div class="hero-tile na">
+    <div class="tile-label">Section validator</div>
+    <div class="tile-value">n/a</div>
+    
+  </div>
+    <div class="hero-tile na">
+    <div class="tile-label">Section fixer</div>
+    <div class="tile-value">n/a</div>
+    
+  </div>
+    <div class="hero-tile">
+    <div class="tile-label">TOTAL</div>
+    <div class="tile-value">1.17s</div>
+    <div class="tile-sub">wall time</div>
+  </div>
+  </div>
+  <div class="hero-section-label">Cost breakdown</div>
+  <div class="hero-row hero-row-4">
+    <div class="hero-tile na">
+    <div class="tile-label">Extractors (MP-01..56)</div>
+    <div class="tile-value">n/a</div>
+    
+  </div>
+    <div class="hero-tile na">
+    <div class="tile-label">Renderer mikrotaski</div>
+    <div class="tile-value">n/a</div>
+    
+  </div>
+    <div class="hero-tile na">
+    <div class="tile-label">Validator + fixer</div>
+    <div class="tile-value">n/a</div>
+    
+  </div>
+    <div class="hero-tile">
+    <div class="tile-label">TOTAL THIS BUILD</div>
+    <div class="tile-value">$0.000000</div>
+    <div class="tile-sub">0 calli</div>
+  </div>
+  </div>
+  <div class="hero-section-label">Counts</div>
+  <div class="hero-row hero-row-3">
+    <div class="hero-tile">
+    <div class="tile-label">Nano calls total</div>
+    <div class="tile-value">0</div>
+    <div class="tile-sub">gpt-nano calls (pipeline)</div>
+  </div>
+    <div class="hero-tile">
+    <div class="tile-label">Cache hit %</div>
+    <div class="tile-value">0%</div>
+    <div class="tile-sub">cached / input tokens</div>
+  </div>
+    <div class="hero-tile">
+    <div class="tile-label">Sections rendered</div>
+    <div class="tile-value">4/15</div>
+    <div class="tile-sub">sekcji w output</div>
+  </div>
+  </div>
+  <div class="hero-section-label">Pipeline run</div>
+  <div class="hero-row hero-row-3">
+    <div class="hero-tile">
+    <div class="tile-label">Pipeline wall time</div>
+    <div class="tile-value">7.26s</div>
+    <div class="tile-sub">pipeline-run.ts real execution</div>
+  </div>
+    <div class="hero-tile">
+    <div class="tile-label">Build cost</div>
+    <div class="tile-value">$0.000000</div>
+    <div class="tile-sub">0 nano calls</div>
+  </div>
+    <div class="hero-tile">
+    <div class="tile-label">Build ID</div>
+    <div class="tile-value">fde4b085</div>
+    <div class="tile-sub">pipeline_log uuid prefix</div>
+  </div>
+  </div>
+  <div class="running-tab">
+    <div class="rt-label">Project running tab</div>
+    <div class="rt-row">
+      <div class="rt-value">$0.08 / $100.00</div>
+      <div class="rt-bar-bg"><div class="rt-bar-fill" style="width:0.1%"></div></div>
+      <div class="rt-cap">cap $100</div>
+    </div>
+  </div>
+</div>
+  <details class="setor-blacklist">
+  <summary>Blacklist candidates (50)</summary>
+  <div class="cand-inner">
+    <table class="cand-table">
+      <thead><tr>
+        <th></th>
+        <th>Prospekt</th>
+        <th>Powod</th>
+        <th>Pewnosc</th>
+      </tr></thead>
+      <tbody>
+<tr>
+      <td><input type="checkbox" name="bl_name:unknown" value="1"></td>
+      <td class="cand-name">[Imię329] &#9888;&#65039;</td>
+      <td class="cand-reason">1020 rozmów, pet names od prospecta, ślady wcześniejszej relacji</td>
+      <td class="cand-conf">90%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:jeanwozniak" value="1"></td>
+      <td class="cand-name">[Imię114] &#9888;&#65039;</td>
+      <td class="cand-reason">zero commercial questions, pet names od prospecta</td>
+      <td class="cand-conf">60%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:kemparamateusz" value="1"></td>
+      <td class="cand-name">[Imię143] &#9888;&#65039;</td>
+      <td class="cand-reason">zero commercial questions, ślady wcześniejszej relacji</td>
+      <td class="cand-conf">60%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:michal_s_p" value="1"></td>
+      <td class="cand-name">[Imię212] &#9888;&#65039;</td>
+      <td class="cand-reason">zero commercial questions, ślady wcześniejszej relacji</td>
+      <td class="cand-conf">60%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:____mracel_____" value="1"></td>
+      <td class="cand-name">[Imię1]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:__najtninowski__" value="1"></td>
+      <td class="cand-name">[Imię2]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_.d.e.c._" value="1"></td>
+      <td class="cand-name">[Imię3]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_.gorniak_" value="1"></td>
+      <td class="cand-name">[Imię4]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_dakooo98_" value="1"></td>
+      <td class="cand-name">[Imię5]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_damix32_" value="1"></td>
+      <td class="cand-name">[Imię6]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_echo_papa_" value="1"></td>
+      <td class="cand-name">[Imię7]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_ka.c.p.e.r_" value="1"></td>
+      <td class="cand-name">[Imię8]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_kacper_tomaszewski.ig" value="1"></td>
+      <td class="cand-name">[Imię9]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_kacpi_siemka_" value="1"></td>
+      <td class="cand-name">[Imię10]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_kamil_8.9" value="1"></td>
+      <td class="cand-name">[Imię11]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_kamila.kaa" value="1"></td>
+      <td class="cand-name">[Imię12]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_kinga.sych_" value="1"></td>
+      <td class="cand-name">[Imię13]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_magdalena_grzechowiak_" value="1"></td>
+      <td class="cand-name">[Imię14]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_nika.lc_" value="1"></td>
+      <td class="cand-name">[Imię15]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_papaj__" value="1"></td>
+      <td class="cand-name">[Imię16]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_patrykcierpikowski_" value="1"></td>
+      <td class="cand-name">[Imię17]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_sylwiia__" value="1"></td>
+      <td class="cand-name">[Imię18]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:_tymek" value="1"></td>
+      <td class="cand-name">[Imię19]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:4dam_fg" value="1"></td>
+      <td class="cand-name">[Imię20]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:7braturad7" value="1"></td>
+      <td class="cand-name">[Imię21]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:a_a_a_agnieszka" value="1"></td>
+      <td class="cand-name">[Imię22]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:a.griffkowski" value="1"></td>
+      <td class="cand-name">[Imię23]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:adam__sobczak__" value="1"></td>
+      <td class="cand-name">[Imię24]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:adam_prushynski" value="1"></td>
+      <td class="cand-name">[Imię25]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="bl_name:adambylica" value="1"></td>
+      <td class="cand-name">[Imię26]</td>
+      <td class="cand-reason">zero commercial questions</td>
+      <td class="cand-conf">30%</td>
+    </tr>
+      </tbody>
+    </table>
+    <p class="cand-overflow">...i 20 wiecej (pokaz wiecej w fact packu)</p>
+  </div>
+</details>
+  <details class="setor-already-client">
+  <summary>Juz-klienci candidates (50)</summary>
+  <div class="cand-inner">
+    <table class="cand-table">
+      <thead><tr>
+        <th></th>
+        <th>Prospekt</th>
+        <th>Powod</th>
+        <th>Pewnosc</th>
+      </tr></thead>
+      <tbody>
+<tr>
+      <td><input type="checkbox" name="ac_d.omqa" value="1"></td>
+      <td class="cand-name">[Klient_d.omqa] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">3 sygnałów: payment/ownership phrase detected; 1 conversion(s)</td>
+      <td class="cand-conf">95%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_m4rcello4" value="1"></td>
+      <td class="cand-name">[Klient_m4rcello] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">2 sygnałów: payment/ownership phrase detected; 1 conversion(s)</td>
+      <td class="cand-conf">70%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_nikodempekala" value="1"></td>
+      <td class="cand-name">[Klient_nikodemp] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">2 sygnałów: payment/ownership phrase detected; thread stage=ALREADYCLIENT</td>
+      <td class="cand-conf">70%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac__.d.e.c._" value="1"></td>
+      <td class="cand-name">[Klient__.d.e.c.] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac__.gorniak_" value="1"></td>
+      <td class="cand-name">[Klient__.gornia] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac__kamila.kaa" value="1"></td>
+      <td class="cand-name">[Klient__kamila.] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_a_a_a_agnieszka" value="1"></td>
+      <td class="cand-name">[Klient_a_a_a_ag] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_adbee00" value="1"></td>
+      <td class="cand-name">[Klient_adbee00] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_adrianpikulinski" value="1"></td>
+      <td class="cand-name">[Klient_adrianpi] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_adziulaa_" value="1"></td>
+      <td class="cand-name">[Klient_adziulaa] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_aleksandra_lukaszewska_" value="1"></td>
+      <td class="cand-name">[Klient_aleksand] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_aleksandra.ch144" value="1"></td>
+      <td class="cand-name">[Klient_aleksand] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_anna._.malpa.pv" value="1"></td>
+      <td class="cand-name">[Klient_anna._.m] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_cwieeq" value="1"></td>
+      <td class="cand-name">[Klient_cwieeq] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_czarnulla92" value="1"></td>
+      <td class="cand-name">[Klient_czarnull] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_dominik.krajewski.585" value="1"></td>
+      <td class="cand-name">[Klient_dominik.] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_elo.tu.olek" value="1"></td>
+      <td class="cand-name">[Klient_elo.tu.o] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_elowrobelo" value="1"></td>
+      <td class="cand-name">[Klient_elowrobe] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_iflex187" value="1"></td>
+      <td class="cand-name">[Klient_iflex187] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_izi_dyl" value="1"></td>
+      <td class="cand-name">[Klient_izi_dyl] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_jacek.czaja" value="1"></td>
+      <td class="cand-name">[Klient_jacek.cz] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_jakub.dzik.malecki" value="1"></td>
+      <td class="cand-name">[Klient_jakub.dz] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_jed_pietrucha" value="1"></td>
+      <td class="cand-name">[Klient_jed_piet] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_jerzy_jurek210" value="1"></td>
+      <td class="cand-name">[Klient_jerzy_ju] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_julia.morawskaaa" value="1"></td>
+      <td class="cand-name">[Klient_julia.mo] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_k.l.a.u.d.k.a" value="1"></td>
+      <td class="cand-name">[Klient_k.l.a.u.] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_kacper_zukiewicz" value="1"></td>
+      <td class="cand-name">[Klient_kacper_z] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_kaes.1910" value="1"></td>
+      <td class="cand-name">[Klient_kaes.191] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_kafaspar14" value="1"></td>
+      <td class="cand-name">[Klient_kafaspar] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+<tr>
+      <td><input type="checkbox" name="ac_kalinowski03" value="1"></td>
+      <td class="cand-name">[Klient_kalinows] <span class='notify-badge'>notify</span></td>
+      <td class="cand-reason">1 sygnałów: 1 conversion(s)</td>
+      <td class="cand-conf">40%</td>
+    </tr>
+      </tbody>
+    </table>
+    <p class="cand-overflow">...i 20 wiecej (pokaz wiecej w fact packu)</p>
+  </div>
+</details>
+
+  <div class="sections-header" style="display:flex;align-items:center;margin:24px 0 12px">
+    <h2 class="section-label" style="margin:0">Additional Info - Phase C</h2>
+    <span class="sections-badge">4/15 sekcji</span>
+  </div>
+
+  <div class="sections-trace-view">
+<details class="section-block" data-status="ok">
+  <summary>
+    <span class="sb-badge sb-badge-ok">&#10003;</span>
+    <span class="sb-id">S1</span>
+    <span class="sb-title">kim jesteś w rozmowie</span>
+    <span class="sb-stats">0 calls &middot; &lt;1ms &middot; $0</span>
+  </summary>
+  <div class="section-body">
+    <div class="markdown">
+<h2 class="md-h1">kim jesteś w rozmowie</h2>
+<ul class="notes-list">
+<li><strong>Dietetyka Zolnierzyka</strong></li>
+<li>Rola: Bartosz - żołnierz i dietetyk</li>
+<li>Pisz jako mężczyzna - zapytałem, zaprosiłem, powiedziałem</li>
+<li>Branża: dietetyka, przygotowanie pod WF, trening i zdrowe odżywianie</li>
+<li>Pisz jako "my" - to TY z Twoim zespołem. Możesz mówić "ja i mój zespół" albo "razem z zespołem". TY jesteś owner, zespół wspiera Cię</li>
+</ul>
+    </div>
+  </div>
+  <details class="section-trace">
+    <summary>Pipeline trace (brak wpisow w tym buildzie)</summary>
+    <p class="trace-empty-note">Showcase mode: executionLog pusty (fact-pack pre-built, brak live LLM calls).</p>
+  </details>
+  
+</details>
+
+<details class="section-block" data-status="ok">
+  <summary>
+    <span class="sb-badge sb-badge-ok">&#10003;</span>
+    <span class="sb-id">S2</span>
+    <span class="sb-title">styl pisania i ton</span>
+    <span class="sb-stats">0 calls &middot; &lt;1ms &middot; $0</span>
+  </summary>
+  <div class="section-body">
+    <div class="markdown">
+<h2 class="md-h1">styl pisania i ton</h2>
+<ul class="notes-list">
+<li>Długość wiadomości (mediana): 9 słów</li>
+<li>Średnia ilość wiadomości w wypowiedzi: 2</li>
+<li>Używaj najczęściej tych emoji: 😅, 💪, 🫡, 🙂, 🔥, 👉</li>
+</ul>
+<ul class="notes-list">
+<li>Używaj tych zwrotów (najczęściej "czołem! jak tam testy idą?", potem "Przyjąłem 🙂", rzadziej "Odezwałem się tylko z rozpoznania, bo działam po to, żeby nasi zdawali WF pewnie i bez nerwów.", "czołem! jak tam przygotowania do sprawdzianu?", "czołęm! pompki, bieg, brzuszki, podciąganie a może coś innego daje Ci w kość na WF? 😅")</li>
+</ul>
+<h4 class="md-h3">krótsze wiadomości (~4 słów) - gdy potwierdzasz lub kończysz wątek</h4>
+<p>Przykład: &quot;jasne, do usłyszenia 🫡&quot;</p>
+<p>Przykład: &quot;okej, do usłyszenia 🫡&quot;</p>
+<p>Przykład: &quot;czołem! jak tam testy idą?&quot;</p>
+<h4 class="md-h3">średnie wiadomości (~9 słów) - gdy zapraszasz na konsultacje</h4>
+<p>Przykład: &quot;Bartku le z tego cvo widze tov zaznaczyles brzuszki&quot;</p>
+<p>Przykład: &quot;Dziękuję za odpowiedź ;) Czy potrafisz przybliżyć aktualny czas i jak wyglądają Twoje treningi jeśli w ogóle wyglądają 😅&quot;</p>
+<p>Przykład: &quot;masz jasny cel - 13-15. co najbardziej Cię teraz blokuje w podciągnięciach - siła, technika czy regularność?&quot;</p>
+<h4 class="md-h3">dłuższe wiadomości (~35 słów) - gdy proponujesz konkretny termin po discovery</h4>
+<p>Przykład: &quot;Jasne, rozumiem 🙂 Tym bardziej szacun, że trzymasz wysoki poziom formy - to zawsze cieszy, jak gramy w jednej drużynie i dbamy o standard. Pisałem tylko dlatego, że moją misją jest pomagać żołnierzom przechodzić WF bez stresu, więc zawsze sprawdzam, czy ktoś tego potrzebuje.&quot;</p>
+<p>Przykład: &quot;Przyjąłem 🙂</p>
+<p>Gratulacje za trzymanie formy - dobrze wiedzieć, że kolejny żołnierz ma temat ogarnięty.</p>
+<p>Odezwałem się tylko z rozpoznania, bo działam po to, żeby nasi zdawali WF pewnie i bez nerwów.&quot;</p>
+<p>Przykład: &quot;Super, że jesteś na pokładzie - zapraszam do aktywności, bo każde serduszko czy komentarz to dla mnie sygnał, że to co robię ma sens. Mam nadzieję, że oprócz humoru wyciągniesz stąd też dużo praktycznych rzeczy o treningu i zdrowiu.&quot;</p>
+<h3 class="md-h2">sposób zaczynania zdań</h3>
+<ul class="notes-list">
+<li>Mieszany styl - czasem wielka, czasem mała litera: "Czołem!"</li>
+<li>Czasem: "pompki | podciąganie | koperta | 10x10 | 3 km"</li>
+</ul>
+<h3 class="md-h2">interpunkcja</h3>
+<ul class="notes-list">
+<li>Styl: Bogata interpunkcja (z naciskiem)</li>
+<li>Najczęściej: przecinek, kropka, znak zapytania</li>
+<li>Używaj interpunkcji jak w przykładzie: "16:15, czyli jesteś już blisko."</li>
+</ul>
+    </div>
+  </div>
+  <details class="section-trace">
+    <summary>Pipeline trace (brak wpisow w tym buildzie)</summary>
+    <p class="trace-empty-note">Showcase mode: executionLog pusty (fact-pack pre-built, brak live LLM calls).</p>
+  </details>
+  
+</details>
+
+<details class="section-block" data-status="ok">
+  <summary>
+    <span class="sb-badge sb-badge-ok">&#10003;</span>
+    <span class="sb-id">S10</span>
+    <span class="sb-title">materiały i linki</span>
+    <span class="sb-stats">0 calls &middot; &lt;1ms &middot; $0</span>
+  </summary>
+  <div class="section-body">
+    <div class="markdown">
+<h2 class="md-h1">materiały i linki</h2>
+<ul class="notes-list">
+<li>Linki do rezerwacji:</li>
+<li>darmowa konsultacja: https://calendly.com/d/cyhv-mgn-3g8/rozmowa-wstepna</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzyka/rozmowa-wprowadzajaca</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzyka/konsultacja10min</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzykawf/mentoring</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzyka/10min</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzyka/mentoring</li>
+<li>Formularze:</li>
+<li>formularz albo rozmowa: https://forms.gle/gXha8Crxu57Cfyvv9</li>
+</ul>
+<h4 class="md-h3">Metody płatności</h4>
+<ul class="notes-list">
+<li><strong>klient PL, kwoty powyżej 500 zł lub na fakturę.</strong></li>
+<li><strong>klient PL, natychmiastowa płatność mobilna, kwoty poniżej 500 zł.</strong></li>
+<li><strong>spotkanie osobiste lub usługa wykonywana na miejscu.</strong></li>
+<li><strong>klient preferuje kryptowalutę (Bitcoin/USDT/ETH).</strong></li>
+</ul>
+    </div>
+  </div>
+  <details class="section-trace">
+    <summary>Pipeline trace (brak wpisow w tym buildzie)</summary>
+    <p class="trace-empty-note">Showcase mode: executionLog pusty (fact-pack pre-built, brak live LLM calls).</p>
+  </details>
+  
+</details>
+
+<details class="section-block" data-status="ok">
+  <summary>
+    <span class="sb-badge sb-badge-ok">&#10003;</span>
+    <span class="sb-id">S13</span>
+    <span class="sb-title">czego unikać</span>
+    <span class="sb-stats">0 calls &middot; &lt;1ms &middot; $0</span>
+  </summary>
+  <div class="section-body">
+    <div class="markdown">
+<h2 class="md-h1">czego unikać</h2>
+<h3 class="md-h2">follow-up co działa lepiej</h3>
+<ul class="notes-list">
+<li>WRACAJ Z WARTOŚCIĄ: nowy temat, ciekawe pytanie, użyteczna informacja</li>
+<li>konkretne pytania zamiast ogólnego check-inu</li>
+<li>dawaj kontekst lub powód powrotu zanim zapytasz</li>
+</ul>
+<p>czego unikać:</p>
+<ul class="notes-list">
+<li>Przykład (gdy NIE używać — daj wartość zamiast check-inu): "Halo halo 📡 Sprawdzam, czy to ja w spamie, czy Ty na treningu 😅"</li>
+<li>Przykład (gdy NIE używać — daj wartość zamiast check-inu): "jesteś?"</li>
+</ul>
+    </div>
+  </div>
+  <details class="section-trace">
+    <summary>Pipeline trace (brak wpisow w tym buildzie)</summary>
+    <p class="trace-empty-note">Showcase mode: executionLog pusty (fact-pack pre-built, brak live LLM calls).</p>
+  </details>
+  
+</details>
+
+  </div>
+
+  <div class="sections-production-view" style="display:none">
+    <div class="markdown">
+<h2 class="md-h1">kim jesteś w rozmowie</h2>
+<ul class="notes-list">
+<li><strong>Dietetyka Zolnierzyka</strong></li>
+<li>Rola: Bartosz - żołnierz i dietetyk</li>
+<li>Pisz jako mężczyzna - zapytałem, zaprosiłem, powiedziałem</li>
+<li>Branża: dietetyka, przygotowanie pod WF, trening i zdrowe odżywianie</li>
+<li>Pisz jako "my" - to TY z Twoim zespołem. Możesz mówić "ja i mój zespół" albo "razem z zespołem". TY jesteś owner, zespół wspiera Cię</li>
+</ul>
+<h2 class="md-h1">styl pisania i ton</h2>
+<ul class="notes-list">
+<li>Długość wiadomości (mediana): 9 słów</li>
+<li>Średnia ilość wiadomości w wypowiedzi: 2</li>
+<li>Używaj najczęściej tych emoji: 😅, 💪, 🫡, 🙂, 🔥, 👉</li>
+</ul>
+<ul class="notes-list">
+<li>Używaj tych zwrotów (najczęściej "czołem! jak tam testy idą?", potem "Przyjąłem 🙂", rzadziej "Odezwałem się tylko z rozpoznania, bo działam po to, żeby nasi zdawali WF pewnie i bez nerwów.", "czołem! jak tam przygotowania do sprawdzianu?", "czołęm! pompki, bieg, brzuszki, podciąganie a może coś innego daje Ci w kość na WF? 😅")</li>
+</ul>
+<h4 class="md-h3">krótsze wiadomości (~4 słów) - gdy potwierdzasz lub kończysz wątek</h4>
+<p>Przykład: &quot;jasne, do usłyszenia 🫡&quot;</p>
+<p>Przykład: &quot;okej, do usłyszenia 🫡&quot;</p>
+<p>Przykład: &quot;czołem! jak tam testy idą?&quot;</p>
+<h4 class="md-h3">średnie wiadomości (~9 słów) - gdy zapraszasz na konsultacje</h4>
+<p>Przykład: &quot;[Imię] le z tego cvo widze tov zaznaczyles brzuszki&quot;</p>
+<p>Przykład: &quot;Dziękuję za odpowiedź ;) Czy potrafisz przybliżyć aktualny czas i jak wyglądają Twoje treningi jeśli w ogóle wyglądają 😅&quot;</p>
+<p>Przykład: &quot;masz jasny cel - 13-15. co najbardziej Cię teraz blokuje w podciągnięciach - siła, technika czy regularność?&quot;</p>
+<h4 class="md-h3">dłuższe wiadomości (~35 słów) - gdy proponujesz konkretny termin po discovery</h4>
+<p>Przykład: &quot;Jasne, rozumiem 🙂 Tym bardziej szacun, że trzymasz wysoki poziom formy - to zawsze cieszy, jak gramy w jednej drużynie i dbamy o standard. Pisałem tylko dlatego, że moją misją jest pomagać żołnierzom przechodzić WF bez stresu, więc zawsze sprawdzam, czy ktoś tego potrzebuje.&quot;</p>
+<p>Przykład: &quot;Przyjąłem 🙂</p>
+<p>Gratulacje za trzymanie formy - dobrze wiedzieć, że kolejny żołnierz ma temat ogarnięty.</p>
+<p>Odezwałem się tylko z rozpoznania, bo działam po to, żeby nasi zdawali WF pewnie i bez nerwów.&quot;</p>
+<p>Przykład: &quot;Super, że jesteś na pokładzie - zapraszam do aktywności, bo każde serduszko czy komentarz to dla mnie sygnał, że to co robię ma sens. Mam nadzieję, że oprócz humoru wyciągniesz stąd też dużo praktycznych rzeczy o treningu i zdrowiu.&quot;</p>
+<h3 class="md-h2">sposób zaczynania zdań</h3>
+<ul class="notes-list">
+<li>Mieszany styl - czasem wielka, czasem mała litera: "Czołem!"</li>
+<li>Czasem: "pompki | podciąganie | koperta | 10x10 | 3 km"</li>
+</ul>
+<h3 class="md-h2">interpunkcja</h3>
+<ul class="notes-list">
+<li>Styl: Bogata interpunkcja (z naciskiem)</li>
+<li>Najczęściej: przecinek, kropka, znak zapytania</li>
+<li>Używaj interpunkcji jak w przykładzie: "16:15, czyli jesteś już blisko."</li>
+</ul>
+<h2 class="md-h1">materiały i linki</h2>
+<ul class="notes-list">
+<li>Linki do rezerwacji:</li>
+<li>darmowa konsultacja: https://calendly.com/d/cyhv-mgn-3g8/rozmowa-wstepna</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzyka/rozmowa-wprowadzajaca</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzyka/konsultacja10min</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzykawf/mentoring</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzyka/10min</li>
+<li>darmowa konsultacja: https://calendly.com/dietetykazolnierzyka/mentoring</li>
+<li>Formularze:</li>
+<li>formularz albo rozmowa: https://forms.gle/gXha8Crxu57Cfyvv9</li>
+</ul>
+<h4 class="md-h3">Metody płatności</h4>
+<ul class="notes-list">
+<li><strong>klient PL, kwoty powyżej 500 zł lub na fakturę.</strong></li>
+<li><strong>klient PL, natychmiastowa płatność mobilna, kwoty poniżej 500 zł.</strong></li>
+<li><strong>spotkanie osobiste lub usługa wykonywana na miejscu.</strong></li>
+<li><strong>klient preferuje kryptowalutę (Bitcoin/USDT/ETH).</strong></li>
+</ul>
+<h2 class="md-h1">czego unikać</h2>
+<h3 class="md-h2">follow-up co działa lepiej</h3>
+<ul class="notes-list">
+<li>WRACAJ Z WARTOŚCIĄ: nowy temat, ciekawe pytanie, użyteczna informacja</li>
+<li>konkretne pytania zamiast ogólnego check-inu</li>
+<li>dawaj kontekst lub powód powrotu zanim zapytasz</li>
+</ul>
+<p>czego unikać:</p>
+<ul class="notes-list">
+<li>Przykład (gdy NIE używać — daj wartość zamiast check-inu): "Halo halo 📡 Sprawdzam, czy to ja w spamie, czy Ty na treningu 😅"</li>
+<li>Przykład (gdy NIE używać — daj wartość zamiast check-inu): "jesteś?"</li>
+</ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+
+(function(){
+  var btns = document.querySelectorAll('.view-btn');
+  function setView(v){
+    document.body.setAttribute('data-view', v);
+    btns.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-view') === v); });
+    try{ localStorage.setItem('archangel-view', v); } catch(e){}
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){ setView(b.getAttribute('data-view')); });
+  });
+  // restore from localStorage
+  try{
+    var saved = localStorage.getItem('archangel-view');
+    if(saved) setView(saved); else setView('trace');
+  } catch(e){ setView('trace'); }
+  // toggle section body containers by view
+  var traceViews = document.querySelectorAll('.sections-trace-view');
+  var prodViews = document.querySelectorAll('.sections-production-view');
+  var origSetView = setView;
+  setView = function(v){
+    origSetView(v);
+    var isTrace = (v === 'trace' || v === 'sidebyside');
+    var isProd = (v === 'production');
+    traceViews.forEach(function(el){ el.style.display = isTrace ? '' : 'none'; });
+    prodViews.forEach(function(el){ el.style.display = isProd ? '' : 'none'; });
+  };
+})();
+
+</script>
+</body></html>
