@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>SETOR Archangel · oceny iter-by-iter</title>
+  <meta http-equiv="refresh" content="60">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f9fafb; color: #1f2937; margin: 0; padding: 24px; }
+    h1 { font-size: 24px; margin: 0 0 4px; color: #111827; }
+    .sub { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+    .hero { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .tile { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .tile-label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
+    .tile-value { font-size: 32px; font-weight: 700; margin-top: 8px; }
+    .tile-sub { font-size: 13px; color: #6b7280; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+    th { background: #f3f4f6; font-weight: 600; color: #374151; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .score-cell { font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; }
+    .iter-label { font-weight: 600; color: #111827; }
+    .median-row td { background: #fef3c7; font-weight: 700; }
+    .biz-name { font-weight: 500; color: #4b5563; }
+    .footer { margin-top: 24px; color: #9ca3af; font-size: 12px; text-align: center; }
+    a { color: #2563eb; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>SETOR Archangel · oceny per iteracja</h1>
+  <div class="sub">Sprint do <strong>98/100</strong> · Cel: median ≥95 dla 7 biz · auto-refresh co 60s · ostatnia regeneracja 15:08:20 Bali</div>
+
+  <div class="hero">
+    <div class="tile">
+      <div class="tile-label">Median ostatniej iter</div>
+      <div class="tile-value" style="color:#f97316">57</div>
+      <div class="tile-sub">cel 98 · gap +41</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Liczba iteracji</div>
+      <div class="tile-value">9</div>
+      <div class="tile-sub">opus-review-runner V1+V2</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Best per biz</div>
+      <div class="tile-value">66</div>
+      <div class="tile-sub">top combined across all iters</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Showcase live</div>
+      <div class="tile-value"><a href="index.html">→ otwórz</a></div>
+      <div class="tile-sub">7 biz Additional Info HTML</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Iter</th>
+        <th>Czas</th>
+        <th class="score-cell">ada</th>
+        <th class="score-cell">dietetyka</th>
+        <th class="score-cell">jakwfinanse</th>
+        <th class="score-cell">jasion</th>
+        <th class="score-cell">kontrowersyjny</th>
+        <th class="score-cell">nietypowy</th>
+        <th class="score-cell">olaf</th>
+        <th class="score-cell">MEDIAN</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="iter-label">iter1</td>
+        <td class="biz-name">11:13</td>
+        <td class="score-cell" style="color:#ef4444">37</td>
+        <td class="score-cell" style="color:#f97316">57</td>
+        <td class="score-cell" style="color:#ef4444">40</td>
+        <td class="score-cell" style="color:#ef4444">42</td>
+        <td class="score-cell" style="color:#f97316">54</td>
+        <td class="score-cell" style="color:#ef4444">45</td>
+        <td class="score-cell" style="color:#f97316">55</td>
+        <td class="score-cell" style="color:#ef4444;font-weight:700">45</td>
+      </tr>
+      <tr>
+        <td class="iter-label">iter2</td>
+        <td class="biz-name">11:21</td>
+        <td class="score-cell" style="color:#ef4444">49</td>
+        <td class="score-cell" style="color:#f97316">57</td>
+        <td class="score-cell" style="color:#ef4444">42</td>
+        <td class="score-cell" style="color:#f97316">52</td>
+        <td class="score-cell" style="color:#f97316">54</td>
+        <td class="score-cell">-</td>
+        <td class="score-cell" style="color:#ef4444">48</td>
+        <td class="score-cell" style="color:#f97316;font-weight:700">52</td>
+      </tr>
+      <tr>
+        <td class="iter-label">iter3</td>
+        <td class="biz-name">13:03</td>
+        <td class="score-cell" style="color:#f97316">53</td>
+        <td class="score-cell" style="color:#f97316">60</td>
+        <td class="score-cell" style="color:#f97316">60</td>
+        <td class="score-cell" style="color:#ef4444">43</td>
+        <td class="score-cell" style="color:#f97316">63</td>
+        <td class="score-cell" style="color:#ef4444">48</td>
+        <td class="score-cell" style="color:#f97316">55</td>
+        <td class="score-cell" style="color:#f97316;font-weight:700">55</td>
+      </tr>
+      <tr>
+        <td class="iter-label">iter4</td>
+        <td class="biz-name">13:15</td>
+        <td class="score-cell" style="color:#f97316">50</td>
+        <td class="score-cell" style="color:#ef4444">45</td>
+        <td class="score-cell" style="color:#f97316">50</td>
+        <td class="score-cell" style="color:#ef4444">42</td>
+        <td class="score-cell" style="color:#f97316">58</td>
+        <td class="score-cell" style="color:#f97316">57</td>
+        <td class="score-cell" style="color:#f97316">61</td>
+        <td class="score-cell" style="color:#f97316;font-weight:700">50</td>
+      </tr>
+      <tr>
+        <td class="iter-label">iter5</td>
+        <td class="biz-name">13:21</td>
+        <td class="score-cell" style="color:#f97316">54</td>
+        <td class="score-cell" style="color:#f97316">54</td>
+        <td class="score-cell" style="color:#f97316">62</td>
+        <td class="score-cell" style="color:#ef4444">44</td>
+        <td class="score-cell" style="color:#f97316">54</td>
+        <td class="score-cell" style="color:#f97316">50</td>
+        <td class="score-cell" style="color:#eab308">66</td>
+        <td class="score-cell" style="color:#f97316;font-weight:700">54</td>
+      </tr>
+      <tr>
+        <td class="iter-label">iter6</td>
+        <td class="biz-name">13:34</td>
+        <td class="score-cell" style="color:#f97316">51</td>
+        <td class="score-cell" style="color:#f97316">52</td>
+        <td class="score-cell" style="color:#f97316">59</td>
+        <td class="score-cell" style="color:#f97316">51</td>
+        <td class="score-cell" style="color:#f97316">56</td>
+        <td class="score-cell" style="color:#f97316">50</td>
+        <td class="score-cell" style="color:#f97316">53</td>
+        <td class="score-cell" style="color:#f97316;font-weight:700">52</td>
+      </tr>
+      <tr>
+        <td class="iter-label">iter7</td>
+        <td class="biz-name">13:40</td>
+        <td class="score-cell" style="color:#f97316">55</td>
+        <td class="score-cell" style="color:#f97316">57</td>
+        <td class="score-cell" style="color:#f97316">61</td>
+        <td class="score-cell" style="color:#f97316">56</td>
+        <td class="score-cell" style="color:#f97316">56</td>
+        <td class="score-cell" style="color:#f97316">59</td>
+        <td class="score-cell" style="color:#f97316">60</td>
+        <td class="score-cell" style="color:#f97316;font-weight:700">57</td>
+      </tr>
+      <tr>
+        <td class="iter-label">iter8</td>
+        <td class="biz-name">13:55</td>
+        <td class="score-cell" style="color:#f97316">58</td>
+        <td class="score-cell" style="color:#f97316">54</td>
+        <td class="score-cell" style="color:#f97316">57</td>
+        <td class="score-cell" style="color:#ef4444">38</td>
+        <td class="score-cell" style="color:#ef4444">46</td>
+        <td class="score-cell" style="color:#f97316">50</td>
+        <td class="score-cell" style="color:#ef4444">46</td>
+        <td class="score-cell" style="color:#f97316;font-weight:700">50</td>
+      </tr>
+      <tr>
+        <td class="iter-label">iter9</td>
+        <td class="biz-name">14:53</td>
+        <td class="score-cell" style="color:#ef4444">38</td>
+        <td class="score-cell" style="color:#f97316">59</td>
+        <td class="score-cell" style="color:#f97316">61</td>
+        <td class="score-cell" style="color:#f97316">55</td>
+        <td class="score-cell" style="color:#ef4444">46</td>
+        <td class="score-cell" style="color:#f97316">57</td>
+        <td class="score-cell" style="color:#f97316">57</td>
+        <td class="score-cell" style="color:#f97316;font-weight:700">57</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Generated: 15:08:20 Bali · Cron-driven loop · push co iteracja · target 98/100
+  </div>
+</body>
+</html>
