@@ -16,7 +16,11 @@ nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 8px;backgrou
 .meta{font-size:11px;color:#8b949e;font-family:monospace;margin-top:6px;display:flex;flex-wrap:wrap;gap:10px}
 .tag{padding:1px 6px;border-radius:4px;background:#21262d}.st{color:#7ee787}.no{color:#79c0ff}.notes{color:#8b949e;font-style:italic}
 </style></head><body>
-<header><h1>ABRAMS OPUS_31 - rozmowy do przeglądu (nasz proces)</h1><div class=sub>82 rozmów · 12 biznesów · gpt-5.4 low · surowy output (prod-faithful) · noindex</div></header><nav>
+<header><h1>ABRAMS OPUS_31 - rozmowy do przeglądu (nasz proces)</h1><div class=sub>82 rozmów · 12 biznesów · gpt-5.4 low · surowy output (prod-faithful) · noindex</div></header>
+<div style="background:#0d2818;border:1px solid #238636;border-radius:10px;margin:14px 20px;padding:14px;font-size:13px;color:#aff5b4">
+<b style="color:#7ee787">OPUS_31 - status walidacji</b><br>
+203 bugów znalezionych (2 rundy adwersaryjnego huntu), ~60 root-fixów PL+EN. Regresja 96 conv: gender-mix <b>0</b> · notes 45%&rarr;<b>4%</b> · em-dash <b>0</b> · SAFETY <b>P0=0</b>. Booking-regresja (31 P0) złapana audytem i naprawiona &rarr; manual-slot trzyma FORMSENT (0 halucynacji rezerwacji). Gaty: PL/bilingual contract PASS. Residua (sufit gpt-5.4-low): curly-apostrof ~3/650, message3-tekst ~21/650 &rarr; rekomendacja 2-liniowego deterministycznego guardu w prod.
+</div><nav>
 <a href="#realcsv_01">Dietetyka (plan/cena)</a>
 <a href="#realcsv_02">Finanse (inwestowanie)</a>
 <a href="#realcsv_03">Trading (Fire Crew)</a>
