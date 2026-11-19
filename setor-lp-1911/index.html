@@ -8088,7 +8088,7 @@ a:hover > .cta-rocket { animation: ctaRocketLaunch 0.7s cubic-bezier(0.32, 0.72,
     /* Oddech nad stopką, żeby ledwo widoczna linijka nie sklejała się z dolną
        krawędzią kalendarza i nie wyglądała jak jego część. */
     margin-top: 40px !important;
-  }</style><script>/* z produkcji (origin/main, ProstaPage.astro, PR 144): miniatura Wistii wylaczona dla materialu, znacznik gotowosci API dla plakatu */try{window.wistiaOptions=window.wistiaOptions||{};window.wistiaOptions["20twgbl6rl"]={playbackRate:1.1,captionsOnByDefault:true,plugin:{videoThumbnail:{on:false},"captions-v1":{onByDefault:true}}};customElements.whenDefined("wistia-player").then(function(){var w=document.querySelector("wistia-player");if(w&&w.whenApiReady){w.whenApiReady().then(function(){window.__setorWistiaApiGotowe=true;});}else{window.__setorWistiaApiGotowe=true;}});}catch(e){}</script><script src="https://fast.wistia.com/player.js" async></script>
+  }</style><script>/* z produkcji (origin/main, ProstaPage.astro, PR 144): miniatura Wistii wylaczona dla materialu, znacznik gotowosci API dla plakatu */try{window.wistiaOptions=window.wistiaOptions||{};window.wistiaOptions["20twgbl6rl"]={playbackRate:1.1,captionsOnByDefault:true,plugin:{videoThumbnail:{on:false},"captions-v1":{onByDefault:true}}};customElements.whenDefined("wistia-player").then(function(){var w=document.querySelector("wistia-player");if(w&&w.whenApiReady){w.whenApiReady().then(function(){window.__setorWistiaApiGotowe=true;try{w.captionsEnabled=true;w.playbackRate=1.1;}catch(e){}});}else{window.__setorWistiaApiGotowe=true;}});}catch(e){}</script><script src="https://fast.wistia.com/player.js" async></script>
 <script src="https://fast.wistia.com/embed/20twgbl6rl.js" async type="module"></script>
 <style id="proto-pasek">
   .proto{position:relative;z-index:50;background:#2A2A3C;color:#C9CAD6;font:12px/1.4 system-ui,sans-serif;padding:6px 16px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:center}
@@ -8530,7 +8530,7 @@ src: url(data:application/x-font-woff;charset=utf-8;base64,d09GMk9UVE8AAAaMAAwAA
       if(!wp){schowaj();return;}
       if(poster.hasAttribute('data-czeka')){try{if(wp.state==='playing'&&wp.muted)wp.muted=false;}catch(e){}return;}
       poster.setAttribute('data-czeka','');
-      /* wlasciciel 21:5x: VSL domyslnie 1,10x i z napisami; predkosc ustawiana zaraz po play(), bez await */var tempo=function(){try{if(wp.playbackRate!==1.1)wp.playbackRate=1.1;}catch(e){}};var start=function(){try{wp.play();}catch(e){}tempo();};if(!poster.__tempo){poster.__tempo=1;try{wp.addEventListener('play',tempo);wp.addEventListener('playing',tempo);}catch(e){}}
+      /* wlasciciel 21:5x: VSL domyslnie 1,10x i z napisami; predkosc ustawiana zaraz po play(), bez await */var tempo=function(){try{if(wp.playbackRate!==1.1)wp.playbackRate=1.1;if(!wp.captionsEnabled)wp.captionsEnabled=true;}catch(e){}};var start=function(){try{wp.play();}catch(e){}tempo();};if(!poster.__tempo){poster.__tempo=1;try{wp.addEventListener('play',tempo);wp.addEventListener('playing',tempo);}catch(e){}}
       if(window.__setorWistiaApiGotowe||!window.customElements||!customElements.whenDefined){start();}
       else{var poApi=function(){try{if(wp.whenApiReady){wp.whenApiReady().then(start,start);return;}}catch(e){}start();};customElements.whenDefined('wistia-player').then(poApi,start);}
       var proby=0; var iv=setInterval(function(){proby+=1;var ct=0;try{ct=wp.currentTime||0;}catch(e){}
