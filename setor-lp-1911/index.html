@@ -8220,6 +8220,10 @@ html body .proto-loga img[src*="setor.svg"]{width:auto!important;height:32px}
 html body .pv-odznaka{background:#FACC15!important;color:#131628!important;font-size:15px!important;line-height:21px!important;font-weight:800!important;letter-spacing:.02em!important;text-transform:none!important;padding:9px 16px!important;white-space:normal!important;text-align:center}
 html body .pv-odznaka::before{background:#131628!important;width:7px!important;height:7px!important}
 @media (max-width:640px){html body .pv-odznaka{font-size:14px!important;line-height:19px!important;padding:9px 16px!important;border-radius:16px!important;max-width:calc(100% - 8px)!important;text-wrap:balance}}
+
+/* iter 20 (polecenie wlasciciela 20:38 "dopracuj je tam po srodku"): znak Setora o 6 px wyzszy od bocznych (38 px; telefon 33 px), bo rysunek jest smukly i przy tej samej wysokosci wygladal na mniejszy; srodki w jednej linii (align-items center), odstepy rysunkow po 12 px zmierzone na 4x */
+html body .proto-loga img[src*="setor.svg"]{height:38px!important;margin:0 -2px 0 0}
+@media (max-width:640px){html body .proto-loga img[src*="setor.svg"]{height:33px!important;margin:0}}
 </style>
 </head><body><div class="proto" role="region" aria-label="Przełączniki prototypu">
     <div class="proto__grupa"><b>Formularz:</b><button type="button" data-krok-btn="1">krok 1</button><button type="button" data-krok-btn="2">krok 2</button></div>
