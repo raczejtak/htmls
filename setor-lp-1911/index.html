@@ -8361,6 +8361,12 @@ html body .proto-nw{white-space:nowrap}
 html body .rs-demo__etykieta{margin-bottom:16px!important}
 /* 2 linie na telefonie wymagalyby ok. 16 px (zmierzone: linie 436 px przy 19,6 px w kolumnie 350), wiec zasada wlasciciela "max 3, gdy 2 bylyby za male": 3 linie po 22 px */
 @media (max-width:640px){html body .rs-revhead__title{line-height:1.15!important;text-wrap:balance}}
+/* petla 8: karuzela dowodow: cien z rodziny kart (lzejszy, granatowy) i miejsce na niego w torze, zeby nie byl ucinany w twarda szara belke; promien kart 16 */
+html body .proof-swipe__track img, html body .proof-gallery__viewport img{border-radius:16px!important;box-shadow:0 1px 2px rgba(19,22,40,.10),0 10px 24px rgba(19,22,40,.16)!important}
+html body .proof-swipe__track{padding-top:12px!important;padding-bottom:32px!important;margin-top:-8px!important;margin-bottom:-28px!important}
+/* petla 8b: licznik "1 / 25" byl bialy na bialym tle (niewidoczny duch pod karta) - teraz szary 13 px, 16 px pod karta; na komputerze kafle rozdzielone 12 px (margines kazdego kafla, petla przesuwu zostaje rowna) */
+html body .proof-swipe__licznik{color:#5B6076!important;font-size:13px!important;margin-top:12px!important;text-align:center}
+html body .proof-gallery__track > img{margin-right:12px!important}
 </style>
 </head><body><div class="proto" role="region" aria-label="Przełączniki prototypu">
     <div class="proto__grupa"><b>Formularz:</b><button type="button" data-krok-btn="1">krok 1</button><button type="button" data-krok-btn="2">krok 2</button></div>
