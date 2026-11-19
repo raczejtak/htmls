@@ -8332,6 +8332,16 @@ html body .rs-google.rs-demo__przycisk[aria-disabled="true"]{opacity:.7!importan
 /* ta sama kolumna co gorny formularz: 500 px komputer, na telefonie 330 px przy 390 */
 html body .dol{max-width:500px!important}
 @media (max-width:640px){html body .dol{padding:0 10px}}
+/* petla 5 (krytyka 20:55 pkt 5): blok pod przyciskiem w skali 8 px: przycisk -> linia 16, linia -> ikony 16, ikony -> znaczki 16, znaczki -> Darek 24; 15 ikon w jednym rzedzie na komputerze (odstep 10 px), na telefonie dwa rowne rzedy 8 + 7; cytat Darka na pelna szerokosc karty */
+html body .proto-pod{gap:16px!important;margin-top:16px!important}
+html body .proto-pod__ikony{gap:10px!important;max-width:510px!important}
+@media (max-width:640px){html body .proto-pod__ikony{gap:12px!important;max-width:292px!important}}
+html body .proto-pod .rs-zaufanie__link{margin-top:8px!important}
+html body .proto-pod .rs-zaufanie__cytat{display:flex!important;align-items:center;max-width:none!important;width:100%}
+html body .proto-pod .rs-zaufanie__cytat figcaption{flex:1;min-width:0;max-width:none!important}
+html body .proto-pod .rs-zaufanie__slowa{max-width:none!important;display:block}
+/* petla 5b: karta Darka w rodzinie kart: promien 16, jasna ramka, cien wspolny dla kart */
+html body .proto-pod .rs-zaufanie__cytat{border-radius:16px!important;border:1px solid #E3E4EC!important;background:#F7F8FB!important;box-shadow:0 1px 2px rgba(19,22,40,.04),0 8px 24px rgba(19,22,40,.06)!important}
 </style>
 </head><body><div class="proto" role="region" aria-label="Przełączniki prototypu">
     <div class="proto__grupa"><b>Formularz:</b><button type="button" data-krok-btn="1">krok 1</button><button type="button" data-krok-btn="2">krok 2</button></div>
