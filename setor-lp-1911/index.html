@@ -8320,6 +8320,18 @@ html body .rs-video__poster:focus-visible{outline:3px solid #fff;outline-offset:
 html body .rs-video__poster.rs-poster-ukryty{display:none}
 @media (max-width:640px){html body .rs-video__poster-play{width:72px;height:72px}html body .rs-video__poster-play::after{border-width:12px 0 12px 19px}}
 @media (prefers-reduced-motion:reduce){html body .rs-video__poster-play{transition:none}}
+/* petla 4 (20:37, 20:43 "buttony brzydkie za male"): oba przyciski kobaltowe 72 px komputer / 68 px telefon, tekst 19/18 px 800, promien 14 px, pelna szerokosc kolumny formularza (min. 460 px na komputerze), gradient #2563EB -> #1D4ED8, swiatlo u gory, miekki cien w kobalcie; hover: uniesienie 1 px, active: scale .98; przed wpisaniem nicku opacity .7 */
+html body .rs-google.rs-demo__przycisk,html body .rs-google.dol__przycisk{display:flex!important;align-items:center;justify-content:center;gap:10px;width:100%!important;max-width:none!important;min-width:min(460px,100%);min-height:72px!important;height:72px;padding:0 24px!important;margin:16px 0 0!important;border:0!important;border-radius:14px!important;background:linear-gradient(180deg,#2563EB 0%,#1D4ED8 100%)!important;color:#fff!important;font-size:19px!important;line-height:1!important;font-weight:800!important;letter-spacing:.02em!important;text-transform:uppercase!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 1px 2px rgba(19,22,40,.12),0 10px 24px rgba(29,78,216,.30)!important;opacity:1!important;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s,filter .18s,opacity .18s;-webkit-tap-highlight-color:transparent}
+html body .rs-google.rs-demo__przycisk .rs-google__napis,html body .rs-google.dol__przycisk .rs-google__napis{font:inherit!important;color:inherit!important;letter-spacing:inherit!important}
+@media (hover:hover){html body .rs-google.rs-demo__przycisk:hover,html body .rs-google.dol__przycisk:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 2px 4px rgba(19,22,40,.12),0 16px 32px rgba(29,78,216,.38)!important;filter:brightness(1.04)}}
+html body .rs-google.rs-demo__przycisk:active,html body .rs-google.dol__przycisk:active{transform:scale(.98);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 4px 12px rgba(29,78,216,.28)!important}
+html body .rs-google.rs-demo__przycisk:focus-visible,html body .rs-google.dol__przycisk:focus-visible{outline:3px solid #131628;outline-offset:3px}
+html body .rs-google.rs-demo__przycisk[aria-disabled="true"]{opacity:.7!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 6px 16px rgba(29,78,216,.18)!important}
+@media (max-width:640px){html body .rs-google.rs-demo__przycisk,html body .rs-google.dol__przycisk{min-height:68px!important;height:68px;font-size:18px!important;margin-top:12px!important}}
+@media (prefers-reduced-motion:reduce){html body .rs-google.rs-demo__przycisk,html body .rs-google.dol__przycisk{transition:none}}
+/* ta sama kolumna co gorny formularz: 500 px komputer, na telefonie 330 px przy 390 */
+html body .dol{max-width:500px!important}
+@media (max-width:640px){html body .dol{padding:0 10px}}
 </style>
 </head><body><div class="proto" role="region" aria-label="Przełączniki prototypu">
     <div class="proto__grupa"><b>Formularz:</b><button type="button" data-krok-btn="1">krok 1</button><button type="button" data-krok-btn="2">krok 2</button></div>
