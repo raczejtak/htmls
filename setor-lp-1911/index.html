@@ -8294,6 +8294,18 @@ html body .proto-ab__strzalka{animation:protoAb .6s ease-out .3s both}
 @media (max-width:640px){html body .proto-ab__kafel{width:64px;height:64px}html body .proto-ab__kafel img{width:32px;height:32px}}
 html body .dol__naglowek{margin:8px 0 6px;text-align:center;font-size:27px;line-height:32.4px;font-weight:700;letter-spacing:-0.48px;color:#131628;text-wrap:balance}
 @media (max-width:640px){html body .dol__naglowek{font-size:21px;line-height:25.2px}}
+/* petla 2 (krytyka 20:55 pkt 2): rytm hero callout / H1 / linia kobaltowa / wideo = 24/12/32 px komputer, 16/8/24 px telefon; linia kobaltowa na telefonie 2 linie: clamp 21-28 px (375 px: 21, 390: 22, 430: 24) */
+html body .pv-odznaka{margin-bottom:24px!important}
+html body h1.pv-hero__h1{margin-top:0!important;margin-bottom:12px!important}
+html body .pv-hero__h1--druga{margin-top:0!important;margin-bottom:0!important}
+html body .pv-hero{padding-bottom:0!important}
+html body .rs-section--flush{padding-top:32px!important}
+@media (max-width:640px){
+html body .pv-odznaka{margin-bottom:16px!important}
+html body h1.pv-hero__h1{margin-bottom:8px!important}
+html body .rs-section--flush{padding-top:24px!important}
+html body .pv-hero__h1--druga,html body .pv-hero__h1--druga .pv-hero__zdanie{font-size:clamp(21px,calc(21px + (100vw - 375px) * .0545),28px)!important;line-height:1.12!important}
+}
 </style>
 </head><body><div class="proto" role="region" aria-label="Przełączniki prototypu">
     <div class="proto__grupa"><b>Formularz:</b><button type="button" data-krok-btn="1">krok 1</button><button type="button" data-krok-btn="2">krok 2</button></div>
